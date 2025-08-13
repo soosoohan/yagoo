@@ -2,14 +2,6 @@
 
 <html lang="ko">
 <head>
-<!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4YZHC1G9FN');
-    </script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>숫자야구</title>
@@ -31,6 +23,14 @@
     border:1px solid rgba(255,255,255,.14);
     background:#0f1c2a; color:#e9f5ff; letter-spacing:6px; text-align:center;
   }
+
+input#guess {
+    font-size: 20px;
+    background: #1e3a52; /* ← 이 부분이 배경색입니다 */
+    border: 3px solid #2c4157;
+    color: white;
+}
+
   button { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px; }
   .primary { background:var(--accent); color:#00121d; }
   .secondary { background:#2c4157; color:#d7e7f5; }
@@ -42,19 +42,29 @@
   .log table { width:100%; border-collapse:collapse; font-variant-numeric: tabular-nums; font-size:20px; }
   .log th, .log td { padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
   .log tr:last-child td { border-bottom:0; }
-  .badge { display:inline-block; padding:3px 10px; border-radius:999px; background:#143148; color:#bfe7ff; font-size:20px; }
+  .badge { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px;display:inline-block;  background:#ff6b6b;}
   .footer { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
   .mode-buttons { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
   .ok { color:#b8ffb8; }
   .fail { color:#ffb8c1; }
-
+#modeLabel:empty {
+  display: none;
+}
+/* 선택 사항: 새 게임 버튼 주목 효과 */
+.attention {
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+  50% { transform: scale(1.03); box-shadow: 0 8px 20px rgba(0,0,0,.25); }
+}
 /* 통계 버튼 스타일 */
 .stats-btn { background:#ff6b6b; color:white; }
 .stats-btn:hover { background:#ff5252; }
 
 input#guess {
 font-size: 20px;
-background: #143148;
+background: var(–bg);
 border: 3px solid #2c4157;
 color:white;
 }
@@ -133,7 +143,7 @@ font-size: 18px;
 <body>
 <div class="wrap">
   <div class="card">
-    <h1>숫자 야구 <span id="modeLabel" class="badge"></span></h1>
+    <h1>숫자 야구 </h1>
     <div style="margin:10px 0;padding:10px 14px;border:1px solid #ccc;border-radius:8px;background:#143148;color:#d7e7f5;font-size:20px;line-height:1.6">
   <strong>게임 규칙:</strong> 
   비밀 숫자를 맞추는 고전 퍼즐입니다.<br>
@@ -150,14 +160,16 @@ font-size: 18px;
       <button class="secondary" id="m4e">4자리 1~9</button>
       <button class="secondary" id="m4i">4자리 0~9</button>
     </div>
-    <div class="sub">모드를 선택한 후 숫자를 맞혀보세요.</div>
-
+    
 
 <div class="row">
   <input id="guess" autocomplete="off" inputmode="numeric" maxlength="4" placeholder="예: 573" />
   <button id="btn-try" class="primary" disabled>제출</button>
   <button id="btn-reset" class="secondary">새 게임</button>
   <button id="btn-giveup" class="ghost">포기</button>
+ <span id="status" class="badge">모드를  먼저 선택하세요.</span>
+  <span id="modeLabel" class="badge"></span>
+<span id="summary" class="hint"></span>
 </div>
 <div id="warn" class="warn"></div>
 
@@ -173,8 +185,7 @@ font-size: 18px;
 </div>
 
 <div class="footer">
-  <span id="status" class="badge">모드 선택 필요</span>
-  <span id="summary" class="hint"></span>
+<button onclick="location.href='stats.html'" class="stats-btn">📊 통계</button>
 </div>
 
 
@@ -241,22 +252,26 @@ font-size: 18px;
     return digits.slice(0, mode.len).join("");
   }
 
-  function reset() {
-    if (!mode) { warnEl.textContent = "먼저 모드를 선택하세요."; return; }
-    secret = newSecret();
-    tries = 0; finished = false;
-    tbody.innerHTML = "";
-    statusEl.textContent = "진행 중";
-    statusEl.classList.remove("ok","fail");
-    summaryEl.textContent = "";
-    warnEl.textContent = "";
-    guessEl.value = "";
-    btnTry.disabled = true;
-    guessEl.maxLength = mode.len;
-    guessEl.placeholder = (mode.len === 3) ? "예: 573" : "예: 5073";
-    guessEl.focus();
-    // console.log("SECRET", secret);
-  }
+  
+
+function reset() {
+  if (!mode) { warnEl.textContent = "먼저 모드를 선택하세요."; return; }
+  secret = newSecret();
+  tries = 0; finished = false;
+  tbody.innerHTML = "";
+  statusEl.textContent = "진행 중";
+  statusEl.classList.remove("ok","fail");
+  summaryEl.textContent = "";
+  warnEl.textContent = "";
+  guessEl.value = "";
+  btnTry.disabled = true;
+  guessEl.maxLength = mode.len;
+  guessEl.placeholder = (mode.len === 3) ? "예: 573" : "예: 5073";
+  guessEl.focus();
+
+  updateButtons(false);        // ← 추가: 진행 중 UI
+}
+
 
   function validate(input) {
     if (!mode) return "모드를 먼저 선택하세요.";
@@ -285,17 +300,7 @@ font-size: 18px;
     tbody.prepend(tr);
   }
 
-  function gameComplete(attempts) {
-    // 신기록 확인
-    if (currentModeKey) {
-      const result = recordsManager.addRecord(currentModeKey, attempts);
-      
-      if (result.isNewRecord) {
-        showRecordModal(result.rank, attempts, currentModeKey);
-      }
-    }
-  }
-
+  // 기존 함수들 제거하고 필요한 함수만 유지
   function showRecordModal(rank, attempts, modeKey) {
     const modal = $("#recordModal");
     const celebration = $("#recordCelebration");
@@ -317,7 +322,8 @@ font-size: 18px;
     $("#recordModal").style.display = 'none';
   }
 
-  function onTry() {
+  
+function onTry() {
     if (finished || !mode) return;
     const g = guessEl.value.trim();
     const err = validate(g);
@@ -326,30 +332,57 @@ font-size: 18px;
     tries++;
     const { s, b, outs } = score(g, secret);
     addRow(g, s, b, outs);
-    if (s === mode.len) {
-      finished = true;
-      statusEl.textContent = `정답! (${secret})`;
-      statusEl.classList.add("ok");
-      summaryEl.textContent = `시도 횟수: ${tries}번`;
-      btnTry.disabled = true;
-      
-      // 게임 완료 처리 (신기록 확인)
-      gameComplete(tries);
-    } else {
-      summaryEl.textContent = `시도 ${tries}번`;
+    
+
+if (s === mode.len) {
+  finished = true;
+  statusEl.textContent = `정답! (${secret})`;
+  statusEl.classList.add("ok");
+  summaryEl.textContent = `시도 횟수: ${tries}번`;
+  btnTry.disabled = true;
+
+  updateButtons(true);         // ← 추가: 끝난 UI
+
+  if (currentModeKey) {
+    const result = recordsManager.addRecord(currentModeKey, tries);
+    if (result.isNewRecord) {
+      showRecordModal(result.rank, tries, currentModeKey);
     }
+  }
+} else {
+  summaryEl.textContent = `시도 ${tries}번`;
+}
+
     guessEl.value = "";
     btnTry.disabled = true;
     guessEl.focus();
   }
 
-  function giveUp() {
-    if (finished || !mode) return;
-    finished = true;
-    statusEl.textContent = `포기! 정답: ${secret}`;
-    statusEl.classList.add("fail");
-    btnTry.disabled = true;
-  }
+
+function giveUp() {
+  if (finished || !mode) return;
+  finished = true;
+  statusEl.textContent = `포기! 정답: ${secret}`;
+  statusEl.classList.add("fail");
+  btnTry.disabled = true;
+
+  updateButtons(true);         // ← 추가: 끝난 UI
+}
+
+
+ 
+function updateButtons(isFinished) {
+  // 제출 버튼: 끝났으면 덜 눈에 띄게(secondary), 진행 중이면 primary
+  btnTry.classList.toggle("primary", !isFinished);
+  btnTry.classList.toggle("secondary", isFinished);
+
+  // 새 게임 버튼: 끝났으면 눈에 띄게(primary), 진행 중이면 secondary
+  btnReset.classList.toggle("primary", isFinished);
+  btnReset.classList.toggle("secondary", !isFinished);
+
+  // 선택: 새 게임 버튼에 주목 효과
+  btnReset.classList.toggle("attention", isFinished);
+}
 
   function onInput(e) {
     let v = e.target.value.replace(/[^\d]/g, "").slice(0, mode ? mode.len : 4);
