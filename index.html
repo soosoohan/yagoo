@@ -43,7 +43,6 @@ input#guess {
   .log th, .log td { padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
   .log tr:last-child td { border-bottom:0; }
   .badge { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px;display:inline-block;  background:#ff6b6b;}
-  .footer { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
   .mode-buttons { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
   .ok { color:#b8ffb8; }
   .fail { color:#ffb8c1; }
@@ -58,9 +57,6 @@ input#guess {
   0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
   50% { transform: scale(1.03); box-shadow: 0 8px 20px rgba(0,0,0,.25); }
 }
-/* 통계 버튼 스타일 */
-.stats-btn { background:#ff6b6b; color:white; }
-.stats-btn:hover { background:#ff5252; }
 
 input#guess {
 font-size: 20px;
@@ -69,74 +65,6 @@ border: 3px solid #2c4157;
 color:white;
 }
 
-/* 신기록 모달 스타일 */
-.record-modal {
-display: none;
-position: fixed;
-z-index: 1000;
-left: 0;
-top: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0,0,0,0.8);
-}
-
-.record-modal-content {
-background: var(–card);
-margin: 10% auto;
-padding: 30px;
-border-radius: 20px;
-width: 90%;
-max-width: 500px;
-text-align: center;
-position: relative;
-border: 1px solid rgba(255,255,255,.2);
-box-shadow: 0 20px 40px rgba(0,0,0,.5);
-}
-
-.record-close {
-color: var(–muted);
-float: right;
-font-size: 28px;
-font-weight: bold;
-cursor: pointer;
-position: absolute;
-right: 20px;
-top: 15px;
-}
-
-.record-close:hover {
-color: white;
-}
-
-.record-celebration {
-font-size: 4em;
-margin: 20px 0;
-}
-
-.record-title {
-color: var(–accent);
-font-size: 2em;
-margin: 20px 0;
-}
-
-.record-message {
-color: #eef6ff;
-font-size: 1.2em;
-margin: 20px 0;
-}
-
-.record-buttons {
-display: flex;
-gap: 15px;
-justify-content: center;
-margin-top: 30px;
-}
-
-.record-buttons button {
-padding: 15px 25px;
-font-size: 18px;
-}
 </style>
 
 </head>
@@ -188,22 +116,6 @@ font-size: 18px;
   </div>
 </div>
 
-<!-- 신기록 축하 모달 -->
-
-<div id="recordModal" class="record-modal">
-  <div class="record-modal-content">
-    <span class="record-close" onclick="closeRecordModal()">&times;</span>
-    <div class="record-celebration" id="recordCelebration">🎉</div>
-    <h2 class="record-title" id="recordTitle">신기록 달성!</h2>
-    <p class="record-message" id="recordMessage"></p>
-    <div class="record-buttons">
-      <button class="primary" onclick="closeRecordModal()">확인</button>
-      <button class="stats-btn" onclick="location.href='stats.html'">통계 보기</button>
-    </div>
-  </div>
-</div>
-
-<script src="records.js"></script>
 
 <script>
 (function () {
@@ -296,28 +208,6 @@ function reset() {
     tbody.prepend(tr);
   }
 
-  // 기존 함수들 제거하고 필요한 함수만 유지
-  function showRecordModal(rank, attempts, modeKey) {
-    const modal = $("#recordModal");
-    const celebration = $("#recordCelebration");
-    const title = $("#recordTitle");
-    const message = $("#recordMessage");
-
-    const medals = ['🥇', '🥈', '🥉'];
-    const medal = rank <= 3 ? medals[rank - 1] : '🏆';
-    const modeName = recordsManager.getModeLabel(modeKey);
-
-    celebration.textContent = medal;
-    title.textContent = `${rank}등 신기록!`;
-    message.innerHTML = `<strong>${modeName}</strong><br>${attempts}번 만에 맞춰서 ${rank}위에 올랐습니다!`;
-
-    modal.style.display = 'block';
-  }
-
-  function closeRecordModal() {
-    $("#recordModal").style.display = 'none';
-  }
-
   
 function onTry() {
     if (finished || !mode) return;
@@ -330,24 +220,18 @@ function onTry() {
     addRow(g, s, b, outs);
     
 
+
 if (s === mode.len) {
-  finished = true;
-  statusEl.textContent = `정답! (${secret})`;
-  statusEl.classList.add("ok");
-  summaryEl.textContent = `시도 횟수: ${tries}번`;
-  btnTry.disabled = true;
-
-  updateButtons(true);         // ← 추가: 끝난 UI
-
-  if (currentModeKey) {
-    const result = recordsManager.addRecord(currentModeKey, tries);
-    if (result.isNewRecord) {
-      showRecordModal(result.rank, tries, currentModeKey);
+      finished = true;
+      statusEl.textContent = `정답! (${secret})`;
+      statusEl.classList.add("ok");
+      summaryEl.textContent = `시도 횟수: ${tries}번`;
+      btnTry.disabled = true;
+      updateButtons(true);
+    } else {
+      summaryEl.textContent = `시도 ${tries}번`;
     }
-  }
-} else {
-  summaryEl.textContent = `시도 ${tries}번`;
-}
+
 
     guessEl.value = "";
     btnTry.disabled = true;
@@ -388,16 +272,6 @@ function updateButtons(isFinished) {
     warnEl.textContent = (v.length === (mode ? mode.len : 0) && err) ? err : "";
   }
 
-  // 전역 함수로 노출 (모달에서 사용)
-  window.closeRecordModal = closeRecordModal;
-
-  // 모달 외부 클릭 시 닫기
-  window.onclick = function(event) {
-    const modal = $("#recordModal");
-    if (event.target === modal) {
-      closeRecordModal();
-    }
-  }
 
   guessEl.addEventListener("input", onInput);
   guessEl.addEventListener("keydown", e => { if (e.key === "Enter" && !btnTry.disabled) onTry(); });
