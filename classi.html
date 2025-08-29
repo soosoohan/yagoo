@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>숫자야구</title>
+<style>
+  :root { --bg:#0b1520; --card:#122233; --accent:#6ee7ff; --muted:#9db3c7; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background: var(--bg); color:#eef6ff; display:flex; min-height:100vh; }
+  .wrap { margin:auto; width:min(720px, 100%); padding:24px; }
+  .card { background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:22px; box-shadow: 0 10px 30px rgba(0,0,0,.35);}
+  h1 { margin:0 0 8px; font-size: 30px;}
+  .sub { color:var(--muted); margin-bottom:18px; font-size: 20px; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  input[type="text"]{
+    flex:1 1 auto;
+    width: 420px;
+    font-size: 20px;
+    padding: 14px 16px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.14);
+    background:#0f1c2a; color:#e9f5ff; letter-spacing:6px; text-align:center;
+  }
+
+input#guess {
+    font-size: 20px;
+    background: #1e3a52; /* ← 이 부분이 배경색입니다 */
+    border: 3px solid #2c4157;
+    color: white;
+}
+
+  button { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px; }
+  .primary { background:var(--accent); color:#00121d; }
+  .secondary { background:#2c4157; color:#d7e7f5; }
+  .ghost { background:transparent; color:var(--muted); border:1px dashed rgba(255,255,255,.2); }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  .hint { margin-top:10px; color:var(--muted); font-size:20px;}
+  .warn { margin-top:6px; color:#ffb8c1; font-size:20px; min-height:1.3em; }
+  .log { margin-top:18px; background:#0f1c2a; border-radius:14px; border:1px solid rgba(255,255,255,.08); max-height:50vh; overflow:auto;}
+  .log table { width:100%; border-collapse:collapse; font-variant-numeric: tabular-nums; font-size:20px; }
+  .log th, .log td { padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
+  .log tr:last-child td { border-bottom:0; }
+  .badge { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px;display:inline-block;  background:#ff6b6b;}
+  .mode-buttons { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .ok { color:#b8ffb8; }
+  .fail { color:#ffb8c1; }
+#modeLabel:empty {
+  display: none;
+}
+/* 선택 사항: 새 게임 버튼 주목 효과 */
+.attention {
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+  50% { transform: scale(1.03); box-shadow: 0 8px 20px rgba(0,0,0,.25); }
+}
+
+input#guess {
+font-size: 20px;
+background: var(–bg);
+border: 3px solid #2c4157;
+color:white;
+}
+
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>숫자 야구 </h1>
+    <div style="margin:10px 0;padding:10px 14px;border:1px solid #ccc;border-radius:8px;background:#143148;color:#d7e7f5;font-size:20px;line-height:1.6">
+  <strong>게임 규칙:</strong> 
+  비밀 숫자를 맞추는 고전 퍼즐입니다.<br>
+  - 서로 다른 숫자로 구성된 비밀 코드를 추측합니다.<br>
+  - <b>S(스트라이크)</b>: 숫자와 자리 모두 맞음<br>
+  - <b>B(볼)</b>: 숫자는 맞지만 자리 다름<br>
+  - <b>OUT(아웃)</b>: 없는 숫자<br>
+  모든 자리를 맞추면 승리!
+</div>
+
+<div class="mode-buttons">
+      <button class="secondary" id="m3e">3자리 1~9</button>
+      <button class="secondary" id="m3i">3자리 0~9</button>
+      <button class="secondary" id="m4e">4자리 1~9</button>
+      <button class="secondary" id="m4i">4자리 0~9</button>
+    </div>
+    
+
+<div class="row">
+  <input id="guess" autocomplete="off" inputmode="numeric" maxlength="4" placeholder="예: 573" />
+  <button id="btn-try" class="primary" disabled>제출</button>
+  <button id="btn-reset" class="secondary">새 게임</button>
+  <button id="btn-giveup" class="ghost">포기</button>
+ <span id="status" class="badge">모드를  먼저 선택하세요.</span>
+  <span id="modeLabel" class="badge"></span>
+<span id="summary" class="hint"></span>
+</div>
+<div id="warn" class="warn"></div>
+
+<div class="hint">1S=자리·숫자 일치, 1B=숫자만 존재. 나머지는 OUT.</div>
+
+<div class="log">
+  <table>
+    <thead>
+      <tr><th>#</th><th>추측</th><th>결과</th></tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+
+  </div>
+</div>
+
+
+<script>
+(function () {
+  const $ = sel => document.querySelector(sel);
+  const guessEl = $("#guess"), tbody = $("#tbody"), statusEl = $("#status"),
+        summaryEl = $("#summary"), btnTry = $("#btn-try"),
+        btnReset = $("#btn-reset"), btnGiveup = $("#btn-giveup"),
+        warnEl = $("#warn"), modeLabel = $("#modeLabel");
+
+  let secret = "", tries = 0, finished = false;
+  let mode = null; // {len:3|4, zero:true|false}
+  let currentModeKey = null; // m3e, m3i, m4e, m4i
+
+  const modes = {
+    m3e: {len:3, zero:false, label:"3자리 · 0 제외"},
+    m3i: {len:3, zero:true, label:"3자리 · 0 포함"},
+    m4e: {len:4, zero:false, label:"4자리 · 0 제외"},
+    m4i: {len:4, zero:true, label:"4자리 · 0 포함"}
+  };
+
+  Object.keys(modes).forEach(id=>{
+    $("#"+id).addEventListener("click", ()=>{
+      mode = modes[id];
+      currentModeKey = id;
+      modeLabel.textContent = mode.label;
+      reset();
+    });
+  });
+
+  function newSecret() {
+    let digits = mode.zero ? ["0","1","2","3","4","5","6","7","8","9"] : ["1","2","3","4","5","6","7","8","9"];
+    for (let i = digits.length - 1; i > 0; i--) {
+      const r = Math.floor(Math.random() * (i + 1));
+      [digits[i], digits[r]] = [digits[r], digits[i]];
+    }
+    // 첫자리 0 방지
+    if (digits[0] === "0") {
+      for (let i = 1; i < digits.length; i++) {
+        if (digits[i] !== "0") { [digits[0], digits[i]] = [digits[i], digits[0]]; break; }
+      }
+    }
+    return digits.slice(0, mode.len).join("");
+  }
+
+  
+
+function reset() {
+  if (!mode) { warnEl.textContent = "먼저 모드를 선택하세요."; return; }
+  secret = newSecret();
+  tries = 0; finished = false;
+  tbody.innerHTML = "";
+  statusEl.textContent = "진행 중";
+  statusEl.classList.remove("ok","fail");
+  summaryEl.textContent = "";
+  warnEl.textContent = "";
+  guessEl.value = "";
+  btnTry.disabled = true;
+  guessEl.maxLength = mode.len;
+  guessEl.placeholder = (mode.len === 3) ? "예: 573" : "예: 5073";
+  guessEl.focus();
+
+  updateButtons(false);        // ← 추가: 진행 중 UI
+}
+
+
+  function validate(input) {
+    if (!mode) return "모드를 먼저 선택하세요.";
+    if (input.length < mode.len) return `${mode.len}자리 모두 입력하세요.`;
+    let regex = mode.zero ? /^\d+$/ : /^[1-9]+$/;
+    if (!regex.test(input)) return mode.zero ? "0~9 숫자만" : "1~9 숫자만 (0 금지)";
+    if (new Set(input).size !== mode.len) return "모든 숫자는 달라야 합니다.";
+    if (input[0] === "0") return "첫 자리에 0 불가";
+    return "";
+  }
+
+  function score(guess, ans) {
+    let s = 0, b = 0;
+    for (let i = 0; i < guess.length; i++) {
+      if (guess[i] === ans[i]) s++;
+      else if (ans.includes(guess[i])) b++;
+    }
+    return { s, b, outs: guess.length - (s+b) };
+  }
+
+  function addRow(guess, s, b, outs) {
+    let result = `${s}S ${b}B`;
+    if (outs > 0) result += ` ${outs}OUT`;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${tries}</td><td><strong>${guess}</strong></td><td>${result}</td>`;
+    tbody.prepend(tr);
+  }
+
+  
+function onTry() {
+    if (finished || !mode) return;
+    const g = guessEl.value.trim();
+    const err = validate(g);
+    if (err) { warnEl.textContent = err; guessEl.focus(); return; }
+    warnEl.textContent = "";
+    tries++;
+    const { s, b, outs } = score(g, secret);
+    addRow(g, s, b, outs);
+    
+
+
+if (s === mode.len) {
+      finished = true;
+      statusEl.textContent = `정답! (${secret})`;
+      statusEl.classList.add("ok");
+      summaryEl.textContent = `시도 횟수: ${tries}번`;
+      btnTry.disabled = true;
+      updateButtons(true);
+    } else {
+      summaryEl.textContent = `시도 ${tries}번`;
+    }
+
+
+    guessEl.value = "";
+    btnTry.disabled = true;
+    guessEl.focus();
+  }
+
+
+function giveUp() {
+  if (finished || !mode) return;
+  finished = true;
+  statusEl.textContent = `포기! 정답: ${secret}`;
+  statusEl.classList.add("fail");
+  btnTry.disabled = true;
+
+  updateButtons(true);         // ← 추가: 끝난 UI
+}
+
+
+ 
+function updateButtons(isFinished) {
+  // 제출 버튼: 끝났으면 덜 눈에 띄게(secondary), 진행 중이면 primary
+  btnTry.classList.toggle("primary", !isFinished);
+  btnTry.classList.toggle("secondary", isFinished);
+
+  // 새 게임 버튼: 끝났으면 눈에 띄게(primary), 진행 중이면 secondary
+  btnReset.classList.toggle("primary", isFinished);
+  btnReset.classList.toggle("secondary", !isFinished);
+
+  // 선택: 새 게임 버튼에 주목 효과
+  btnReset.classList.toggle("attention", isFinished);
+}
+
+  function onInput(e) {
+    let v = e.target.value.replace(/[^\d]/g, "").slice(0, mode ? mode.len : 4);
+    e.target.value = v;
+    const err = validate(v);
+    btnTry.disabled = !!err;
+    warnEl.textContent = (v.length === (mode ? mode.len : 0) && err) ? err : "";
+  }
+
+
+  guessEl.addEventListener("input", onInput);
+  guessEl.addEventListener("keydown", e => { if (e.key === "Enter" && !btnTry.disabled) onTry(); });
+  btnTry.addEventListener("click", onTry);
+  btnReset.addEventListener("click", reset);
+  btnGiveup.addEventListener("click", giveUp);
+})();
+</script>
+
+</body>
+</html>
