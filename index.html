@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
@@ -12,404 +11,185 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>숫자야구인덱스</title>
+    <title>야구시리즈</title>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Pretendard', sans-serif;
-    background: #2e8b8b;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-.container {
-    width: 100%;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-.header {
-    position: relative;
-    padding: 20px;
-    text-align: center;
-}
-
-.language-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(255,255,255,0.9);
-    padding: 8px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    z-index: 100;
-}
-
-.language-button {
-    background: #2e8b8b;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    margin: 2px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Pretendard', sans-serif;
-    font-size: clamp(0.8rem, 2vw, 1rem);
-    transition: all 0.3s ease;
-}
-
-.language-button:hover {
-    background: #20b2aa;
-}
-
-.language-button.active {
-    background: #ff69b4;
-}
-
-.main-title {
-    font-size: clamp(1.5rem, 4vw, 2.2rem);
-    font-weight: bold;
-    color: #f0f8ff;
-    margin-top: 20px;
-}
-
-.content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-.game-description {
-    color: #f0f8ff;
-    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-    line-height: 1.6;
-    margin-bottom: 30px;
-}
-
-.game-description h3 {
-    color: #add8e6;
-    margin-bottom: 15px;
-    font-size: clamp(1rem, 3vw, 1.3rem);
-    border-bottom: 2px solid #add8e6;
-    padding-bottom: 8px;
-}
-
-.game-description p {
-    margin-bottom: 15px;
-}
-
-.game-description ul {
-    margin-bottom: 20px;
-    padding-left: 20px;
-}
-
-.game-description li {
-    margin-bottom: 8px;
-}
-
-.game-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.buttons-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-    max-width: 400px;
-}
-
-.main-game-button {
-    background: rgba(255,255,255,0.9);
-    color: #2e8b8b;
-    padding: 15px 20px;
-    border: none;
-    border-radius: 10px;
-    font-size: clamp(1rem, 3vw, 1.2rem);
-    font-family: 'Pretendard', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    width: 100%;
-}
-
-.main-game-button:hover {
-    background: #f0f8ff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-}
-
-.main-game-button:active {
-    transform: translateY(0);
-}
-
-.footer {
-    margin-top: auto;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.square-button {
-            width: 250px;
-            height: 45px;
-            background-color: #FFB3D9; /* 연분홍 */
-            color: white;
-            border: none;
-            border-radius: 12px; /* 둥근 모서리 */
-            cursor: pointer;
-            font-size: 1.1rem; /*크기 고정 */
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            line-height: 1.2;
-            margin: 8px;
-            transition: all 0.3s ease;
-            font-family: Arial, sans-serif;
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+          font-family:'Pretendard',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+          background:#2e8b8b;min-height:100vh;overflow-x:hidden
+        }
+        .container{width:100%;min-height:100dvh;display:flex;flex-direction:column;position:relative}
+        .header{position:relative;padding:20px;text-align:center}
+        .language-toggle{
+          position:absolute;top:20px;right:20px;background:rgba(255,255,255,.9);
+          padding:8px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.3);z-index:100
+        }
+        .language-button{
+          background:#2e8b8b;color:#fff;border:none;padding:6px 12px;margin:2px;border-radius:5px;
+          cursor:pointer;font-size:clamp(.8rem,2vw,1rem);transition:.3s
+        }
+        .language-button:hover{background:#20b2aa}
+        .language-button.active{background:#ff69b4}
+        .main-title{
+          font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#f0f8ff;margin-top:20px
         }
 
-    .square-button:hover {
-        background-color: #FF8FAB; /* 호버 시 진한 분홍 */
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
+        .content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px;max-width:900px;margin:0 auto;width:100%}
 
-    .square-button:active {
-        transform: scale(0.95);
-    }
-.credits {
-        margin-top: 50px;
-        font-size: 0.9em;
-        color:white;
-        background-color: #2e8b8b;
-        padding: 20px;
-        border-radius: 10px;
-        width: 300px;
-        justify-content: center;
-}
+        .game-description{color:#f0f8ff;font-size:clamp(.9rem,2.5vw,1.1rem);line-height:1.6;margin-bottom:30px}
+        .game-description h3{color:#add8e6;margin-bottom:15px;font-size:clamp(1rem,3vw,1.3rem);border-bottom:2px solid #add8e6;padding-bottom:8px}
+        .game-description p{margin-bottom:15px}
+        .game-description ul{margin-bottom:20px;padding-left:20px}
+        .game-description li{margin-bottom:8px}
 
-.hidden {
-    display: none;
-}
+        .groups{display:grid;gap:18px}
+        .group{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:16px}
+        .group h4{color:#eaf7ff;margin-bottom:12px;font-size:clamp(1rem,2.5vw,1.2rem)}
+        .buttons{display:flex;flex-wrap:wrap;gap:12px}
+        .main-game-button{
+          background:rgba(255,255,255,.92);color:#2e8b8b;padding:14px 18px;border:none;border-radius:10px;
+          font-size:clamp(1rem,3vw,1.1rem);font-weight:700;cursor:pointer;transition:.25s;
+          box-shadow:0 4px 10px rgba(0,0,0,.2)
+        }
+        .main-game-button:hover{background:#f0f8ff;transform:translateY(-2px);box-shadow:0 6px 15px rgba(0,0,0,.3)}
+        .main-game-button:active{transform:translateY(0)}
 
-/* 모바일 최적화 */
-@media (max-width: 768px) {
-    .header {
-        padding: 15px;
-    }
+        .footer{margin-top:auto;padding:20px;display:flex;justify-content:center;align-items:center}
+        .square-button{
+          width:250px;height:45px;background:#FFB3D9;color:#fff;border:none;border-radius:12px;cursor:pointer;
+          font-size:1.1rem;font-weight:700;display:flex;justify-content:center;align-items:center;line-height:1.2;margin:8px;transition:.3s;font-family:Arial, sans-serif
+        }
+        .square-button:hover{background:#FF8FAB;transform:scale(1.05);box-shadow:0 4px 8px rgba(0,0,0,.2)}
+        .square-button:active{transform:scale(.95)}
+        .credits{margin-top:50px;font-size:.9em;color:#fff;background:#2e8b8b;padding:20px;border-radius:10px;width:300px;justify-content:center}
 
-    .language-toggle {
-        top: 15px;
-        right: 15px;
-        padding: 6px;
-    }
+        .hidden{display:none}
 
-    .content {
-        padding: 15px;
-    }
-
-    
-}
-
-/* 매우 작은 화면 */
-@media (max-width: 480px) {
-    .header {
-        padding: 10px;
-    }
-
-    .language-toggle {
-        position: static;
-        float: right;
-        margin-bottom: 20px;
-    }
-
-    .main-title {
-        clear: both;
-        margin-top: 10px;
-    }
-
-    .content {
-        padding: 10px;
-    }
-
-    .buttons-container {
-        max-width: 300px;
-    }
-
-    .footer {
-        padding: 15px;
-    }
-}
-
-/* 가로 모드 모바일 */
-@media (max-height: 600px) and (orientation: landscape) {
-    .content {
-        justify-content: flex-start;
-        padding-top: 10px;
-    }
-
-    .game-description {
-        margin-bottom: 20px;
-    }
-
-    .game-menu {
-        margin-top: 10px;
-        gap: 15px;
-    }
-
-    .buttons-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        max-width: 600px;
-    }
-
-    .main-game-button {
-        flex: 1;
-        min-width: 180px;
-        max-width: 200px;
-    }
-
-    .footer {
-        padding: 10px;
-    }
-
-    .credits {
-        padding: 15px;
-    }
-}
-
-
-</style>
-
+        @media (max-width: 768px){
+          .header{padding:15px}
+          .language-toggle{top:15px;right:15px;padding:6px}
+          .content{padding:15px}
+        }
+        @media (max-width: 480px){
+          .header{padding:10px}
+          .language-toggle{position:static;float:right;margin-bottom:20px}
+          .main-title{clear:both;margin-top:10px}
+          .content{padding:10px}
+          .footer{padding:15px}
+        }
+        @media (max-height:600px) and (orientation:landscape){
+          .content{justify-content:flex-start;padding-top:10px}
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 헤더 -->
-        <div class="header">
-            <div class="language-toggle">
-                <button class="language-button active" onclick="toggleLanguage('ko')">한국어</button>
-                <button class="language-button" onclick="toggleLanguage('en')">English</button>
-            </div>
-            <h1 class="main-title">숫자야구 Number Baseball </h1>
-        </div>
-
+  <div class="container">
+    <!-- 헤더 -->
+    <div class="header">
+      <div class="language-toggle">
+        <button class="language-button active" onclick="toggleLanguage('ko')">한국어</button>
+        <button class="language-button" onclick="toggleLanguage('en')">English</button>
+      </div>
+      <h1 class="main-title">야구 시리즈 Baseball Series</h1>
+    </div>
 
     <!-- 메인 콘텐츠 -->
     <div class="content">
-        <!-- 한국어 설명 -->
-        <div class="game-description" id="korean-description">
-                   <h3>📋 게임 규칙</h3>
-            <ul>
-                <li>비밀 숫자를 맞추는 고전 퍼즐입니다.</li>
-                <li>서로 다른 숫자로 구성된 비밀 코드를 추측합니다.</li>
-                <li><b>S(스트라이크)</b>: 숫자와 자리 모두 맞음</li>
-                <li><b>B(볼)</b>: 숫자는 맞지만 자리 다름</li>
-                <li><b>OUT(아웃)</b>: 없는 숫자</li>
-                <li>클래식 숫자야구는 S,B,OUT의 위치를 알려주지 않습니다.</li>
-                <li>수수랜드 숫자야구는 S,B,OUT의 위치를 알려줍니다.</li>
-            </ul>
+      <!-- 한국어 설명 -->
+      <div class="game-description" id="korean-description">
+        <h3>📋 공통 규칙 (S/B/O)</h3>
+        <ul>
+          <li>비밀 코드를 맞추는 퍼즐입니다.</li>
+          <li><b>S</b>: 글자 또는 숫자가 맞는 자리에 있음 · <b>B</b>: 글자 또는 숫자가  있는데 자리가 다름 · <b>O</b>: 없음</li>
+          <li>수수랜드 버전은 자리마다 S/B/O를 알려줍니다.</li>
+        </ul>
 
-            <div class="game-menu">
-                <div class="buttons-container">
-                    <button class="main-game-button" onclick="location.href='classic.html'">
-                        클래식 숫자야구 
-                    </button>
-                    <button class="main-game-button" onclick="location.href='soosoo.html'">
-                         수수랜드 숫자야구
-                    </button>
-                    
-                </div>
+        <div class="groups">
+          <div class="group">
+            <h4> 영어 야구 </h4>
+            <div class="buttons">
+              <!-- 파일명에 맞게 href 수정 -->
+              <button class="main-game-button" onclick="location.href='EN2.html'">클래식 영어야구</button>
+              <button class="main-game-button" onclick="location.href='EN1.html'">수수랜드 영어야구</button>
             </div>
-        </div>
+          </div>
 
-        <!-- 영어 설명 -->
-        <div class="game-description hidden" id="english-description">
-            
-            <h3>📋 Game Rules</h3>
-            <ul>
-        
-        <li>This is a classic puzzle where you guess the secret number.</li>
-        <li>The secret code is made up of different digits with no duplicates.</li>
-        <li><b>S (Strike)</b>: The digit and its position are both correct.</li>
-        <li><b>B (Ball)</b>: The digit is correct but in the wrong position.</li>
-        <li><b>OUT</b>: The digit is not in the secret number.</li>
-        <li>In Classic Number Baseball, the exact positions of S, B, and OUT are not shown.</li>
-        <li>In Soosooland Number Baseball, the positions of S, B, and OUT are revealed.</li>
-                 </ul>
-
-            <div class="game-menu">
-                <div class="buttons-container">
-                    
-<button class="main-game-button" onclick="location.href='classic.html'">
-                        Classic Number Baseball 
-                    </button>
-                    <button class="main-game-button" onclick="location.href='soosoo.html'">
-                         Soosooland Number Baseball
-                    </button>
-                    
-
-
-                </div>
+          <div class="group">
+            <h4> 숫자 야구 </h4>
+            <div class="buttons">
+              <button class="main-game-button" onclick="location.href='NU2.html'">클래식 숫자야구</button>
+              <button class="main-game-button" onclick="location.href='NU1.html'">수수랜드 숫자야구</button>
             </div>
+          </div>
+
+          <div class="group">
+            <h4> 한글 야구 </h4>
+            <div class="buttons">
+              <!-- 파일명에 맞게 href 수정 -->
+              <button class="main-game-button" onclick="location.href='KO.html'">한글 야구</button>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- 영어 설명 -->
+      <div class="game-description hidden" id="english-description">
+        <h3>📋 Common Rules (S/B/O)</h3>
+        <ul>
+          <li>Guess the secret code puzzle.</li>
+          <li><b>S</b>: correct value & position · <b>B</b>: correct value, wrong position · <b>O</b>: not present</li>
+          <li>Soosooland version shows <b>per-position S/B/O</b>.</li>
+        </ul>
+
+        <div class="groups">
+          <div class="group">
+            <h4>English Baseball</h4>
+            <div class="buttons">
+              <button class="main-game-button" onclick="location.href='EN2.html'">Bulls and Cows</button>
+              <button class="main-game-button" onclick="location.href='EN1.html'">Soosooland Word Baseball</button>
+            </div>
+          </div>
+
+          <div class="group">
+            <h4>Number Baseball </h4>
+            <div class="buttons">
+              <button class="main-game-button" onclick="location.href='NU2.html'">Classic Number Baseball</button>
+              <button class="main-game-button" onclick="location.href='NU1.html'">Soosooland Number Baseball</button>
+            </div>
+          </div>
+
+          <div class="group">
+            <h4> Korean Baseball </h4>
+            <div class="buttons">
+              <button class="main-game-button" onclick="location.href='KO.html'">Korean Baseball</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 푸터 -->
     <div class="footer">
-        <div class="credits">       
-<button class="square-button" onclick="location.href='https://soosoohan.github.io/soosooland/'">
-    재미있게 공부하는 수수랜드
-</button>
-<p> © 2025 Soosoo Han. All rights reserved.</p>
+      <div class="credits">
+        <button class="square-button" onclick="location.href='https://soosoohan.github.io/soosooland/'">
+          재미있게 공부하는 수수랜드
+        </button>
+        <p>© 2025 Soosoo Han. All rights reserved.</p>
+      </div>
     </div>
+  </div>
 
-    </div>
-</div>
-
-<script>
-    function toggleLanguage(lang) {
-        const koreanDesc = document.getElementById('korean-description');
-        const englishDesc = document.getElementById('english-description');
-        const buttons = document.querySelectorAll('.language-button');
-        
-        buttons.forEach(btn => btn.classList.remove('active'));
-        
-        if (lang === 'ko') {
-            koreanDesc.classList.remove('hidden');
-            englishDesc.classList.add('hidden');
-            buttons[0].classList.add('active');
-        } else {
-            koreanDesc.classList.add('hidden');
-            englishDesc.classList.remove('hidden');
-            buttons[1].classList.add('active');
-        }
+  <script>
+    function toggleLanguage(lang){
+      const ko = document.getElementById('korean-description');
+      const en = document.getElementById('english-description');
+      const buttons = document.querySelectorAll('.language-button');
+      buttons.forEach(b=>b.classList.remove('active'));
+      if(lang==='ko'){ ko.classList.remove('hidden'); en.classList.add('hidden'); buttons[0].classList.add('active'); }
+      else { ko.classList.add('hidden'); en.classList.remove('hidden'); buttons[1].classList.add('active'); }
     }
-</script>
-
-
+  </script>
 </body>
-</html> 
+</html>
