@@ -253,11 +253,11 @@ function onTry() {
     finished = true;
     statusEl.textContent = `정답! (${secret})`;
     statusEl.classList.add("ok");
-    summaryEl.textContent = `시도 횟수: ${tries}번`;
+    summaryEl.textContent = ``;
     btnTry.disabled = true;
     updateButtons(true);
   } else {
-    summaryEl.textContent = `시도 ${tries}번`;
+    summaryEl.textContent = ``;
   }
 
   guessEl.value = "";
