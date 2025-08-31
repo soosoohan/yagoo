@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4YZHC1G9FN');
+    </script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>한글야구성어</title>
+<style>
+  :root { --bg:#0b1520; --card:#122233; --accent:#6ee7ff; --muted:#9db3c7;
+          --hit:#8fd3ff; --out:#ff9bb3; --idle:#7b8ea3; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background: var(--bg); color:#eef6ff; display:flex; min-height:100vh; }
+  .wrap { margin:auto; width:min(820px, 100%); padding:24px; }
+  .card { background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:22px; box-shadow: 0 10px 30px rgba(0,0,0,.35);}
+  h1 { margin:0 0 8px; font-size: 25px;}
+  .sub { color:var(--muted); margin-bottom:18px; font-size: 20px; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+  input {
+    font: inherit;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: #0f1c2a;
+    color: #e9f5ff;
+    text-align: center;
+    min-width:260px;
+    font-size:20px;
+  }
+  button { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:18px; }
+  .primary { background:var(--accent); color:#00121d; }
+  .secondary { background:#2c4157; color:#d7e7f5; }
+  .ghost { background:transparent; color:var(--muted); border:1px dashed rgba(255,255,255,.2); }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  .hint { margin-top:10px; color:#c7d9eb; font-size:20px;}
+  .warn { margin-top:6px; color:#ffb8c1; font-size:20px; min-height:1.3em; }
+  .log { margin-top:18px; background:#0f1c2a; border-radius:14px; border:1px solid rgba(255,255,255,.08); max-height:46vh; overflow:auto;}
+  .log table { width:100%; border-collapse:collapse; font-variant-numeric: tabular-nums; font-size:18px; }
+  .log th, .log td { padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
+  .log tr:last-child td { border-bottom:0; }
+  .badge { display:inline-block; border-radius:12px; padding:8px 12px; font-size:20px; background:#21415c; color:#d7e7f5;}
+  .ok { color:#b8ffb8; }
+  .fail { color:#ffb8c1; }
+  .attention { animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+
+  /* 모드 버튼 active 스타일 */
+  .mode-buttons { display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+  .mode-buttons .secondary.active {
+    background: var(--accent);
+    color: #00121d;
+    font-weight: 700;
+    box-shadow: 0 0 0 2px rgba(110,231,255,.25) inset;
+  }
+
+  /* 자음 키보드 */
+  .kb { margin-top:14px; display:grid; grid-template-columns: repeat(auto-fit, minmax(44px,1fr)); gap:8px; }
+  .key {
+    padding:10px 8px; border-radius:10px; text-align:center; font-size:20px;
+    background:#1a2f44; color:#d0ddea; border:1px solid rgba(255,255,255,.08);
+    user-select:none;
+  }
+  .key.idle { background:#1a2430; color:#d0ddea; border-color:rgba(255,255,255,.1); }
+  .key.hit  { background:var(--hit); color:#062033; border-color:transparent; font-weight:700; }
+  .key.out  { background:#f2c9d4; color:#3a0010; border-color:transparent; font-weight:700; }
+  .flex { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+<h1>Korean Word Baseball - idioms</h1>
+<div class="sub">
+A game where you guess the secret Korean word chosen by the computer.<br>
+S: Consonant exists and position matches <br> B: Consonant exists but wrong position <br>Out: Consonant does not exist<br>
+The game ends when you guess the word correctly or use up all attempts.
+</div>
+
+<div class="mode-buttons">
+  <button class="secondary" id="m2">2 letters</button>
+  <button class="secondary" id="m3">3 letters</button>
+  <button class="secondary" id="m4">4 letters</button>
+  <button class="secondary" id="m5">5 letters</button>
+</div>
+
+<div class="flex" style="margin-bottom:8px;">
+  <!-- Removed mode badge like “2글자” -->
+  <span id="vowelHint" class="hint"></span>
+</div>
+
+<div class="row">
+  <input id="guess" autocomplete="off" placeholder="Enter a word with the same vowels as the hint" />
+  <button id="btn-try" class="primary" disabled>Submit</button>
+  <button id="btn-reset" class="secondary">New Game</button>
+  <button id="btn-giveup" class="ghost">Give Up</button>
+  <span id="status" class="badge">Select word length.</span>
+  <span id="summary" class="hint"></span>
+</div>
+<div id="warn" class="warn"></div>
+
+<div class="log">
+  <table>
+    <thead>
+      <tr><th>#</th><th>Guess</th><th>Result</th></tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<div class="hint">Consonants hint keyboard : 
+  <span class="key idle" style="padding:2px 8px;">Not tried</span> 
+  <span class="key hit" style="padding:2px 8px;">Exists: S/B</span> 
+  <span class="key out" style="padding:2px 8px;">Not exists: OUT</span>
+</div>
+<div id="kb" class="kb" aria-label="Consonant keyboard (status indicator)"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const $ = sel => document.querySelector(sel);
+  const guessEl = $("#guess"), tbody = $("#tbody"), statusEl = $("#status"),
+        summaryEl = $("#summary"), btnTry = $("#btn-try"),
+        btnReset = $("#btn-reset"), btnGiveup = $("#btn-giveup"),
+        warnEl = $("#warn"), vowelHintEl = $("#vowelHint"),
+        kbEl = $("#kb");
+
+  // ——— 단어뱅크: 글자수 섞어서 한 배열로 관리 ———
+  // 원래 있던 예시들을 하나로 합침. 여기다 자유롭게 섞어서 추가하세요.
+  const WORDS = [
+"가격인상", "가내공업", "가동시간", "가사소송", "가석방심사", "가압류신청", "가입여부", "가전제품", "가정교육", "가정법원", "가정폭력", "가족화목", "가치판단", "가화만사성", "각골난망", "각양각색", "각인각색", "각자도생", "각주구검", "간난신고", "간담상조", "감개무량", "감언이설", "감염확산", "감전주의", "갑론을박", "강제집행", "강제퇴거", "개과천선", "개방상태", "개인면허", "개인정보", "개인창고", "개인택시", "개점시간", "거두절미", "건강관리", "건강진단", "건곤일척", "건축구조", "검사완료", "격세지감", "견강부회", "견원지간", "결사항전", "결석계제출", "결석사유", "결자해지", "결제금액", "결제수단", "결제안내", "결초보은", "경거망동", "경고표지", "경국지색", "경력불문", "경이원지", "경제발전", "경천동지", "계단주의", "계란유골", "계륵", "계약체결", "계약해지", "계좌이체", "계좌정지", "고객만족", "고객불만", "고객상담", "고객안내", "고객안전", "고객응대", "고객편의", "고군분투", "고등동물", "고등법원", "고등학교", "고령화사회", "고색창연", "고속도로", "고용불안", "고용촉진", "고육지책", "고장신고", "고진감래", "골다공증", "공간설계", "공간활용", "공공복리", "공공부문", "공공시설", "공공의식", "공공장소", "공동주택", "공리공론", "공명정대", "공부시간", "공사구간", "공소시효", "공식문서", "공장가동", "공중전화", "공중정원", "공지사항", "공항폐쇄", "과속단속", "과유불급", "과제시간", "과제제출", "관계부처", "관계자외", "관람시간", "관리부재", "관포지교", "괄목상대", "광풍제월", "교언영색", "교육격차", "교육과정", "교육기관", "교육자료", "교통기관", "교통마비", "교통상황", "교통신호", "교통약자", "교통편의", "구급함체", "구매내역", "구사일생", "구속영장", "구제불능", "구중궁궐", "구태의연", "구호물품", "구호물품함", "구호용품", "국가기관", "국내여행", "국민연금", "국악공연", "국제공항", "군계일학", "궁여지책", "권리보호", "권모술수", "권선징악", "권토중래", "규제개혁", "근검절약", "근로계약", "근로수칙", "근무태도", "근무태만", "근묵자흑", "금과옥조", "금상첨화", "금시초문", "금연구역", "금융기관", "금융사기", "금은보석", "금의야행", "금의환향", "금자탑", "금지옥엽", "금지행위", "금품수수", "급수시설", "급식시간", "기계수리", "기고만장", "기관단체", "기상시간", "기상천외", "기세등등", "기소유예", "기소중지", "기습공격", "기승전결", "기암괴석", "기업대출", "기업정보", "기우", "기절초풍", "기정사실", "기진맥진", "기출문제", "기획전시", "긴급공지", "긴급구조", "긴급대피", "긴급복구", "긴급상황", "긴급연락", "긴급출동", "긴급호출", "길흉화복", "낙락장송", "낙심천만", "낙장불입", "낙찰통보", "난공불락", "난중유골", "난형난제", "남가일몽", "남남북녀", "남녀공학", "남녀노소", "남녀유별", "남부여대", "남존여비", "남중일색", "납부여부", "낭중지추", "내과진료", "내부갈등", "내연기관", "내우외환", "노기충전", "노력결실", "노력집중", "노발대발", "노사협의", "노선변경", "노심초사", "노약자석", "노익장", "노인복지", "노인정책", "노조탄압", "논공행상", "논리정연", "뇌물수수", "누란지위", "능력개발", "능소능대", "다다익선", "다사다난", "다재다능", "단도직입", "단독사용", "단열공사", "단체급식", "당연지사", "대경실색", "대기만성", "대담무쌍", "대대손손", "대동소이", "대리시험", "대리운전", "대리출석", "대마불사", "대명천지", "대서특필", "대성통곡", "대출연체", "대피경로", "대피요령", "대피유도", "대피유도등", "도난방지", "도난신고", "도덕관념", "도로교통법", "도시정비", "도원결의", "도착예정", "독수공방", "독야청청", "동고동락", "동문서답", "동문수학", "동물병원", "동물보호", "동병상련", "동분서주", "동상이몽", "동생공사", "동서고금", "동서남북", "동성동본", "동시다발", "동족상잔", "두문불출", "득의만면", "득의양양", "등록여부", "등록필증", "등용문", "등한시", "등화관제", "마감시간", "마감임박", "마약소지", "마이동풍", "막무가내", "막상막하", "막역지우", "막전막후", "만고불변", "만국신호", "만리장천", "만병통치", "만사여의", "만사형통", "만수무강", "만신창이", "만장일치", "만전지책", "말소등록", "망망대해", "망연자실", "망중유한", "매물접수", "매장정리", "매점매석", "면허발급", "면회금지", "면회시간", "멸사봉공", "멸종위기", "명견만리", "명경지수", "명명백백", "명불허전", "명산대천", "명실상부", "명약관화", "명언명구", "목불인견", "목표달성", "목표설정", "목표집중", "무궁무진", "무념무상", "무단결근", "무단투기", "무단횡단", "무릉도원", "무법천지", "무병장수", "무사안일", "무색무취", "무소부재", "무소불위", "무용지물", "무위도식", "무인지경", "무임승차", "무지몽매", "무학무식", "무형문화재", "묵묵부답", "문서위조", "문서제출", "문의전화", "문전박대", "문전성시", "물가상승", "물극필반", "물류정지", "물리학자", "물심양면", "물아일체", "물품판매", "미관말직", "미래설계", "미봉책", "미사여구", "미생지신", "미인박명", "미풍양속", "민감피부", "민방공훈련", "민사소송", "민속놀이", "민주주의", "밀운불우", "밀폐공간", "바닥마감", "박람강기", "박수갈채", "박장대소", "박학다식", "반면교사", "반신반의", "반신불수", "반포지효", "반품신청", "발본색원", "방독마스크", "방문금지", "방문예약", "방문환영", "방방곡곡", "방약무인", "방역구역", "방역수칙", "방열담요", "방염처리", "배송시간", "배수시설", "배수진", "배은망덕", "배차간격", "백가쟁명", "백골난망", "백년가약", "백년대계", "백년지계", "백년하청", "백년해로", "백만대군", "백만장자", "백면서생", "백미", "백발백중", "백의민족", "백의종군", "백전노장", "백전백승", "백척간두", "백해무익", "번호표발급", "범죄예방", "범죄행위", "법령단위", "법률관념", "법률상담", "법률서류", "법률자문", "법정관리", "벽지교체", "변화무쌍", "별유천지", "병역면제", "보관금지", "보관함체", "보석청구", "보안검색", "보안취약", "보안허술", "보육시설", "보존기록", "보편타당", "보행유도", "보행통로", "보험사기", "보호구역", "보호자동행", "복도통행", "복수면허", "복약지도", "복잡다단", "복지부동", "복지사각", "복지정책", "복지제도", "복지향상", "봉건주의", "봉사정신", "부국강병", "부귀영화", "부도처리", "부모형제", "부분마취", "부전자전", "부정행위", "부지기수", "부지불식", "부창부수", "부화뇌동", "분골쇄신", "분기충천", "분리수거", "분양계획", "분양공고", "불가사의", "불가피", "불가항력", "불광불급", "불기소처분", "불로장생", "불문가지", "불문곡직", "불법침입", "불상사", "불식주야", "불야성", "불요불급", "불철주야", "불편부당", "불평불만", "불혹", "붕우유신", "비닐우산", "비몽사몽", "비밀조직", "비분강개", "비빔국수", "비상개방", "비상구역", "비상대피", "비상벨소", "비상상황", "비상안전", "비상용품", "비상전화", "비상정지", "비상정차", "비상조명", "비상조명등", "비상조치", "비상출구", "비상출입", "비상통로", "비상통화", "비상호출", "비상확성기", "비영리단체", "비일비재", "비행경로", "비행시간", "비혼주의", "빙산일각", "사각지대", "사고무친", "사고방지", "사고정리", "사기피해", "사내연애", "사리분별", "사리사욕", "사면초가", "사방팔방", "사사건건", "사사오입", "사상누각", "사생결단", "사생지교", "사생활침해", "사서오경", "사실무근", "사용가능", "사용금지", "사용흔적", "사자성어", "사전예약", "사전협의", "사통팔달", "사필귀정", "사회갈등", "사회규범", "사회보장", "사회안정", "산림보호", "산소공급", "산소공급기", "산전수전", "살신성인", "삼고초려", "삼라만상", "삼사일언", "삼삼오오", "삼수갑산", "삼십육계", "삼일천하", "삼척동자", "삼한사온", "상가건물", "상가입찰", "상담시간", "상명하복", "상부상조", "상선약수", "상설전시", "상속포기", "상전벽해", "상품권구매", "상하수도", "상하좌우", "새옹지마", "색즉시공", "생년월일", "생로병사", "생사고락", "생사기로", "생존키트", "생활권역", "생활비압박", "서류접수", "서류제출", "서명여부", "서비스중단", "서행운전", "선견지명", "선공후사", "선남선녀", "선제공습", "설상가상", "설왕설래", "성공비결", "성과도출", "성동격서", "성심성의", "성인군자", "성장동력", "세계평화", "세상만사", "세시풍속", "세포재생", "세한고절", "소년범죄", "소년보호", "소득공제", "소망성취", "소방시설", "소방점검", "소탐대실", "소화장비", "속도위반", "속수무책", "속전속결", "솔선수범", "솔직담백", "송구영신", "수구초심", "수도단수", "수리접수", "수복강녕", "수분탄력", "수사기관", "수수방관", "수어지교", "수업시간", "수주대토", "수질오염", "순망치한", "승급심사", "승승장구", "승인기간", "승인대기", "승인여부", "승차권발매", "승차여부", "승차질서", "시간관리", "시간문제", "시간엄수", "시간제한", "시계수리", "시공완료", "시기상조", "시민사회", "시설보수", "시설안전", "시설임대", "시설점검", "시시각각", "시시비비", "시정잡배", "시종여일", "시종일관", "시행착오", "시험범위", "시험합격", "식사시간", "신문기자", "신분증지참", "신성불가침", "신속배달", "신용등급", "신용불량", "신용카드", "신원조회", "신장이식", "신청기간", "신체검사", "신출귀몰", "신호위반", "실내장식", "실사구시", "실용한자", "실종신고", "심기일전", "심리불안", "심사숙고", "심장이식", "십년감수", "십시일반", "십중팔구", "아동학대", "아래에", "아수라장", "아역배우", "아연실색", "아전인수", "악전고투", "악화일로", "안분지족", "안전기준", "안전불감증", "안전수칙", "안전시설", "안전요원", "안전점검", "안전제일", "안전조치", "안전행동", "안하무인", "암중모색", "애국애족", "애매모호", "애지중지", "야간진료", "야반도주", "야생동물", "약냉방칸", "약속준수", "약육강식", "약자배려", "약품부족", "양상군자", "양자택일", "어부지리", "어불성설", "언감생심", "언어감각", "언중유골", "언행일치", "엄동설한", "업무마감", "업무마비", "업무보고", "업무시간", "업무정지", "여객열차", "여객운송", "역린", "역사내매점", "역지사지", "연가신청", "연료장치", "연립주택", "연말연시", "연중무휴", "연중행사", "열선구간", "열심지취", "열정충만", "열차운행", "열차지연", "영구불변", "영업시간", "영업중단", "예산삭감", "예측불허", "오곡백과", "오리무중", "오만불손", "오매불망", "오불관언", "오십보백보", "오월동주", "오장육부", "오합지졸", "옥상출입", "옥석구분", "온고지신", "와신상담", "완전무결", "완충장치", "왈가왈부", "왕권분립", "외래접수", "외부음식", "외유내강", "외출금지", "요금부과", "요금인상", "요산요수", "요절복통", "요지부동", "용감무쌍", "용두사미", "용맹무쌍", "용호상박", "우공이산", "우선지원", "우선탑승", "우여곡절", "우왕좌왕", "우유부단", "우주여행", "우측보행", "우측통행", "우회도로", "우후죽순", "운동경기", "운송기관", "운영시간", "운영입찰", "운영정책", "운전면허", "운칠기삼", "운행금지", "운행시간", "운행중단", "원교근공", "원기왕성", "원리원칙", "원천봉쇄", "위기상황", "위기일발", "위기투합", "위생관념", "위임조문", "위탁판매", "위풍당당", "위험경고", "위험주의", "위험지역", "위험천만", "유구무언", "유명무실", "유분수", "유비무환", "유아독존", "유아동반", "유유상종", "유유자적", "유일무이", "유전자변형", "유종지미", "유통기한", "유효숫자", "육식동물", "윤리관념", "윤리소비", "은인자중", "음주운전", "읍참마속", "응급의약품", "응급조치", "응급처치", "응시여부", "의기소침", "의기양양", "의기투합", "의료기기", "의료지원", "의미심장", "의식불명", "의약분류", "이구동성", "이목구비", "이심전심", "이역만리", "이열치열", "이왕지사", "이용안내", "이용약관", "이용제한", "이용후생", "이율배반", "이인삼각", "이직준비", "이합집산", "이해득실", "이해타산", "인간관계", "인과응보", "인권침해", "인면수심", "인사불성", "인산인해", "인용조문", "인원축소", "인적자원", "인정사정", "인증서발급", "인지상정", "인해전술", "일가견", "일각여삼추", "일각천금", "일거양득", "일구이언", "일급기밀", "일기당천", "일도양단", "일망타진", "일맥상통", "일면식", "일목요연", "일문일답", "일방통행", "일사불란", "일사천리", "일석이조", "일시정지", "일언반구", "일자무식", "일장춘몽", "일촉즉발", "일취월장", "일파만파", "일편단심", "일필휘지", "일확천금", "일희일비", "임기응변", "임전무퇴", "입사서류", "입사시험", "입신양명", "입점신청", "입점업체", "입주민전용", "입주청소", "입찰공고", "자강불식", "자격요건", "자격지심", "자격취득", "자급자족", "자기계발", "자기인증", "자동결제", "자동차관리", "자린고비", "자문자답", "자산관리", "자생식물", "자수성가", "자승자박", "자신만만", "자아실현", "자업자득", "자원봉사", "자유자재", "자율주행", "자중지란", "자초지종", "자치경찰", "자치단체", "자타공인", "자포자기", "자화자찬", "작성요령", "작심삼일", "잠금해제", "장삼이사", "장애인석", "재개발구역", "재고부족", "재난대응", "재난방송", "재난지원", "재산몰수", "재승박덕", "저속운전", "적반하장", "적시적지", "적재적소", "전광석화", "전국정체", "전기검침", "전기공사", "전대미문", "전도유망", "전력질주", "전력투구", "전보조치", "전산마비", "전신마취", "전심전력", "전용출입구", "전자담배", "전자매체", "전자수리", "전자장치", "전전긍긍", "전지전능", "전통가옥", "전통관념", "전통무용", "전통문화", "전통시장", "전통음식", "전통의상", "전화상담", "전화위복", "절세가인", "절체절명", "점검완료", "점심시간", "점입가경", "접근금지", "접수마감", "접수시간", "접수완료", "정년퇴직", "정론직필", "정문일침", "정보유출", "정부기관", "정상근무", "정상진료", "정시출근", "정신질환", "정신집중", "정저지와", "정전사고", "정정당당", "정직성실", "정차금지", "정차위반", "정차위치", "정품인증", "정품확인", "제동장치", "제작결함", "제출여부", "제한속도", "조강지처", "조명설치", "조직폭력배", "조향장치", "종이봉투", "종합안내", "좌불안석", "좌우지간", "좌지우지", "좌충우돌", "좌측통행", "주객전도", "주경야독", "주도면밀", "주마간산", "주민센터", "주민투표", "주식거래", "주의사항", "주정차금지", "주지육림", "주차구역", "주차금지", "주차시간", "주차지원", "주택단지", "주행장치", "죽마고우", "중고거래", "중고서점", "중과부적", "중구난방", "중도포기", "중언부언", "중증장애", "중환자실", "증거불충분", "증거사진", "지각사유", "지고지선", "지극정성", "지급불능", "지급완료", "지급정지", "지기지우", "지록위마", "지리멸렬", "지방법원", "지방자치", "지방정부", "지불수단", "지상천국", "지식기부", "지역개발", "지역경제", "지역사회", "지역주민", "지역화폐", "지위고하", "지음", "지자체명단", "지정좌석", "지지부진", "지진경보", "지진대피", "지하공간", "지하보도", "지하주차장", "지하차도", "지하차원", "지하철역", "지하철화재", "지행일치", "직무정지", "직원모집", "직장갈등", "직장복귀", "진로탐색", "진료과목", "진료시간", "진면목", "진수성찬", "진심성의", "진열상품", "진일보", "진입금지", "진퇴양난", "진퇴유곡", "질서정연", "징계위원회", "차내방송", "차내소지품", "차량정체", "차량통제", "차일피일", "참석여부", "채권추심", "채무불이행", "채무조정", "채식주의", "처리중단", "처방조제", "천고마비", "천군만마", "천근만근", "천만다행", "천방지축", "천생연분", "천신만고", "천양지차", "천우신조", "천의무봉", "천인공노", "천재일우", "천재지변", "천정도배", "천정부지", "천지개벽", "천진난만", "천태만상", "천편일률", "천하태평", "철도차량", "철두철미", "철천지한", "첩첩산중", "청년실업", "청력검사", "청렴결백", "청빈낙도", "청산유수", "청소년범죄", "청소년보호", "청천벽력", "청출어람", "초등학교", "초록동색", "초보운전", "초식동물", "초전박살", "초지일관", "촉법소년", "촌철살인", "촬영금지", "촬영범위", "촬영시간", "최신기사", "최종면접", "최종보고", "최종승인", "추월금지", "추풍낙엽", "춘하추동", "출결여부", "출구전략", "출근대란", "출근시간", "출근전쟁", "출산장려", "출입금지", "출입제한", "출입주의", "출입통제", "충언역이", "충전금액", "취사선택", "취약계층", "취약시설", "취약지역", "취업규칙", "취업준비", "취침시간", "측은지심", "치아교정", "칠전팔기", "침소봉대", "쾌도난마", "타산지석", "탁상공론", "탁상행정", "탄수화물", "탐관오리", "태연자약", "태평세월", "토목공사", "토사구팽", "통학시간", "통행금지", "퇴근시간", "퇴사처리", "퇴직연금", "특별활동", "특이체질", "특정기관", "특정질환", "파란만장", "파렴치한", "파산선고", "파산신청", "파상공세", "파안대소", "파죽지세", "판매금지", "팔도강산", "팔방미인", "패가망신", "편의시설", "편익증진", "평지풍파", "폐쇄구역", "폐점시간", "포복절도", "폭력사건", "폭풍전야", "폭행사건", "표리부동", "품질보증", "풍기문란", "풍비박산", "풍전등화", "피난계단", "피난유도", "피부반응", "피부질환", "피차일반", "피해보상", "하극상", "하등동물", "하마평", "하자보수", "학력불문", "학사경고", "학수고대", "학습효과", "학업성취", "학위취득", "한도초과", "한우충동", "함흥차사", "항의방문", "해고통보", "해괴망측", "해외여행", "행방불명", "행복추구", "행정구역", "행정명령", "행정절차", "행정처분", "허례허식", "허송세월", "허심탄회", "허허실실", "현금결제", "현금영수", "현역입대", "현장확인", "혈기왕성", "혈혈단신", "협력업체", "협약체결", "형사처벌", "형설지공", "형형색색", "호가호위", "호각지세", "호사다마", "호사유피", "호시탐탐", "호언장담", "호연지기", "호의호식", "호형호제", "혹세무민", "혼비백산", "혼연일체", "홍동백서", "홍익인간", "화기애애", "화려강산", "화룡점정", "화무십일홍", "화상연결", "화생방훈련", "화재경보", "화재대피", "화재예방", "화재주의", "확고부동", "확인필요", "환경보호", "환경취약", "환골탈태", "환기설비", "환불금액", "환불안내", "환승통로", "환승할인", "환호작약", "황당무계", "회의시간", "회자정리", "횡단보도", "횡설수설", "효시", "후원기관", "후회막급", "휴가기간", "휴강안내", "휴게시간", "휴무일자", "휴식시간", "흑색선전", "흡연구역", "흡연금지", "흥망성쇠", "흥미진진", "흥청망청", "희노애락"
+  ];
+
+  // ——— 한글 분해/조립 유틸 ———
+  const CHO_LIST = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌ ㅍㅎ".replace(" ", "").split("");
+  const JUNG_LIST = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
+  const JONG_LIST  = ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+  const COMPOUND_JONG = {"ㄳ":["ㄱ","ㅅ"],"ㄵ":["ㄴ","ㅈ"],"ㄶ":["ㄴ","ㅎ"],"ㄺ":["ㄹ","ㄱ"],"ㄻ":["ㄹ","ㅁ"],"ㄼ":["ㄹ","ㅂ"],"ㄽ":["ㄹ","ㅅ"],"ㄾ":["ㄹ","ㅌ"],"ㄿ":["ㄹ","ㅍ"],"ㅀ":["ㄹ","ㅎ"],"ㅄ":["ㅂ","ㅅ"]};
+
+  function decomposeChar(ch){
+    const code = ch.charCodeAt(0);
+    const base = code - 0xAC00;
+    if (base < 0 || base > 11171) return null;
+    const cho  = Math.floor(base / 588);
+    const jung = Math.floor((base % 588) / 28);
+    const jong = base % 28;
+    const arr = [
+      { slot: "초", jamo: CHO_LIST[cho] },
+      { slot: "중", jamo: JUNG_LIST[jung] }
+    ];
+    const jongSym = JONG_LIST[jong];
+    if (jongSym) {
+      const parts = COMPOUND_JONG[jongSym];
+      if (parts) parts.forEach(p => arr.push({ slot: "종", jamo: p }));
+      else arr.push({ slot: "종", jamo: jongSym });
+    }
+    return arr;
+  }
+
+  function getConsonantItems(word){
+    const items = [];
+    const chars = [...word];
+    for (let i = 0; i < chars.length; i++){
+      const parts = decomposeChar(chars[i]);
+      if (!parts) return null;
+      let jongIndex = 0;
+      for (const p of parts){
+        if (p.slot === "중") continue;
+        const idx = (p.slot === "종") ? (jongIndex++) : 0;
+        items.push({ i, slot: p.slot, idx, jamo: p.jamo });
+      }
+    }
+    return items;
+  }
+
+  function decomposeWordToJamo(word){
+    const perSyllable = [], flat = [], consonants = [], vowels = [], choSeq = [];
+    const chars = [...word];
+    for (let i=0;i<chars.length;i++){
+      const d = decomposeChar(chars[i]);
+      if (!d) return null;
+      perSyllable.push(d);
+      let choHere = null;
+      for (const x of d) {
+        flat.push(x.jamo);
+        if (x.slot === "중") vowels.push(x.jamo);
+        else {
+          consonants.push(x.jamo);
+          if (x.slot === "초") choHere = x.jamo;
+        }
+      }
+      choSeq.push(choHere);
+    }
+    return { perSyllable, flat, vowels, consonants, choSeq };
+  }
+
+  function countMap(arr){ const m=new Map(); for(const k of arr) m.set(k,(m.get(k)||0)+1); return m; }
+
+  // ——— 상태 ———
+  let secret = "", tries = 0, finished = false;
+  let modeLen = null, guessed = new Set();
+  let secretDecomp = null;
+
+  // 자음 키보드 (초성 19자)
+  const KB_CONSONANTS = "ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ".split(" ");
+  const keyStates = new Map();
+
+  function renderKeyboard(){
+    kbEl.innerHTML = "";
+    KB_CONSONANTS.forEach(j=>{
+      const div = document.createElement("div");
+      div.className = "key " + (keyStates.get(j) || "idle");
+      div.textContent = j;
+      div.title = "자음 상태 표시";
+      kbEl.appendChild(div);
+    });
+  }
+
+  function updateKeyStateFromGuess(guessWord){
+    const secretConsSet = new Set(getConsonantItems(secret).map(x=>x.jamo));
+    const usedCon = new Set(getConsonantItems(guessWord).map(x=>x.jamo));
+    usedCon.forEach(c=>{
+      const prev = keyStates.get(c) || "idle";
+      const now = secretConsSet.has(c) ? "hit" : "out";
+      keyStates.set(c, (prev === "hit") ? "hit" : now);
+    });
+    renderKeyboard();
+  }
+
+  // ——— 모드 버튼: active 토글 + 배지 제거 버전 ———
+  const modeButtons = ["m2","m3","m4","m5"].map(id=>$("#"+id));
+  modeButtons.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      modeButtons.forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      modeLen = parseInt(btn.id.slice(1),10);
+      reset();
+    });
+  });
+
+  function pickSecret() {
+    const cand = WORDS.filter(w => /^[가-힣]+$/.test(w) && [...w].length === modeLen);
+    if (cand.length === 0) return randomHangulWord(modeLen);
+    return cand[Math.floor(Math.random()*cand.length)];
+  }
+
+  function randomHangulWord(n){
+    let s = "";
+    while ([...s].length < n){
+      const code = 0xAC00 + Math.floor(Math.random()*(0xD7A4-0xAC00));
+      s += String.fromCharCode(code);
+    }
+    return s;
+  }
+function reset() {
+  if (!modeLen) { 
+    warnEl.textContent = "Please select the word length first."; 
+    return; 
+  }
+  secret = pickSecret();
+  secretDecomp = decomposeWordToJamo(secret);
+  tries = 0; 
+  finished = false; 
+  guessed.clear();
+
+  tbody.innerHTML = "";
+  statusEl.textContent = "In progress";
+  statusEl.classList.remove("ok","fail");
+  summaryEl.textContent = ""; 
+  warnEl.textContent = "";
+  guessEl.value = ""; 
+  btnTry.disabled = true;
+  guessEl.placeholder = "Enter a word with the same vowels as the hint";
+
+  // Hint (vowel sequence)
+  const hint = secretDecomp.vowels.join("");
+  vowelHintEl.textContent = `Hint: ${hint}`;
+
+  // Initialize keyboard
+  keyStates.clear(); 
+  KB_CONSONANTS.forEach(c => keyStates.set(c, "idle")); 
+  renderKeyboard();
+
+  guessEl.focus();
+  updateButtons(false);
+}
+
+
+  function validate(input) {
+    if (!modeLen) return "Please select the word length first.";
+    if (!/^[가-힣]+$/.test(input)) return "Please enter only complete Hangul syllables.(가–힣)";
+    if ([...input].length !== modeLen) return `${modeLen}글자를 정확히 입력하세요.`;
+    const g = decomposeWordToJamo(input);
+    const hint = secretDecomp.vowels;
+    for (let i=0;i<hint.length;i++){
+      const gs = g.perSyllable[i].find(x=>x.slot==="중").jamo;
+      if (gs !== hint[i]) return "Enter a word with the same vowels as the hint.";
+    }
+    return "";
+  }
+
+  function scoreByConsonants(guess, secret){
+    const gi = getConsonantItems(guess);
+    const si = getConsonantItems(secret);
+    if (!gi || !si) return { S:0, B:0, OUT:0, gi:null, si:null };
+
+    let S = 0;
+    const usedS = new Array(si.length).fill(false);
+    const usedG = new Array(gi.length).fill(false);
+
+    for (let gk = 0; gk < gi.length; gk++){
+      const g = gi[gk];
+      for (let sk = 0; sk < si.length; sk++){
+        const s = si[sk];
+        if (usedS[sk]) continue;
+        if (g.i === s.i && g.slot === s.slot && g.idx === s.idx && g.jamo === s.jamo){
+          usedS[sk] = true; usedG[gk] = true; S++;
+          break;
+        }
+      }
+    }
+
+    const gLeft = []; const sLeft = [];
+    for (let k=0;k<gi.length;k++) if (!usedG[k]) gLeft.push(gi[k].jamo);
+    for (let k=0;k<si.length;k++) if (!usedS[k]) sLeft.push(si[k].jamo);
+
+    const gMap = countMap(gLeft);
+    const sMap = countMap(sLeft);
+    let overlap = 0;
+    for (const [j, gv] of gMap.entries()){
+      const sv = sMap.get(j) || 0;
+      overlap += Math.min(gv, sv);
+    }
+    const B = overlap;
+    const OUT = Math.max(0, gi.length - (S + B));
+    return { S, B, OUT };
+  }
+
+  function addRow(guess, S, B, OUT) {
+    let result = `${S}S ${B}B`;
+    if (OUT > 0) result += ` ${OUT}OUT`;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${tries}</td><td><strong>${guess}</strong></td><td>${result}</td>`;
+    tbody.prepend(tr);
+  }
+
+  function onTry() {
+    if (finished || !modeLen) return;
+    const g = guessEl.value.trim();
+    const err = validate(g);
+    if (err) { warnEl.textContent = err; guessEl.focus(); return; }
+    if (guessed.has(g)) { warnEl.textContent = "This word has already been tried."; guessEl.focus(); return; }
+
+    warnEl.textContent = "";
+    guessed.add(g); tries++;
+
+    const { S, B, OUT } = scoreByConsonants(g, secret);
+    addRow(g, S, B, OUT);
+    updateKeyStateFromGuess(g);
+
+    if (g === secret) {
+      finished = true;
+      statusEl.textContent = `Correct! (${secret})`;
+      statusEl.classList.add("ok");
+      summaryEl.textContent = ``;
+      btnTry.disabled = true;
+      updateButtons(true);
+    } else {
+      summaryEl.textContent = ``;
+    }
+
+    guessEl.value = ""; btnTry.disabled = true; guessEl.focus();
+  }
+
+  function giveUp() {
+    if (finished || !modeLen) return;
+    finished = true;
+    statusEl.textContent = `Out of tries! The answer was ${secret}`;
+    statusEl.classList.add("fail");
+    btnTry.disabled = true;
+    updateButtons(true);
+  }
+
+  function updateButtons(isFinished) {
+    btnTry.classList.toggle("primary", !isFinished);
+    btnTry.classList.toggle("secondary", isFinished);
+    btnReset.classList.toggle("primary", isFinished);
+    btnReset.classList.toggle("secondary", !isFinished);
+    btnReset.classList.toggle("attention", isFinished);
+  }
+
+  function onInput(e) {
+    let v = e.target.value.replace(/\s+/g,"");
+    e.target.value = v;
+    const err = v ? validate(v) : "Please enter a word first.";
+    btnTry.disabled = !!v && !!err;
+    warnEl.textContent = (v && err) ? err : "";
+  }
+
+  guessEl.addEventListener("input", onInput);
+  guessEl.addEventListener("keydown", e => { if (e.key === "Enter" && !btnTry.disabled) onTry(); });
+  btnTry.addEventListener("click", onTry);
+  btnReset.addEventListener("click", reset);
+  btnGiveup.addEventListener("click", giveUp);
+})();
+</script>
+</body>
+</html>
