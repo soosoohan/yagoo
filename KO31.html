@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4YZHC1G9FN');
+    </script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>수수한글야구기본</title>
+<style>
+  :root { --bg:#0b1520; --card:#122233; --accent:#6ee7ff; --muted:#9db3c7;
+          --hit:#8fd3ff; --out:#ff9bb3; --idle:#7b8ea3; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background: var(--bg); color:#eef6ff; display:flex; min-height:100vh; }
+  .wrap { margin:auto; width:min(820px, 100%); padding:24px; }
+  .card { background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:22px; box-shadow: 0 10px 30px rgba(0,0,0,.35);}
+  h1 { margin:0 0 8px; font-size: 25px;}
+  .sub { color:var(--muted); margin-bottom:18px; font-size: 20px; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+  input {
+    font: inherit;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: #0f1c2a;
+    color: #e9f5ff;
+    text-align: center;
+    min-width:260px;
+    font-size:20px;
+  }
+  button { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:18px; }
+  .primary { background:var(--accent); color:#00121d; }
+  .secondary { background:#2c4157; color:#d7e7f5; }
+  .ghost { background:transparent; color:var(--muted); border:1px dashed rgba(255,255,255,.2); }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  .hint { margin-top:10px; color:#c7d9eb; font-size:20px;}
+  .warn { margin-top:6px; color:#ffb8c1; font-size:20px; min-height:1.3em; }
+  .log { margin-top:18px; background:#0f1c2a; border-radius:14px; border:1px solid rgba(255,255,255,.08); max-height:46vh; overflow:auto;}
+  .log table { width:100%; border-collapse:collapse; font-variant-numeric: tabular-nums; font-size:18px; }
+  .log th, .log td { padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
+  .log tr:last-child td { border-bottom:0; }
+  .badge { display:inline-block; border-radius:12px; padding:8px 12px; font-size:20px; background:#21415c; color:#d7e7f5;}
+  .ok { color:#b8ffb8; }
+  .fail { color:#ffb8c1; }
+  .attention { animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+
+  /* 모드 버튼 active 스타일 */
+  .mode-buttons { display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+  .mode-buttons .secondary.active {
+    background: var(--accent);
+    color: #00121d;
+    font-weight: 700;
+    box-shadow: 0 0 0 2px rgba(110,231,255,.25) inset;
+  }
+
+  /* 자음 키보드 */
+  .kb { margin-top:14px; display:grid; grid-template-columns: repeat(auto-fit, minmax(44px,1fr)); gap:8px; }
+  .key {
+    padding:10px 8px; border-radius:10px; text-align:center; font-size:20px;
+    background:#1a2f44; color:#d0ddea; border:1px solid rgba(255,255,255,.08);
+    user-select:none;
+  }
+  .key.idle { background:#1a2430; color:#d0ddea; border-color:rgba(255,255,255,.1); }
+  .key.hit  { background:var(--hit); color:#062033; border-color:transparent; font-weight:700; }
+  .key.out  { background:#f2c9d4; color:#3a0010; border-color:transparent; font-weight:700; }
+  .flex { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+/* 결과 칸: 음절별(S/B/O) 박스 */
+
+
+.result { display:flex; gap:8px; justify-content:center; }
+.sy {
+  display:flex; flex-direction:column; gap:4px; align-items:center;
+}
+.sy .slot-row { display:flex; gap:4px; }
+.sy .slot {
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:6px; padding:2px 4px;
+  font-weight:800; font-size:14px;
+  min-width:18px; text-align:center;
+}
+.sy .slot.s { border-color:#6ee7ff; color:#6ee7ff; }
+.sy .slot.b { border-color:#ffd166; color:#ffd166; }
+.sy .slot.o { border-color:#8697a9; color:#8697a9; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>수수한글야구기본</h1>
+    <div class="sub">
+컴퓨터가 선택한 비밀 한글 단어를 맞히는 게임입니다.<br>
+S: 자음이 있고 위치가 맞음 <br> B: 자음이 있으나 위치가 다름 <br> Out: 자음이 없음<br>
+정답을 맞히거나 시도 횟수를 모두 사용하면 게임이 종료됩니다.
+    </div>
+
+    <div class="mode-buttons">
+      <button class="secondary" id="m2">2글자</button>
+      <button class="secondary" id="m3">3글자</button>
+      <button class="secondary" id="m4">4글자</button>
+      <button class="secondary" id="m5">5글자</button>
+    </div>
+
+    <div class="flex" style="margin-bottom:8px;">
+      <!-- 모드 배지 제거: “2글자” 같은 표시를 없앰 -->
+      <span id="vowelHint" class="hint"></span>
+    </div>
+
+    <div class="row">
+      <input id="guess" autocomplete="off" placeholder="힌트와 같은 모음으로 단어 입력" />
+      <button id="btn-try" class="primary" disabled>제출</button>
+      <button id="btn-reset" class="secondary">새 게임</button>
+      <button id="btn-giveup" class="ghost">포기</button>
+      <span id="status" class="badge">글자 수를 선택하세요.</span>
+      <span id="summary" class="hint"></span>
+    </div>
+    <div id="warn" class="warn"></div>
+
+    <div class="log">
+      <table>
+        <thead>
+          <tr><th>#</th><th>추측</th><th>결과</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="hint">자음 힌트  <span class="key idle" style="padding:2px 8px;">미시도</span> <span class="key hit" style="padding:2px 8px;">있음:S/B</span> <span class="key out" style="padding:2px 8px;">없음:OUT</span></div>
+    <div id="kb" class="kb" aria-label="자음 키보드(상태 표시용)"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const $ = sel => document.querySelector(sel);
+  const guessEl = $("#guess"), tbody = $("#tbody"), statusEl = $("#status"),
+        summaryEl = $("#summary"), btnTry = $("#btn-try"),
+        btnReset = $("#btn-reset"), btnGiveup = $("#btn-giveup"),
+        warnEl = $("#warn"), vowelHintEl = $("#vowelHint"),
+        kbEl = $("#kb");
+
+  // ——— 단어뱅크: 글자수 섞어서 한 배열로 관리 ———
+  // 원래 있던 예시들을 하나로 합침. 여기다 자유롭게 섞어서 추가하세요.
+  const WORDS = [
+"가게", "가격", "가구", "가끔", "가난", "가능", "가다", "가득", "가령", "가로", "가루", "가만", "가뭄", "가방", "가사", "가상", "가수", "가스", "가슴", "가요", "가위", "가을", "가입", "가장", "가정", "가족", "가죽", "가지", "가짜", "가치", "각각", "각국", "각기", "각오", "각자", "각종", "간격", "간부", "간섭", "간식", "간장", "간접", "간판", "간호", "간혹", "갈다", "갈등", "갈비", "갈색", "갈증", "감각", "감기", "감다", "감독", "감동", "감사", "감상", "감소", "가리다", "가만히", "가볍다", "가슴속", "가운데", "가이드", "가입자", "가지다", "가치관", "가톨릭", "가하다", "간단히", "간신히", "간접적", "간호사", "갇히다", "갈비탕", "갈수록", "감동적", "감수성", "감싸다", "감정적", "감추다", "갑자기", "값싸다", "강력히", "강수량", "강아지", "강원도", "강하다", "갖가지", "갖추다", "개개인", "개구리", "개나리", "개인적", "객관적", "거꾸로", "거두다", "거들다", "거짓말", "거치다", "거칠다", "건너다", "건너편", "건넌방", "건네다", "건지다",  "강력하다", "강렬하다", "강요하다", "강의하다", "강조하다", "강화하다", "같이하다", "개발되다", "개발하다", "개방되다", "개방하다", "개선되다", "개선하다", "거대하다", "거부하다", "거절하다", "걱정되다", "걱정하다", "건강하다", "건너가다", "건너오다", "괴로워하다", "그럴듯하다", "그리워하다", "깨끗해지다", "끌어당기다", "나누어지다", "날아다니다", "남대문시장", "내려다보다", "넘어뜨리다", "다양해지다", "더러워지다", "돌아다니다", "동대문시장", "되돌아가다", "되돌아보다", "되돌아오다", "되풀이되다"
+];
+
+  // ——— 한글 분해/조립 유틸 ———
+  const CHO_LIST = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌ ㅍㅎ".replace(" ", "").split("");
+  const JUNG_LIST = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
+  const JONG_LIST  = ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+  const COMPOUND_JONG = {"ㄳ":["ㄱ","ㅅ"],"ㄵ":["ㄴ","ㅈ"],"ㄶ":["ㄴ","ㅎ"],"ㄺ":["ㄹ","ㄱ"],"ㄻ":["ㄹ","ㅁ"],"ㄼ":["ㄹ","ㅂ"],"ㄽ":["ㄹ","ㅅ"],"ㄾ":["ㄹ","ㅌ"],"ㄿ":["ㄹ","ㅍ"],"ㅀ":["ㄹ","ㅎ"],"ㅄ":["ㅂ","ㅅ"]};
+
+  function decomposeChar(ch){
+    const code = ch.charCodeAt(0);
+    const base = code - 0xAC00;
+    if (base < 0 || base > 11171) return null;
+    const cho  = Math.floor(base / 588);
+    const jung = Math.floor((base % 588) / 28);
+    const jong = base % 28;
+    const arr = [
+      { slot: "초", jamo: CHO_LIST[cho] },
+      { slot: "중", jamo: JUNG_LIST[jung] }
+    ];
+    const jongSym = JONG_LIST[jong];
+    if (jongSym) {
+      const parts = COMPOUND_JONG[jongSym];
+      if (parts) parts.forEach(p => arr.push({ slot: "종", jamo: p }));
+      else arr.push({ slot: "종", jamo: jongSym });
+    }
+    return arr;
+  }
+
+  function getConsonantItems(word){
+    const items = [];
+    const chars = [...word];
+    for (let i = 0; i < chars.length; i++){
+      const parts = decomposeChar(chars[i]);
+      if (!parts) return null;
+      let jongIndex = 0;
+      for (const p of parts){
+        if (p.slot === "중") continue;
+        const idx = (p.slot === "종") ? (jongIndex++) : 0;
+        items.push({ i, slot: p.slot, idx, jamo: p.jamo });
+      }
+    }
+    return items;
+  }
+
+  function decomposeWordToJamo(word){
+    const perSyllable = [], flat = [], consonants = [], vowels = [], choSeq = [];
+    const chars = [...word];
+    for (let i=0;i<chars.length;i++){
+      const d = decomposeChar(chars[i]);
+      if (!d) return null;
+      perSyllable.push(d);
+      let choHere = null;
+      for (const x of d) {
+        flat.push(x.jamo);
+        if (x.slot === "중") vowels.push(x.jamo);
+        else {
+          consonants.push(x.jamo);
+          if (x.slot === "초") choHere = x.jamo;
+        }
+      }
+      choSeq.push(choHere);
+    }
+    return { perSyllable, flat, vowels, consonants, choSeq };
+  }
+
+  function countMap(arr){ const m=new Map(); for(const k of arr) m.set(k,(m.get(k)||0)+1); return m; }
+
+  // ——— 상태 ———
+  let secret = "", tries = 0, finished = false;
+  let modeLen = null, guessed = new Set();
+  let secretDecomp = null;
+
+  // 자음 키보드 (초성 19자)
+  const KB_CONSONANTS = "ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ".split(" ");
+  const keyStates = new Map();
+
+  function renderKeyboard(){
+    kbEl.innerHTML = "";
+    KB_CONSONANTS.forEach(j=>{
+      const div = document.createElement("div");
+      div.className = "key " + (keyStates.get(j) || "idle");
+      div.textContent = j;
+      div.title = "자음 상태 표시";
+      kbEl.appendChild(div);
+    });
+  }
+
+  function updateKeyStateFromGuess(guessWord){
+    const secretConsSet = new Set(getConsonantItems(secret).map(x=>x.jamo));
+    const usedCon = new Set(getConsonantItems(guessWord).map(x=>x.jamo));
+    usedCon.forEach(c=>{
+      const prev = keyStates.get(c) || "idle";
+      const now = secretConsSet.has(c) ? "hit" : "out";
+      keyStates.set(c, (prev === "hit") ? "hit" : now);
+    });
+    renderKeyboard();
+  }
+
+  // ——— 모드 버튼: active 토글 + 배지 제거 버전 ———
+  const modeButtons = ["m2","m3","m4","m5"].map(id=>$("#"+id));
+  modeButtons.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      modeButtons.forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      modeLen = parseInt(btn.id.slice(1),10);
+      reset();
+    });
+  });
+
+  function pickSecret() {
+    const cand = WORDS.filter(w => /^[가-힣]+$/.test(w) && [...w].length === modeLen);
+    if (cand.length === 0) return randomHangulWord(modeLen);
+    return cand[Math.floor(Math.random()*cand.length)];
+  }
+
+  function randomHangulWord(n){
+    let s = "";
+    while ([...s].length < n){
+      const code = 0xAC00 + Math.floor(Math.random()*(0xD7A4-0xAC00));
+      s += String.fromCharCode(code);
+    }
+    return s;
+  }
+
+  function reset() {
+    if (!modeLen) { warnEl.textContent = "먼저 글자 수를 선택하세요."; return; }
+    secret = pickSecret();
+    secretDecomp = decomposeWordToJamo(secret);
+    tries = 0; finished = false; guessed.clear();
+    tbody.innerHTML = "";
+    statusEl.textContent = "진행 중";
+    statusEl.classList.remove("ok","fail");
+    summaryEl.textContent = ""; warnEl.textContent = "";
+    guessEl.value = ""; btnTry.disabled = true;
+    guessEl.placeholder = "모음 힌트와 같은 단어를 입력";
+    // 모음 힌트(모음 시퀀스)
+    const hint = secretDecomp.vowels.join("");
+    vowelHintEl.textContent = `모음 힌트: ${hint}`;
+    // 키보드 초기화
+    keyStates.clear(); KB_CONSONANTS.forEach(c=>keyStates.set(c,"idle")); renderKeyboard();
+    guessEl.focus();
+    updateButtons(false);
+  }
+
+  function validate(input) {
+    if (!modeLen) return "먼저 글자 수를 선택하세요.";
+    if (!/^[가-힣]+$/.test(input)) return "완성형 한글만 입력하세요. (가–힣)";
+    if ([...input].length !== modeLen) return `${modeLen}글자를 정확히 입력하세요.`;
+    const g = decomposeWordToJamo(input);
+    const hint = secretDecomp.vowels;
+    for (let i=0;i<hint.length;i++){
+      const gs = g.perSyllable[i].find(x=>x.slot==="중").jamo;
+      if (gs !== hint[i]) return "힌트와 모음이 같아야 합니다.";
+    }
+    return "";
+  }
+
+  function scoreByConsonants(guess, secret){
+    const gi = getConsonantItems(guess);
+    const si = getConsonantItems(secret);
+    if (!gi || !si) return { S:0, B:0, OUT:0, gi:null, si:null };
+
+    let S = 0;
+    const usedS = new Array(si.length).fill(false);
+    const usedG = new Array(gi.length).fill(false);
+
+    for (let gk = 0; gk < gi.length; gk++){
+      const g = gi[gk];
+      for (let sk = 0; sk < si.length; sk++){
+        const s = si[sk];
+        if (usedS[sk]) continue;
+        if (g.i === s.i && g.slot === s.slot && g.idx === s.idx && g.jamo === s.jamo){
+          usedS[sk] = true; usedG[gk] = true; S++;
+          break;
+        }
+      }
+    }
+
+    const gLeft = []; const sLeft = [];
+    for (let k=0;k<gi.length;k++) if (!usedG[k]) gLeft.push(gi[k].jamo);
+    for (let k=0;k<si.length;k++) if (!usedS[k]) sLeft.push(si[k].jamo);
+
+    const gMap = countMap(gLeft);
+    const sMap = countMap(sLeft);
+    let overlap = 0;
+    for (const [j, gv] of gMap.entries()){
+      const sv = sMap.get(j) || 0;
+      overlap += Math.min(gv, sv);
+    }
+    const B = overlap;
+    const OUT = Math.max(0, gi.length - (S + B));
+    return { S, B, OUT };
+  }
+
+
+// 개별 자모 단위로 S/B/O 라벨링 후, 음절별 구조로 정리
+function labelPerConsonant(guess, secret){
+  const gi = getConsonantItems(guess);
+  const si = getConsonantItems(secret);
+  if (!gi || !si) return { perSyl: [], S:0, B:0, OUT:0 };
+
+  const usedS = new Array(si.length).fill(false);
+  const usedG = new Array(gi.length).fill(false);
+  const labels = new Array(gi.length).fill("o"); // 기본 O
+  let S=0, B=0;
+
+  // 1) 정확 위치·슬롯·자모 일치 = S
+  for (let gk=0; gk<gi.length; gk++){
+    const g = gi[gk];
+    for (let sk=0; sk<si.length; sk++){
+      const s = si[sk];
+      if (usedS[sk]) continue;
+      if (g.i===s.i && g.slot===s.slot && g.idx===s.idx && g.jamo===s.jamo){
+        usedS[sk] = true; usedG[gk] = true;
+        labels[gk] = "s"; S++;
+        break;
+      }
+    }
+  }
+
+  // 2) 위치는 다르지만 같은 자모 존재 = B (남은 것끼리)
+  for (let gk=0; gk<gi.length; gk++){
+    if (usedG[gk]) continue;
+    const g = gi[gk];
+    let found = -1;
+    for (let sk=0; sk<si.length; sk++){
+      if (usedS[sk]) continue;
+      if (si[sk].jamo === g.jamo) { found = sk; break; }
+    }
+    if (found !== -1){
+      usedS[found] = true; usedG[gk] = true;
+      labels[gk] = "b"; B++;
+    }
+  }
+
+  const OUT = gi.length - (S+B);
+
+  // 3) 음절별 구조로 재그룹 (초/종(겹받침 인덱스) 순)
+  const perSyl = [];   // index = 음절 위치
+  for (let idx=0; idx<gi.length; idx++){
+    const g = gi[idx];
+    if (!perSyl[g.i]) perSyl[g.i] = { cho:null, jongs:[] };
+    if (g.slot === "초") {
+      perSyl[g.i].cho = labels[idx];
+    } else { // 종성 (겹받침 idx 0,1,…)
+      perSyl[g.i].jongs[g.idx] = labels[idx];
+    }
+  }
+  return { perSyl, S, B, OUT };
+}
+
+function renderResultBoxes(guess, perSyl){
+  const wrap = document.createElement("div");
+  wrap.className = "result";
+
+  const chars = [...guess];
+  for (let i=0; i<chars.length; i++){
+    const sy = document.createElement("div");
+    sy.className = "sy";
+
+    // 초성
+    const rowCho = document.createElement("div");
+    rowCho.className = "slot-row";
+    const slotCho = document.createElement("div");
+    slotCho.className = "slot " + ((perSyl[i] && perSyl[i].cho) ? perSyl[i].cho : "o");
+    slotCho.textContent = slotCho.classList.contains("s") ? "S" :
+                          slotCho.classList.contains("b") ? "B" : "O";
+    rowCho.appendChild(slotCho);
+    sy.appendChild(rowCho);
+
+    // 종성(겹받침)
+    const rowJong = document.createElement("div");
+    rowJong.className = "slot-row";
+    const parts = decomposeChar(chars[i]) || [];
+    const jongLabels = (perSyl[i] && perSyl[i].jongs) ? perSyl[i].jongs : [];
+    const countJong = parts.filter(p=>p.slot==="종").length;
+    for (let j=0; j<countJong; j++){
+      const slot = document.createElement("div");
+      const lab = jongLabels[j] || "o";
+      slot.className = "slot " + lab;
+      slot.textContent = (lab==="s"?"S": lab==="b"?"B":"O");
+      rowJong.appendChild(slot);
+    }
+    if (countJong>0) sy.appendChild(rowJong);
+
+    wrap.appendChild(sy);
+  }
+  return wrap;
+}
+
+function addRow(guess, perSylForBoxes) {
+  const tr = document.createElement("tr");
+  const tdIdx = document.createElement("td");
+  const tdGuess = document.createElement("td");
+  const tdRes = document.createElement("td");
+
+  tdIdx.textContent = tries;
+  tdGuess.innerHTML = `<strong>${guess}</strong>`;
+
+  // 결과 박스만 추가
+  const boxes = renderResultBoxes(guess, perSylForBoxes);
+  tdRes.appendChild(boxes);
+
+  tr.appendChild(tdIdx);
+  tr.appendChild(tdGuess);
+  tr.appendChild(tdRes);
+  tbody.prepend(tr);
+}
+
+
+  function onTry() {
+    if (finished || !modeLen) return;
+    const g = guessEl.value.trim();
+    const err = validate(g);
+    if (err) { warnEl.textContent = err; guessEl.focus(); return; }
+    if (guessed.has(g)) { warnEl.textContent = "이 단어는 이미 시도하셨습니다."; guessEl.focus(); return; }
+
+    warnEl.textContent = "";
+    guessed.add(g); tries++;
+
+    
+const { perSyl } = labelPerConsonant(g, secret);
+addRow(g, perSyl);
+
+    updateKeyStateFromGuess(g);
+
+    if (g === secret) {
+      finished = true;
+      statusEl.textContent = `정답! (${secret})`;
+      statusEl.classList.add("ok");
+      summaryEl.textContent = `시도 횟수: ${tries}번`;
+      btnTry.disabled = true;
+      updateButtons(true);
+    } else {
+      summaryEl.textContent = `시도 ${tries}번`;
+    }
+
+    guessEl.value = ""; btnTry.disabled = true; guessEl.focus();
+  }
+
+  function giveUp() {
+    if (finished || !modeLen) return;
+    finished = true;
+    statusEl.textContent = `포기! 정답: ${secret}`;
+    statusEl.classList.add("fail");
+    btnTry.disabled = true;
+    updateButtons(true);
+  }
+
+  function updateButtons(isFinished) {
+    btnTry.classList.toggle("primary", !isFinished);
+    btnTry.classList.toggle("secondary", isFinished);
+    btnReset.classList.toggle("primary", isFinished);
+    btnReset.classList.toggle("secondary", !isFinished);
+    btnReset.classList.toggle("attention", isFinished);
+  }
+
+  function onInput(e) {
+    let v = e.target.value.replace(/\s+/g,"");
+    e.target.value = v;
+    const err = v ? validate(v) : "먼저 단어를 입력하세요.";
+    btnTry.disabled = !!v && !!err;
+    warnEl.textContent = (v && err) ? err : "";
+  }
+
+  guessEl.addEventListener("input", onInput);
+  guessEl.addEventListener("keydown", e => { if (e.key === "Enter" && !btnTry.disabled) onTry(); });
+  btnTry.addEventListener("click", onTry);
+  btnReset.addEventListener("click", reset);
+  btnGiveup.addEventListener("click", giveUp);
+})();
+</script>
+</body>
+</html>
