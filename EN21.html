@@ -1,278 +1,437 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-4YZHC1G9FN');
-</script>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>고전영어야구</title>
-<style>
-  body { font-family: Arial, sans-serif; background: #0f172a; color: #e5e7eb; display: flex; justify-content: center; padding: 20px; font-size:20px;}
-  .app { max-width: 600px; width: 100%; background: #111827; padding: 20px; border-radius: 10px; }
-  h1 { margin-top: 0; font-size:30px;}
-  select, input, button { padding: 8px; margin: 4px; border-radius: 5px; border: none;  font-size:20px;}
-  button { cursor: pointer; font-size:20px;}
-  .card { background: #1f2937; padding: 10px; border-radius: 8px; margin-bottom: 10px;font-size:20px; }
-  .log { max-height: 300px; overflow-y: auto; }
-  .try { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #374151; }
-  .status.ok { color: #34d399; }
-  .status.warn { color: #f59e0b; }
-  .status.err { color: #f87171; }
-  label {font-size:20px;}
-  /* === Alphabet Keyboard === */
-  .kb { margin-top:10px; display:grid; grid-template-columns: repeat(auto-fit, minmax(40px,1fr)); gap:8px; }
-  .key {
-    padding:10px 8px; border-radius:8px; text-align:center; font-weight:700;
-    background:#1a2430; color:#d0ddea; border:1px solid #374151; user-select:none;
-  }
-  .key.idle { background:#1a2430; color:#d0ddea; }
-  .key.hit  { background:#8fd3ff; color:#062033; border-color:transparent; }  /* 하늘색 */
-  .key.out  { background:#fccad6; color:#3a0010; border-color:transparent; }  /* 분홍색 */
-  .legend { display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:16px; color:#94a3b8; }
-  .legend .swatch { display:inline-block; width:14px; height:14px; border-radius:4px; margin-right:6px; vertical-align:-2px; }
-</style>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4YZHC1G9FN');
+    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>수수영어야구</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f172a; color: #e5e7eb; display: flex; justify-content: center; padding: 20px; font-size:20px;}
+    .app { max-width: 600px; width: 100%; background: #111827; padding: 20px; border-radius: 10px; }
+    h1 { margin-top: 0; font-size:30px;}
+    select, input, button { padding: 8px; margin: 4px; border-radius: 5px; border: none;  font-size:20px;}
+    button { cursor: pointer; font-size:20px;}
+    .card { background: #1f2937; padding: 10px; border-radius: 8px; margin-bottom: 10px;font-size:20px; }
+    .log { max-height: 300px; overflow-y: auto; }
+    .try { display:flex; justify-content:space-between; padding: 6px 0; border-bottom: 1px solid #374151; }
+    .status.ok { color: #34d399; }
+    .status.warn { color: #f59e0b; }
+    .status.err { color: #f87171; }
+    label {font-size:20px;}
+
+
+/* === 현재 입력 중인 단어 표시 === */
+.current-word {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px;
+  background: #374151;
+  border-radius: 8px;
+  margin: 10px 0;
+  letter-spacing: 4px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === 알파벳 키보드 === */
+.kb { margin-top:10px; display:grid; grid-template-columns: repeat(auto-fit, minmax(40px,1fr)); gap:8px; }
+.key {
+  padding:15px 8px; border-radius:8px; text-align:center; font-weight:700; font-size:18px;
+  background:#1a2430; color:#d0ddea; border:1px solid #374151; user-select:none;
+  cursor: pointer; transition: all 0.2s;
+}
+.key:hover { background:#2a3441; }
+.key:active { transform: scale(0.95); }
+.key.idle { background:#1a2430; color:#d0ddea; }
+.key.hit  { background:#8fd3ff; color:#062033; border-color:transparent; }  /* 있다 */
+.key.out  { background:#fccad6; color:#3a0010; border-color:transparent; }  /* 없다 */
+
+/* === 특수 키 === */
+.special-keys { display: flex; gap: 8px; margin-top: 10px; }
+.special-key {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid #374151;
+  transition: all 0.2s;
+}
+.backspace { background: #23fab7; color: white; }
+.backspace:hover { background: #059669; }
+.enter { background: #23fab7; color: white; }
+.enter:hover { background: #059669; }
+.enter:disabled { background: #374151; color: #6b7280; cursor: not-allowed; }
+
+.legend { display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:16px; color:#94a3b8; }
+.legend .swatch { display:inline-block; width:14px; height:14px; border-radius:4px; margin-right:6px; vertical-align:-2px; }
+
+/* 모바일에서 기존 입력창 숨기기 */
+.hidden { display: none; }
+
+
+  </style>
 </head>
 <body>
-<div class="app">
-  <h1>영어 야구 <span style="color:#94a3b8"></span></h1>
-  <div class="card">
-    <strong>게임 규칙</strong>
-    <ol style="font-size:calc(var(--fs) * 0.9); padding-left:20px;">
-      <li>컴퓨터가 선택한 비밀 영어 단어를 맞히는 게임입니다.</li>
-      <li>단어 길이는 3, 4, 5글자 중에서 선택합니다.</li>
-      <li>글자 중복 허용 여부를 선택할 수 있습니다.</li>
-      <li>S: 맞는 위치에 있는 글자수.</li>
-      <li>B: 다른 위치에 있는 글자수.</li>
-      <li>O(Out): 비밀 단어에 포함되지 않은 글자수.</li><li>정답을 맞히거나 시도 횟수를 모두 사용하면 게임이 종료됩니다.</li>
-    </ol>
-  </div>
 
-  <div class="card">
-    <label for="len">단어 길이</label>
-    <select id="len">
-      <option value="3">3글자</option>
-      <option value="4" selected>4글자</option>
-      <option value="5">5글자</option>
-    </select>
-    <label><input type="checkbox" id="allowRepeats" /> 글자 중복 허용</label>
-    <button id="newGame">새 게임</button>
-  </div>
+  <div class="app">
+    <h1>수수랜드 영어 야구 <span style="color:#94a3b8"></span></h1>
 
-  <div class="card">
-    <label for="guess">추측 입력</label>
-    <input id="guess" type="text" placeholder="단어 입력" />
-    <button id="submit">입력</button>
-    <div id="status" class="status"></div>
-  </div>
 
-  <div class="card">
-    <div style="display:flex; justify-content:space-between;">
-      <strong>기록</strong>
-      <button id="reveal">정답 보기</button>
-    </div>
-    <div class="log" id="log"></div>
-  </div>
-
-  <div class="card">
-    <div class="legend" style="margin:8px 0 6px;">
-      <span><span class="swatch" style="background:#1a2430;border:1px solid #374151;"></span>미시도</span>
-      <span><span class="swatch" style="background:#8fd3ff;"></span>있음 (Hit)</span>
-      <span><span class="swatch" style="background:#fccad6;"></span>없음 (Out)</span>
-    </div>
-    <div id="kb" class="kb" aria-label="알파벳 키보드(상태 표시)"></div>
-  </div>
-
-  <button onclick="window.open('hints.html', '_blank')">워드풀 보기</button>
+<div class="card">
+  <strong>게임 규칙</strong>
+  <ol style="font-size:18px; padding-left:20px;">
+    <li>비밀 영어 단어를 맞히세요.</li>
+    <li>단어 길이(3/4/5)와 중복 허용 여부를 선택합니다.</li>
+    <li>S=자리·글자 모두 맞음, B=글자만 맞음, O=없음.</li>
+    <li>기록에는 <b>개수로</b> 표시합니다. (예: <code>1S2B1O</code>)</li>
+    <li>아래 알파벳 키보드로 직접 입력하세요.</li>
+  </ol>
 </div>
 
-<script>
-// 워드풀을 코드 안에 직접 정의
-const WORDPOOL = [
+<div class="card">
+  <label for="len">단어 길이</label>
+  <select id="len">
+    <option value="3">3글자</option>
+    <option value="4" selected>4글자</option>
+    <option value="5">5글자</option>
+  </select>
+  <label><input type="checkbox" id="allowRepeats" /> 글자 중복 허용</label>
+  <button id="newGame">새 게임</button>
+</div>
+
+<div class="card">
+  <div id="status" class="status"></div>
+</div>
+
+<div class="card">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <strong>기록</strong>
+    <button id="reveal">정답 보기</button>
+  </div>
+  <div class="log" id="log">
+    <!-- 여기에 기록과 현재 입력창이 함께 표시됩니다 -->
+  </div>
+</div>
+
+<div class="card">
+  <div class="legend" style="margin:8px 0 6px;">
+    <span><span class="swatch" style="background:#1a2430;border:1px solid #374151;"></span>미시도</span>
+    <span><span class="swatch" style="background:#8fd3ff;"></span>있다</span>
+    <span><span class="swatch" style="background:#fccad6;"></span>없다</span>
+  </div>
+  <div id="kb" class="kb" aria-label="알파벳 키보드"></div>
+  <div class="special-keys">
+    <div class="special-key backspace" id="backspace">⌫ 지우기</div>
+    <div class="special-key enter" id="enterKey">입력</div>
+  </div>
+</div>
+
+<button onclick="window.open('hints.html', '_blank')">워드풀 보기</button>
+
+
+  </div>
+
+  <script>
+    // === 워드풀 (축약 버전) ===
+    const WORDPOOL = [
       "ACT", "AGE", "AIM", "BAN", "BEE", "CAP", "CUT", "DUE", "FAR", "FRY", "FUR", "KEY", "LAY", "LIE", "LIP", "MAD", "MIX", "MUD", "NET", "NOR", "NOW", "ODD", "PAN", "PIN", "POT", "PRO", "ROW", "SET", "SEX", "SHY", "TAX", "TIN", "TIP", "TOE", "WIN", "AGED", "BAKE", "BASE", "BELL", "BEND", "BITE", "BOMB", "BURY", "CALM", "CLUE", "COAL", "COIN", "COOL", "DEAL", "DEEP", "DIRT", "DROP", "DRUM", "DUST", "DUTY", "EDGE", "FACE", "FEAR", "FILE", "FIRE", "FLAG", "FLOW", "FOLD", "FOLK", "FUEL", "GLAD", "HAND", "HANG", "HATE", "HEAD", "HIRE", "HOST", "HUNT", "IRON", "KEEN", "KICK", "KIND", "KISS", "LACK", "LEAD", "LEAF", "LIKE", "LIVE", "LOSS", "MALL", "MESS", "MILD", "MINE", "MOOD", "MOVE", "NAIL", "NEED", "NEXT", "NOTE", "ONCE", "OURS", "PACK", "PALE", "PASS", "PATH", "PIPE", "PLOT", "PLUS", "POEM", "POET", "PORT", "POUR", "PRAY", "PULL", "PUSH", "QUIT", "RARE", "RENT", "RISE", "RISK", "ROLL", "ROPE", "RULE", "SAIL", "SAND", "SCAN", "SEED", "SINK", "SLOW", "SOIL", "SORT", "SPOT", "SUIT", "SWIM", "TAIL", "TAPE", "TEND", "TENT", "THAT", "THIS", "TILL", "TINY", "TOUR", "TUBE", "TYPE", "TYRE", "UGLY", "UPON", "USED", "VIEW", "VOTE", "WARM", "WARN", "WAVE", "WILL", "WING", "WOOL", "YARD", "ADMIT", "AGENT", "AHEAD", "ALARM", "ALBUM", "ANNOY", "APART", "AWARD", "AWARE", "BASIC", "BASIS", "BLOCK", "BOARD", "BRAND", "BRAVE", "BRIDE", "CHAIN", "CHEAP", "CHEAT", "CHEST", "CLAIM", "CLEAR", "CLICK", "CLIMB", "CLOSE", "CLOTH", "COACH", "COUNT", "COURT", "COVER", "CREAM", "CRUEL", "DAILY", "DOUBT", "DRUNK", "EMPTY", "ENEMY", "ENTRY", "EQUAL", "EXTRA", "FANCY", "FENCE", "FIXED", "FLOOD", "FLOUR", "FORCE", "FRAME", "GHOST", "GIANT", "GLOVE", "GOODS", "GRADE", "GRAIN", "GUARD", "HURRY", "ISSUE", "JUDGE", "KNOCK", "LABEL", "LAYER", "LEGAL", "LEVEL", "LIMIT", "LOCAL", "MAGIC", "MODAL", "OCCUR", "OUGHT", "PLACE", "POINT", "PRESS", "PROUD", "PROVE", "QUEUE", "QUOTE", "RANGE", "ROBOT", "ROUGH", "ROYAL", "RUGBY", "SHAKE", "SHARE", "SHARP", "SHELF", "SHELL", "SHIFT", "SHINE", "SHINY", "SHOOT", "SIGHT", "SILLY", "SINCE", "SLICE", "SMART", "SOLID", "SPICY", "STAFF", "STATE", "STICK", "STILL", "STORE", "STUFF", "THEME", "TIGHT", "TOTAL", "TOUCH", "TRADE", "TREAT", "TREND", "TRICK", "TRUTH", "UNION", "UPSET", "VALUE", "WASTE", "WATER", "WEIGH", "WHILE", "WHOLE", "WORRY", "WORSE", "WORST", "WORTH", "WRONG", "YOUNG", "YOUTH", "ACT", "AGE", "AIM", "BAN", "BEE", "CAP", "CUT", "DUE", "FAR", "FRY", "FUR", "KEY", "LAY", "LIE", "LIP", "MAD", "MIX", "MUD", "NET", "NOR", "NOW", "SUM", "TAG", "TAP", "TON", "TRY", "VIA", "WAY", "YET", "ACID", "AIDS", "ARMS", "BACK", "BEAR", "BEAT", "BENT", "BIAS", "BILL", "BLOW", "BOLD", "BOND", "BURN", "BUSH", "CAST", "CAVE", "CELL", "CHOP", "CITE", "CLIP", "COPE", "CORE", "CREW", "CROP", "CURE", "CUTE", "DARE", "DATE", "DEBT", "DECK", "DENY", "DISC", "DISK", "DIVE", "DRAG", "DULL", "DUMP", "EDIT", "EVEN", "EVIL", "EXIT", "FAKE", "FAME", "FARE", "FEED", "FEEL", "FILE", "FIRM", "FOLD", "FOND", "FOOL", "FREE", "FUEL", "FUND", "GAIN", "GANG", "GENE", "GRAB", "HARM", "HEAL", "HEEL", "HELL", "HERB", "HIGH", "HIRE", "HOLD", "HOLY", "HOOK", "HOST", "HUNT", "HURT", "ICON", "INCH", "INFO", "JAIL", "JURY", "LANE", "LEAN", "LENS", "LINE", "LOAD", "LOAN", "LOGO", "LORD", "LUNG", "MAKE", "MASS", "MATE", "MELT", "MODE", "MYTH", "NEAT", "NORM", "OBEY", "PACE", "PALM", "PEER", "PICK", "PILE", "PILL", "PITY", "PLOT", "PLUS", "POSE", "PUNK", "PURE", "RAIL", "RANK", "RATE", "RELY", "ROOT", "ROSE", "RUIN", "RUSH", "SEAT", "SEEK", "SELF", "SEXY", "SHIP", "SHOT", "SILK", "SLIP", "SOUL", "SPOT", "STEP", "TALE", "TANK", "TEAR", "TERM", "THUS", "TIME", "TONE", "TRAP", "TRIP", "TUNE", "URGE", "VARY", "VAST", "VERY", "VISA", "WAGE", "WHOM", "WIND", "WIRE", "WISE", "WORM", "WRAP", "ZONE", "ADAPT", "ADOPT", "ALARM", "ALIEN", "ALTER", "ANGER", "ANGLE", "ARISE", "ARMED", "ARROW", "ASIDE", "ASSET", "AUDIO", "BADGE", "BEING", "BLAME", "BLIND", "BOOST", "BOUND", "BRICK", "BRIEF", "BROAD", "BUNCH", "CABIN", "CABLE", "CANAL", "CATCH", "CHAIN", "CHAIR", "CHART", "CHASE", "CHEEK", "CHEER", "CHIEF", "CHOIR", "CIVIL", "CLERK", "CLIFF", "CLOSE", "COMIC", "CRACK", "CRAFT", "CRASH", "CURVE", "DAIRY", "DELAY", "DEPTH", "DOZEN", "DRAFT", "ELBOW", "ELECT", "EQUAL", "EQUIP", "ERUPT", "ETHIC", "FAITH", "FAULT", "FEVER", "FLAME", "FLASH", "FLOAT", "FORUM", "FOUND", "FRAUD", "FULLY", "GENRE", "GLOBE", "GRADE", "GRAND", "GRANT", "HENCE", "HOUSE", "IDEAL", "IMPLY", "INDEX", "INFER", "INNER", "INPUT", "ISSUE", "JOINT", "LEAVE", "LEVEL", "LITRE", "LOOSE", "LOWER", "LOYAL", "LYRIC", "MAYOR", "MEANS", "MEDAL", "MINER", "MINOR", "MIXED", "MODEL", "MORAL", "MOTOR", "MOUNT", "NAKED", "NASTY", "NERVE", "NEWLY", "OPERA", "ORGAN", "OUTER", "PANEL", "PANIC", "PAUSE", "PHASE", "PITCH", "PLAIN", "POWER", "PRICE", "PRIDE", "PRIME", "PRINT", "PRIOR", "PROOF", "PUPIL", "RANGE", "RAPID", "REACH", "RISKY", "RIVAL", "ROUND", "RURAL", "SCALE", "SCARE", "SENSE", "SHADE", "SHAME", "SHAPE", "SHIFT", "SHOCK", "SHORE", "SKULL", "SLAVE", "SLIDE", "SLOPE", "SOLAR", "SPARE", "SPEED", "SPICE", "SPILL", "SPITE", "SPLIT", "SPOIL", "STAGE", "STALL", "STAND", "STARE", "STEAM", "STEEL", "STEEP", "STIFF", "STOCK", "STUFF", "SUPER", "SWEAR", "SWEEP", "TEENS", "TERMS", "THEFT", "THUMB", "TITLE", "TONNE", "TOUGH", "TRACE", "TRACK", "TRAIT", "TRIAL", "TRIBE", "TROOP", "TRULY", "TRUST", "UNITE", "UNITY", "UPPER", "URBAN", "USAGE", "VALID", "VALUE", "VENUE", "VITAL", "WEIRD", "WHEAT", "WORSE", "WORST", "WORTH", "WOUND", "WRIST", "WRONG", "ARM", "ASH", "BAT", "BAY", "BOW", "COP", "DAM", "DIP", "DUB", "DUO", "EGO", "FIT", "GUT", "LAD", "LAP", "LOG", "MOB", "NET", "NOD", "OPT", "PAD", "PIT", "POP", "RAY", "RIP", "ROD", "SAY", "SIN", "SPY", "SUE", "TOP", "VOW", "WIT", "ACID", "ACRE", "AIDE", "ALLY", "AMID", "AUTO", "BAIL", "BARE", "BASS", "BEAM", "BIND", "BOOM", "BUCK", "BULK", "COUP", "CULT", "DAWN", "DEED", "DEEM", "DEFY", "DOSE", "DUAL", "DUMB", "EASE", "ECHO", "EXIT", "FADE", "FATE", "FEAT", "FINE", "FLAW", "FLEE", "GAZE", "GEAR", "GRID", "GRIN", "GRIP", "HAIL", "HALT", "HINT", "HOOK", "HORN", "JUST", "LAWN", "LEAK", "LEAP", "LIMB", "LOOM", "LOOP", "MASK", "MEMO", "MERE", "MILL", "MONK", "NEST", "NOON", "ODDS", "ORAL", "PEAK", "PLEA", "PLUG", "POLE", "POLL", "POND", "PREY", "PUMP", "RAGE", "RAID", "RAPE", "REAR", "RIOT", "ROCK", "SACK", "SAKE", "SEAL", "SHED", "SIGH", "SKIP", "SLAM", "SLAP", "SLOT", "SNAP", "SOAK", "SOAR", "SOLE", "SOLO", "SPAM", "SPAN", "SPIN", "STAB", "STEM", "STIR", "STUN", "SUCK", "TIDE", "TOLL", "TOSS", "TRIO", "VEIN", "VICE", "WARD", "WEED", "WELL", "WHIP", "WIPE", "YELL", "ABUSE", "ACUTE", "ALERT", "ALIEN", "ALIGN", "ALIKE", "AMEND", "ANGEL", "ARENA", "ARRAY", "AUDIT", "AWAIT", "BEAST", "BENCH", "BLADE", "BLAST", "BLEED", "BLEND", "BLESS", "BOAST", "BONUS", "BREED", "BUDDY", "BURST", "CARGO", "CARVE", "CATER", "CEASE", "CHAOS", "CHARM", "CHUNK", "CIVIC", "CLASH", "CLING", "CRAFT", "CRAWL", "CREEP", "CROWN", "CRUDE", "CRUSH", "DEBUT", "DEMON", "DENSE", "DEVIL", "DONOR", "DRAIN", "DRIFT", "DROWN", "EAGER", "ELITE", "EMBED", "ENACT", "ENROL", "ENSUE", "ERECT", "EVOKE", "EXERT", "EXILE", "FATAL", "FIBRE", "FLEET", "FLESH", "FLUID", "FORGE", "FORTH", "GLORY", "GRACE", "GRASP", "GRAVE", "GRIEF", "GRIND", "GROSS", "GUILT", "HANDY", "HARSH", "HAUNT", "IDIOT", "INCUR", "IRONY", "LASER", "LIVER", "LOBBY", "LOGIC", "MARCH", "MERCY", "MERGE", "MERIT", "MIDST", "NAVAL", "NICHE", "NOBLE", "NOVEL", "PATCH", "PLEAD", "PROBE", "PULSE", "PUNCH", "QUERY", "QUEST", "QUOTA", "RADAR", "RALLY", "RATIO", "REALM", "REBEL", "REIGN", "RENEW", "RIFLE", "SAINT", "SCOPE", "SCREW", "SEIZE", "SETUP", "SHEER", "SHOOT", "SHRUG", "SLASH", "SMASH", "SOUND", "SPARE", "SPARK", "SPELL", "SPINE", "SQUAD", "STAKE", "STARK", "STEER", "STRIP", "SUITE", "SURGE", "SWING", "SWORD", "TEMPT", "TOTAL", "TOXIC", "TRACE", "TRAIL", "TWIST", "UNIFY", "VAGUE", "VERSE", "VOCAL", "WEAVE", "WIDEN", "WIDOW", "WIDTH", "YIELD", "ADD", "AGE", "AGO", "AIR", "ALL", "AND", "ANY", "ARM", "ART", "ASK", "BAD", "BAG", "BED", "BIG", "BOX", "BOY", "BUS", "BUT", "BUY", "BYE", "CAN", "CAR", "CAT", "COW", "CUP", "CUT", "DAD", "DAY", "DIE", "DOG", "DVD", "EAR", "EAT", "EGG", "END", "EYE", "FAR", "FAT", "FEW", "FLY", "FOR", "FUN", "GET", "GYM", "HAT", "HER", "HEY", "HIM", "HIS", "HOT", "HOW", "ICE", "ITS", "JOB", "KEY", "LEG", "LET", "LIE", "LOT", "MAN", "MAP", "MAY", "MUM", "NEW", "NOT", "NOW", "OFF", "OLD", "ONE", "OUR", "OUT", "OWN", "PAY", "PEN", "PIG", "PUT", "RED", "RUN", "SAD", "SAY", "SEA", "SEE", "SHE", "SIT", "SIX", "SON", "SUN", "TEA", "TEN", "THE", "TOO", "TRY", "TWO", "USE", "WAY", "WHO", "WHY", "WIN", "YES", "YOU", "ACT", "ALL", "ANY", "APP", "BAR", "BIN", "BIT", "CAN", "CRY", "DRY", "FAN", "FAT", "FIT", "FIX", "FLU", "FLY", "FUN", "GAP", "GAS", "GOD", "GUN", "GUY", "HIS", "HIT", "ILL", "JAM", "KID", "LAB", "LAW", "LOW", "MAY", "NUT", "OIL", "OWN", "PAY", "PER", "PET", "POP", "PUB", "RUN", "SIR", "SKI", "SKY", "TIE", "TIP", "TOP", "TOY", "USE", "VAN", "WAR", "WEB", "WET", "WOW", "YET", "ABOUT", "ABOVE", "ACTOR", "ADULT", "AFTER", "AGAIN", "AGREE", "ANGRY", "APPLE", "APRIL", "BEACH", "BEGIN", "BELOW", "BLACK", "BORED", "BREAD", "BREAK", "BRING", "BROWN", "BUILD", "CARRY", "CHAIR", "CHART", "CHEAP", "CHECK", "CHILD", "CLASS", "CLEAN", "CLIMB", "CLOCK", "CLOSE", "COULD", "CREAM", "DANCE", "DIRTY", "DRESS", "DRINK", "DRIVE", "EARLY", "EIGHT", "EMAIL", "ENJOY", "EVENT", "EVERY", "EXTRA", "FALSE", "FIFTH", "FIFTY", "FINAL", "FIRST", "FLOOR", "FORTY", "FRONT", "FRUIT", "FUNNY", "GLASS", "GREAT", "GREEN", "GROUP", "GUESS", "HAPPY", "HELLO", "HOBBY", "HORSE", "HOTEL", "HOUSE", "JEANS", "JUICE", "LARGE", "LATER", "LAUGH", "LEARN", "LEAVE", "LIGHT", "LOCAL", "LUNCH", "MARCH", "MATCH", "MAYBE", "METRE", "MODEL", "MONEY", "MONTH", "MOUSE", "MOUTH", "MOVIE", "MUSIC", "NEVER", "NIGHT", "NORTH", "NURSE", "OFTEN", "ONION", "ORDER", "OTHER", "PAINT", "PAPER", "PARTY", "PHONE", "PHOTO", "PIANO", "PIECE", "PLACE", "PLANE", "PLANT", "POINT", "POUND", "PRICE", "QUICK", "QUIET", "QUITE", "RADIO", "READY", "RELAX", "RIGHT", "RIVER", "SALAD", "SEVEN", "SHARE", "SHEEP", "SHIRT", "SHORT", "SIXTY", "SKILL", "SKIRT", "SLEEP", "SMALL", "SNAKE", "SORRY", "SOUND", "SOUTH", "SPACE", "SPEAK", "SPELL", "SPEND", "SPORT", "STAND", "START", "STILL", "STORY", "STUDY", "STYLE", "SUGAR", "TABLE", "TEACH", "THANK", "THEIR", "THERE", "THING", "THINK", "THIRD", "THREE", "TIRED", "TITLE", "TODAY", "TOOTH", "TOPIC", "TRAIN", "TWICE", "UNCLE", "UNDER", "UNTIL", "VIDEO", "VISIT", "WATCH", "WATER", "WHERE", "WHICH", "WHITE", "WOMAN", "WORLD", "WOULD", "WRITE", "WRONG", "YOUNG", "ADULT", "AFTER", "ALIVE", "ALLOW", "ALONE", "ALONG", "AMONG", "ANKLE", "APPLY", "ARGUE", "AVOID", "AWARD", "AWFUL", "BADLY", "BASED", "BIRTH", "BLANK", "BLOOD", "BOARD", "BRAIN", "BRUSH", "CATCH", "CAUSE", "CHECK", "CLEAR", "CLOSE", "CLOUD", "COACH", "COAST", "COUNT", "COVER", "CRAZY", "CRIME", "CROSS", "CROWD", "CURLY", "CYCLE", "DAILY", "DEATH", "DIARY", "DRAMA", "DREAM", "DRIVE", "EARTH", "EMPTY", "ENTER", "ERROR", "ESSAY", "EXACT", "EXIST", "FIELD", "FIGHT", "FINAL", "FIRST", "FOCUS", "FRESH", "GRASS", "GREET", "GUEST", "GUIDE", "HABIT", "HEART", "HEAVY", "HUMAN", "IDEAL", "IMAGE", "KNIFE", "KNOCK", "LATER", "LEAST", "LEMON", "LEVEL", "LIGHT", "LORRY", "LUCKY", "MAJOR", "MARRY", "MATHS", "MEDIA", "METAL", "MIGHT", "NOISE", "NOISY", "NOVEL", "OCEAN", "OFFER", "OWNER", "PANTS", "PEACE", "PENNY", "PILOT", "PLANT", "PLATE", "POWER", "PRINT", "PRIZE", "QUEEN", "RAISE", "REACH", "REACT", "REFER", "REPLY", "RIGHT", "ROUND", "ROUTE", "SADLY", "SAUCE", "SCARY", "SCENE", "SCORE", "SENSE", "SERVE", "SHAKE", "SHALL", "SHAPE", "SHEET", "SHOUT", "SINCE", "SLEEP", "SMELL", "SMILE", "SMOKE", "SOLVE", "SPEED", "SPOON", "STAGE", "STAIR", "STAMP", "START", "STATE", "STEAL", "STONE", "STORE", "STORM", "SWEET", "TASTE", "THICK", "THIEF", "THIRD", "THROW", "TOUCH", "TOWEL", "TOWER", "TRACK", "TRAIN", "TRUCK", "USUAL", "VIRUS", "VOICE", "WHEEL", "WHILE", "WHOLE", "WHOSE", "WORRY", "WORSE", "WORST", "YOURS", "ALSO", "AREA", "AUNT", "AWAY", "BABY", "BACK", "BALL", "BAND", "BANK", "BATH", "BEER", "BEST", "BIKE", "BILL", "BIRD", "BLOG", "BLUE", "BOAT", "BODY", "BOOK", "BOOT", "BORN", "BOTH", "BUSY", "CAFE", "CAKE", "CALL", "CARD", "CENT", "CITY", "CLUB", "COAT", "COLD", "COME", "COOK", "COOL", "COST", "DARK", "DATE", "DEAR", "DESK", "DIET", "DISH", "DOOR", "DOWN", "DRAW", "EACH", "EAST", "EASY", "ELSE", "EURO", "EVEN", "EVER", "EXAM", "FACE", "FACT", "FALL", "FARM", "FAST", "FEEL", "FILL", "FILM", "FIND", "FINE", "FIRE", "FISH", "FIVE", "FLAT", "FOOD", "FOOT", "FORM", "FOUR", "FREE", "FROM", "FULL", "GAME", "GIRL", "GIVE", "GOOD", "GREY", "GROW", "HAIR", "HALF", "HAND", "HARD", "HATE", "HAVE", "HEAD", "HEAR", "HELP", "HERE", "HIGH", "HOME", "HOPE", "HOUR", "IDEA", "INTO", "JOIN", "JULY", "JUNE", "JUST", "KEEP", "KIND", "KNOW", "LAND", "LAST", "LATE", "LEFT", "LIFE", "LIKE", "LINE", "LION", "LIST", "LIVE", "LONG", "LOOK", "LOSE", "LOVE", "MAIN", "MAKE", "MANY", "MEAL", "MEAN", "MEAT", "MEET", "MENU", "MILE", "MILK", "MISS", "MORE", "MOST", "MOVE", "MUCH", "MUST", "NAME", "NEAR", "NEED", "NEWS", "NEXT", "NICE", "NINE", "NOSE", "NOTE", "ONCE", "ONLY", "OPEN", "OVER", "PAGE", "PAIR", "PARK", "PART", "PAST", "PINK", "PLAN", "PLAY", "POOL", "POOR", "POST", "RAIN", "READ", "REAL", "RICE", "RICH", "RIDE", "ROAD", "ROOM", "RULE", "SALT", "SAME", "SELL", "SEND", "SHOE", "SHOP", "SHOW", "SICK", "SING", "SLOW", "SNOW", "SOME", "SONG", "SOON", "SOUP", "STAR", "STAY", "STOP", "SURE", "SWIM", "TAKE", "TALK", "TALL", "TAXI", "TEAM", "TELL", "TEST", "TEXT", "THAN", "THAT", "THEM", "THEN", "THEY", "THIS", "TIME", "TOWN", "TREE", "TRIP", "TRUE", "TURN", "TYPE", "VERY", "WAIT", "WAKE", "WALK", "WALL", "WANT", "WARM", "WASH", "WEAR", "WEEK", "WELL", "WEST", "WHAT", "WHEN", "WIFE", "WILL", "WINE", "WITH", "WORD", "WORK", "YEAH", "YEAR", "YOUR", "ABLE", "ARMY", "BACK", "BEAN", "BEAR", "BEAT", "BEEF", "BELT", "BEST", "BLOW", "BOIL", "BONE", "BOOK", "BOSS", "BOWL", "BURN", "CAMP", "CARE", "CASE", "CASH", "CENT", "CHAT", "CHEF", "CHIP", "CODE", "COOK", "COPY", "DARK", "DATA", "DEAD", "DEAL", "DEAR", "DEEP", "DROP", "DRUG", "EARN", "FAIL", "FAIR", "FALL", "FARM", "FEAR", "FEED", "FILM", "FISH", "FLAT", "FORK", "FREE", "FROG", "GATE", "GIFT", "GOAL", "GOLD", "GOLF", "GOOD", "HALF", "HALL", "HAVE", "HEAT", "HERO", "HERS", "HIDE", "HIGH", "HILL", "HOLD", "HOLE", "HOME", "HOPE", "HUGE", "HURT", "ITEM", "JAZZ", "JOKE", "JUMP", "KILL", "KING", "KNEE", "LADY", "LAKE", "LAMP", "LAND", "LAST", "LAZY", "LEAD", "LEND", "LESS", "LIFT", "LINK", "LOCK", "LOOK", "LOST", "LOUD", "LUCK", "MAIL", "MALE", "MARK", "MIND", "MINE", "MOON", "MORE", "NECK", "NEED", "NONE", "ONTO", "OVEN", "PACK", "PAIN", "PASS", "PAST", "PICK", "PULL", "PUSH", "RACE", "RATE", "REST", "RIDE", "RING", "RISE", "ROCK", "ROLE", "ROOF", "RUDE", "SAFE", "SAIL", "SALE", "SAVE", "SEAT", "SEEM", "SHIP", "SHUT", "SIDE", "SIGN", "SITE", "SIZE", "SKIN", "SOAP", "SOCK", "SOFT", "SORT", "STAR", "STAY", "STEP", "SUCH", "SUIT", "SURE", "TALK", "TASK", "TERM", "TEXT", "THIN", "TIDY", "TOOL", "TOUR", "TWIN", "UNIT", "USED", "USER", "VIEW", "WAIT", "WASH", "WAVE", "WEAK", "WIDE", "WILD", "WIND", "WISH", "WOOD", "ZERO"];
 
+    // === 유틸 ===
+    const uniq = arr => Array.from(new Set(arr));
+    const normalizeWords = arr => (arr||[]).map(w=>String(w).toUpperCase().replace(/[^A-Z]/g,'')).filter(Boolean);
+    const buildDict = len => uniq(normalizeWords(WORDPOOL)).filter(w=>w.length===len);
+    const isIsogram = w => new Set(w.split("")).size === w.length;
+    const setMaxTries = len => len===3?9:len===4?11:13;
 
-// ===== 유틸 =====
-function normalizeWords(arr){
-  return (arr||[]).map(w=>String(w).toUpperCase().replace(/[^A-Z]/g,'')).filter(Boolean);
-}
-function uniq(arr){ return Array.from(new Set(arr)); }
-function buildDict(len){ return uniq(normalizeWords(WORDPOOL)).filter(w=>w.length===len); }
-function isIsogram(word){ return new Set(word.split("")).size === word.length; }
+    // === 요소 ===
+    const lenSel = document.getElementById('len');
+    const allowRepeats = document.getElementById('allowRepeats');
+    const newGameBtn = document.getElementById('newGame');
+    const revealBtn = document.getElementById('reveal');
+    const logEl = document.getElementById('log');
+    const statusEl = document.getElementById('status');
+    const backspaceBtn = document.getElementById('backspace');
+    const enterKeyBtn = document.getElementById('enterKey');
 
-// ===== 요소 참조 =====
-const lenSel = document.getElementById('len');
-const allowRepeats = document.getElementById('allowRepeats');
-const newGameBtn = document.getElementById('newGame');
-const submitBtn = document.getElementById('submit');
-const revealBtn = document.getElementById('reveal');
-const guessInput = document.getElementById('guess');
-const logEl = document.getElementById('log');
-const statusEl = document.getElementById('status');
+    // === 키보드: 있다/없다만 ===
+    const kbEl = document.getElementById('kb');
+    const ALPHABETS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    const keyStates = new Map(); // 'A' -> 'idle' | 'hit' | 'out'
 
-// === Alphabet Keyboard ===
-const kbEl = document.getElementById('kb');
-const ALPHABETS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const keyStates = new Map(); // 'A' -> 'idle' | 'hit' | 'out'
+    // === 현재 입력 상태 ===
+    let currentInput = "";
 
-function renderAlphabetKeyboard(){
-  if(!kbEl) return;
-  kbEl.innerHTML = "";
-  ALPHABETS.forEach(ch=>{
-    const div = document.createElement("div");
-    div.className = "key " + (keyStates.get(ch) || "idle");
-    div.textContent = ch;
-    kbEl.appendChild(div);
-  });
-}
+    function renderAlphabetKeyboard(){
+      kbEl.innerHTML = "";
+      ALPHABETS.forEach(ch=>{
+        const div = document.createElement("div");
+        div.className = "key " + (keyStates.get(ch) || "idle");
+        div.textContent = ch;
+        div.addEventListener('click', ()=> addLetter(ch));
+        kbEl.appendChild(div);
+      });
+    }
 
-// 사용자가 방금 입력한 단어 g를 기준으로 상태 갱신
-function updateKeyStateFromGuess(g){
-  const secretSet = new Set(secret.toUpperCase().split(""));
-  const used = new Set(g.toUpperCase().split(""));
-  used.forEach(ch=>{
-    if(!/[A-Z]/.test(ch)) return;
-    const prev = keyStates.get(ch) || "idle";
-    const now = secretSet.has(ch) ? "hit" : "out";
-    keyStates.set(ch, prev === "hit" ? "hit" : now); // hit 우선 유지
-  });
-  renderAlphabetKeyboard();
-}
+    function renderCurrentInputRow(){
+      const inputRow = document.createElement('div');
+      inputRow.className = 'current-input-row';
+      inputRow.id = 'currentInputRow';
+      
+      const wordSpan = document.createElement('span');
+      wordSpan.className = 'current-input-word';
+      
+      if(currentInput.length === 0){
+        wordSpan.textContent = '단어를 입력하세요...';
+        wordSpan.classList.add('input-placeholder');
+      } else {
+        wordSpan.textContent = currentInput;
+        wordSpan.classList.remove('input-placeholder');
+      }
+      
+      inputRow.appendChild(wordSpan);
+      return inputRow;
+    }
 
-// ===== 게임 상태 =====
-let secret = "";
-let tries = 0;
-let maxTries = 0;
-let length = 4;
-let dict = [];
-let gameOver = true;   // 처음에는 게임 시작 전
-let usedGuesses = new Set();
+    function updateCurrentInputDisplay(){
+      const existingRow = document.getElementById('currentInputRow');
+      if(existingRow){
+        const wordSpan = existingRow.querySelector('.current-input-word');
+        if(currentInput.length === 0){
+          wordSpan.textContent = '단어를 입력하세요...';
+          wordSpan.classList.add('input-placeholder');
+        } else {
+          wordSpan.textContent = currentInput;
+          wordSpan.classList.remove('input-placeholder');
+        }
+      }
+    }
 
-function setMaxTries(len){ return len===3?9:len===4?11:13; }
-function pickSecret(){
-  const pool = allowRepeats.checked ? dict : dict.filter(isIsogram);
-  return pool[Math.floor(Math.random()*pool.length)];
-}
-function setStatus(msg, cls=''){
-  statusEl.textContent = msg;
-  statusEl.className = `status ${cls}`;
-}
-function toggleInput(active){
-  guessInput.disabled = !active;
-  submitBtn.disabled = !active;
-}
+    function addLetter(letter){
+      if(gameOver) return;
+      if(currentInput.length < length){
+        currentInput += letter;
+        updateCurrentInputDisplay();
+      }
+    }
 
-// ===== S/B 계산 (야구 표기) =====
-function countSB(secret, guess){
-  // S = 같은 자리 같은 글자 수 (strike)
-  let S = 0;
-  for (let i=0; i<length; i++) if (secret[i] === guess[i]) S++;
+    function removeLetter(){
+      if(gameOver) return;
+      if(currentInput.length > 0){
+        currentInput = currentInput.slice(0, -1);
+        updateCurrentInputDisplay();
+      }
+    }
 
-  // 위치 무관한 겹침 수 (overlap)
-  const sCount = {}, gCount = {};
-  for (const ch of secret) sCount[ch] = (sCount[ch]||0) + 1;
-  for (const ch of guess)  gCount[ch] = (gCount[ch]||0) + 1;
+    function updateKeyStateFromGuess(g){
+      const secretSet = new Set(secret.toUpperCase().split(""));
+      const used = new Set(g.toUpperCase().split(""));
+      used.forEach(ch=>{
+        if(!/[A-Z]/.test(ch)) return;
+        const prev = keyStates.get(ch) || "idle";
+        const now = secretSet.has(ch) ? "hit" : "out";
+        // 'hit' 우선 유지
+        keyStates.set(ch, prev === "hit" ? "hit" : now);
+      });
+      renderAlphabetKeyboard();
+    }
 
-  let overlap = 0;
-  for (const ch in sCount) overlap += Math.min(sCount[ch], gCount[ch]||0);
+    // === 게임 상태 ===
+    let secret = "";
+    let tries = 0;
+    let maxTries = 0;
+    let length = 4;
+    let dict = [];
+    let gameOver = true;
+    let usedGuesses = new Set();
 
-  const B = overlap - S;          // 다른 위치 같은 글자 수 (ball)
-  const O = length - overlap;     // 포함되지 않은 글자 수 (out)
-  return { S, B, O };
-}
-function appendLog(word, score){
-  const div = document.createElement('div');
-  div.className = 'try';
-  div.innerHTML = `<span>${word}</span><span>S ${score.S} · B ${score.B} · O ${score.O}</span>`;
-  logEl.prepend(div);
-}
+    function setStatus(msg, cls=''){ statusEl.textContent = msg; statusEl.className = `status ${cls}`; }
+    function toggleInput(active){ 
+      enterKeyBtn.style.opacity = active ? '1' : '0.5';
+      if(!active){
+        // 게임 종료시 현재 입력란 제거
+        const existingRow = document.getElementById('currentInputRow');
+        if(existingRow) existingRow.remove();
+      }
+    }
+    function pickSecret(){
+      const pool = allowRepeats.checked ? dict : dict.filter(isIsogram);
+      return pool[Math.floor(Math.random()*pool.length)];
+    }
 
+    function startGame(){
+      length = parseInt(lenSel.value,10);
+      dict = buildDict(length);
+      if (dict.length === 0){
+        setStatus('워드풀에 해당 길이 단어가 없습니다.','err');
+        toggleInput(false);
+        return;
+      }
+      maxTries = setMaxTries(length);
+      tries = 0;
+      secret = pickSecret();
+      usedGuesses.clear();
+      logEl.innerHTML = '';
+      currentInput = "";
+      gameOver = false;
+      
+      // 첫 번째 입력 행 추가
+      const inputRow = renderCurrentInputRow();
+      logEl.appendChild(inputRow);
+      
+      toggleInput(true);
+      setStatus('비밀 단어를 추측해서 입력하세요.','ok');
 
+      // 키보드 초기화
+      keyStates.clear();
+      ALPHABETS.forEach(ch=>keyStates.set(ch,'idle'));
+      renderAlphabetKeyboard();
+    }
 
-function startGame(){
-  // 1) 기본 세팅
-  length = parseInt(lenSel.value,10);
-  dict = buildDict(length);
-  if (dict.length === 0){
-    setStatus('워드풀에 해당 길이 단어가 없습니다.','err');
+    // === S/B/O 개수 계산 ===
+    function calculateSBO(secret, guess){
+      const n = secret.length;
+      const s = secret.toUpperCase().split("");
+      const g = guess.toUpperCase().split("");
+      
+      let strikeCount = 0;
+      let ballCount = 0;
+      
+      // 1) Strike 먼저 계산
+      const remainS = {};
+      const remainG = {};
+      
+      for(let i=0;i<n;i++){
+        if(g[i]===s[i]){
+          strikeCount++;
+        }else{
+          remainS[s[i]] = (remainS[s[i]]||0)+1;
+          remainG[g[i]] = (remainG[g[i]]||0)+1;
+        }
+      }
+      
+      // 2) Ball 계산 (Strike가 아닌 글자들 중에서)
+      for(const char in remainG){
+        if(remainS[char]){
+          ballCount += Math.min(remainG[char], remainS[char]);
+        }
+      }
+      
+      const outCount = n - strikeCount - ballCount;
+      
+      return {
+        strike: strikeCount,
+        ball: ballCount,
+        out: outCount
+      };
+    }
+
+    function formatSBOResult(sbo){
+      let result = "";
+      if(sbo.strike > 0) result += `${sbo.strike}S`;
+      if(sbo.ball > 0) result += `${sbo.ball}B`;
+      if(sbo.out > 0) result += `${sbo.out}O`;
+      return result || "0O";
+    }
+
+    function appendLog(word, sboResult){
+      // 현재 입력 행을 결과로 변환
+      const existingRow = document.getElementById('currentInputRow');
+      if(existingRow){
+        existingRow.id = ''; // ID 제거
+        existingRow.className = 'try'; // 클래스 변경
+        existingRow.innerHTML = ''; // 내용 초기화
+        
+        const wordSpan = document.createElement('span');
+        wordSpan.style.fontWeight = '900';
+        wordSpan.style.letterSpacing = '1px';
+        wordSpan.textContent = word;
+        
+        const resultSpan = document.createElement('span');
+        resultSpan.style.opacity = '.9';
+        resultSpan.textContent = sboResult;
+        
+        existingRow.appendChild(wordSpan);
+        existingRow.appendChild(resultSpan);
+      }
+    }
+
+    function submitGuess(){
+      if(gameOver) return;
+      const g = currentInput.toUpperCase().replace(/[^A-Z]/g,'');
+      if(g.length !== length){ setStatus(`${length}글자를 입력하세요.`,'warn'); return; }
+      if(!dict.includes(g)){ setStatus('워드풀에 없는 단어입니다.','err'); return; }
+      if(usedGuesses.has(g)){ setStatus('이미 시도한 단어입니다.','warn'); return; }
+
+      usedGuesses.add(g);
+      tries++;
+
+      const sbo = calculateSBO(secret, g);
+      const sboResult = formatSBOResult(sbo);
+      appendLog(g, sboResult);
+      updateKeyStateFromGuess(g); // 있다/없다만 표시
+
+      if(sbo.strike === length){
+        setStatus(`정답! ${secret}`,'ok');
+        gameOver = true;
+        toggleInput(false);
+        return;
+      }
+      if(tries >= maxTries){
+        setStatus(`실패! 정답은 ${secret}`,'err');
+        gameOver = true;
+        toggleInput(false);
+        return;
+      }
+      
+      // 게임이 계속되면 새로운 입력 행 추가
+      setStatus('계속 시도하세요.');
+      currentInput = "";
+      const newInputRow = renderCurrentInputRow();
+      logEl.appendChild(newInputRow);
+    }
+
+    function onSubmit(){
+      submitGuess();
+    }
+
+    // === 이벤트 ===
+    newGameBtn.addEventListener('click', startGame);
+    revealBtn.addEventListener('click', ()=>{
+      if(secret){
+        setStatus(`정답은 ${secret}`,'ok');
+        gameOver = true;
+        toggleInput(false);
+      }
+    });
+    lenSel.addEventListener('change', ()=>setStatus('단어 길이/중복 여부를 정한 후 [새 게임]을 누르세요.','warn'));
+    allowRepeats.addEventListener('change', ()=>setStatus('단어 길이/중복 여부를 정한 후 [새 게임]을 누르세요.','warn'));
+
+    // 새로운 키보드 이벤트
+    backspaceBtn.addEventListener('click', removeLetter);
+    enterKeyBtn.addEventListener('click', submitGuess);
+
+    // 초기
     toggleInput(false);
-    return;
-  }
-  maxTries = setMaxTries(length);
-  tries = 0;
-  secret = pickSecret();
-  usedGuesses.clear();
-  logEl.innerHTML = '';
-  guessInput.value = '';
+    setStatus('단어 길이와 중복 여부를 정하고 [새 게임]을 누르세요.','warn');
+    renderAlphabetKeyboard();
+  </script>
 
-  // 2) 게임 on + 입력 활성화
-  gameOver = false;
-  toggleInput(true);
-
-  // 3) 안내
-  setStatus('비밀 단어를 추측해서 입력하세요.','ok');
-
-  // 4) 알파벳 키보드 초기화
-  keyStates.clear();
-  ALPHABETS.forEach(ch=>keyStates.set(ch,'idle'));
-  renderAlphabetKeyboard();
-}
-
-function onSubmit(){
-  if(gameOver) return;
-
-  const g = guessInput.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,length);
-  if(g.length !== length){ setStatus(`${length}글자를 입력하세요.`,'warn'); return; }
-  if(!dict.includes(g)){ setStatus('워드풀에 없는 단어입니다.','err'); return; }
-  if(usedGuesses.has(g)){ setStatus('이미 시도한 단어입니다.','warn'); return; }
-  usedGuesses.add(g);
-
-  tries++;
-  const score = countSB(secret, g);
-  appendLog(g, score);
-
-  // 키보드 색 갱신
-  updateKeyStateFromGuess(g);
-
-  if(score.S === length){
-    setStatus(`정답! ${secret}`,'ok');
-    gameOver = true;
-    toggleInput(false);
-    return;
-  }
-  if(tries >= maxTries){
-    setStatus(`실패! 정답은 ${secret}`,'err');
-    gameOver = true;
-    toggleInput(false);
-    return;
-  }
-  setStatus('계속 시도하세요.');
-  guessInput.value = '';
-}
-
-// 이벤트 바인딩
-newGameBtn.addEventListener('click', startGame);
-submitBtn.addEventListener('click', onSubmit);
-revealBtn.addEventListener('click', ()=>{
-  if(secret){
-    setStatus(`정답은 ${secret}`,'ok');
-    gameOver = true;
-    toggleInput(false); // 정답 공개 시 입력 막기
-  }
-});
-guessInput.addEventListener('keydown', e=>{ if(e.key==='Enter') onSubmit(); });
-
-lenSel.addEventListener('change', ()=>setStatus('단어 길이와 중복 여부를 정한 후 [새 게임]을 누르세요.','warn'));
-allowRepeats.addEventListener('change', ()=>setStatus('단어 길이와 중복 여부를 정한 후 [새 게임]을 누르세요.','warn'));
-
-// 초기 상태
-toggleInput(false);
-setStatus('단어 길이와 중복 여부를 정하고 [새 게임]을 누르세요.','warn');
-</script>
 </body>
 </html>
+
+
+
+
