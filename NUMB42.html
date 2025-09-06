@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4YZHC1G9FN');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Player Number Baseball</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+```
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family:'Pretendard',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+        background:#2e8b8b;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        max-width: 1000px;
+        width: 100%;
+        overflow: hidden;
+    }
+    .header {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+    .header h1 { 
+        font-size:1.5rem; 
+        margin-bottom: 10px; 
+    }
+    .setup { padding: 30px; }
+    .phase { display: none; }
+    .phase.active { display: block; }
+    .difficulty-btn {
+        background: white;
+        border: 2px solid #ddd;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 10px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+    }
+    .difficulty-btn:hover { border-color: #667eea; transform: translateY(-2px); }
+    .difficulty-btn.selected { background: #667eea; color: white; }
+    .secret-setup {
+        background: #f8f9ff;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+    }
+    .secret-input {
+        width: 300px;
+        padding: 15px;
+        font-size: 1.1rem;
+        text-align: center;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        margin: 15px;
+    }
+    .game-board {
+        display: none;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        padding: 30px;
+    }
+    .game-board.active { display: grid; }
+    .player-section {
+        background: #f8f9ff;
+        border-radius: 15px;
+        padding: 25px;
+        border: 2px solid #ddd;
+    }
+    .player-section.active-turn {
+        border-color: #667eea;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+    .player-title {
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .player2-title { color: #ee5a24; }
+    .number-input {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.1rem;
+        text-align: center;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+    .submit-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1.1rem;
+    }
+    .submit-btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .player2-btn { background: linear-gradient(135deg, #ee5a24, #ff6b6b); }
+    .history {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+    }
+    .history-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        margin-bottom: 10px;
+        background: white;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+    }
+    .player2-guess { border-left-color: #ee5a24; }
+    .result {
+        background: #667eea;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 15px;
+        font-weight: bold;
+    }
+    .player2-result { background: #ee5a24; }
+    .status {
+        text-align: center;
+        padding: 20px;
+        background: #f8f9ff;
+        margin: 20px 30px;
+        border-radius: 15px;
+    }
+    .controls {
+        text-align: center;
+        padding: 20px;
+        border-top: 1px solid #ddd;
+    }
+    .btn {
+        background: #6c757d;
+        font-size: 1.1rem;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 20px;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+    .btn.primary { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    @media (max-width: 768px) {
+        .game-board { grid-template-columns: 1fr; }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚾ Two-Player Number Baseball Game</h1>
+        </div>
+
+```
+    <div class="setup">
+        <!-- Difficulty Selection -->
+        <div class="phase active" id="difficultyPhase">
+            <h3 style="text-align: center; margin-bottom: 20px;">Please select difficulty</h3>
+            <div style="text-align: center;">
+                <button class="difficulty-btn" onclick="selectDifficulty(3)">
+                    <div><strong>Easy</strong></div>
+                    <div>3 digits</div>
+                </button>
+                <button class="difficulty-btn" onclick="selectDifficulty(4)">
+                    <div><strong>Medium</strong></div>
+                    <div>4 digits</div>
+                </button>
+                <button class="difficulty-btn" onclick="selectDifficulty(5)">
+                    <div><strong>Hard</strong></div>
+                    <div>5 digits</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Player 1 Setup -->
+        <div class="phase" id="player1Phase">
+            <div class="secret-setup">
+                <h3 style="color: #667eea;">🧑 Player 1</h3>
+                <p>Please enter your secret number.</p>
+                <input type="password" class="secret-input" id="player1Secret" placeholder="Enter number">
+                <br>
+                <button class="btn primary" onclick="setPlayer1()">Confirm</button>
+            </div>
+        </div>
+
+        <!-- Player 2 Setup -->
+        <div class="phase" id="player2Phase">
+            <div class="secret-setup">
+                <h3 style="color: #ee5a24;">👤 Player 2</h3>
+                <p>Please enter your secret number.</p>
+                <input type="password" class="secret-input" id="player2Secret" placeholder="Enter number">
+                <br>
+                <button class="btn primary" onclick="setPlayer2()">Start Game!</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="status" id="status">
+        <div id="statusText">Please select difficulty.</div>
+        <div id="turnText"></div>
+    </div>
+
+    <div class="game-board" id="gameBoard">
+        <!-- Player 1 -->
+        <div class="player-section active-turn" id="section1">
+            <div class="player-title">🧑 Player 1</div>
+            <input type="text" class="number-input" id="input1" placeholder="Enter number">
+            <button class="submit-btn" id="btn1" onclick="guess(1)">Guess</button>
+            <div class="history" id="history1">
+                <div style="text-align: center; color: #666; padding: 20px;">No records</div>
+            </div>
+        </div>
+
+        <!-- Player 2 -->
+        <div class="player-section" id="section2">
+            <div class="player-title player2-title">👤 Player 2</div>
+            <input type="text" class="number-input" id="input2" placeholder="Enter number">
+            <button class="submit-btn player2-btn" id="btn2" onclick="guess(2)">Guess</button>
+            <div class="history" id="history2">
+                <div style="text-align: center; color: #666; padding: 20px;">No records</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn primary" onclick="nextStep()" id="nextBtn" disabled>Please select difficulty</button>
+        <button class="btn" onclick="resetGame()">New Game</button>
+        <button class="btn" onclick="showAnswers()" id="answerBtn" style="display: none;">View Answer</button>
+    </div>
+</div>
+
+<script>
+    let digits = 0;
+    let player1Number = '';
+    let player2Number = '';
+    let currentTurn = 1;
+    let gameActive = false;
+    let step = 'difficulty';
+    let guesses1 = [];
+    let guesses2 = [];
+
+    function selectDifficulty(d) {
+        digits = d;
+        document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('selected'));
+        event.target.classList.add('selected');
+        document.getElementById('nextBtn').disabled = false;
+        document.getElementById('nextBtn').textContent = 'Next Step';
+        document.getElementById('player1Secret').maxLength = d;
+        document.getElementById('player2Secret').maxLength = d;
+        document.getElementById('input1').maxLength = d;
+        document.getElementById('input2').maxLength = d;
+    }
+
+    function nextStep() {
+        if (step === 'difficulty') {
+            step = 'player1';
+            showPhase('player1Phase');
+            document.getElementById('statusText').textContent = 'Player 1 is setting the number...';
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+    }
+
+    function showPhase(id) {
+        document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function setPlayer1() {
+        const num = document.getElementById('player1Secret').value;
+        if (!isValid(num)) {
+            alert(`Please enter ${digits} different digits. (The first digit cannot be 0.)`);
+            return;
+        }
+        player1Number = num;
+        step = 'player2';
+        showPhase('player2Phase');
+        document.getElementById('statusText').textContent = 'Player 2 is setting the number...';
+        document.getElementById('player1Secret').value = '';
+    }
+
+    function setPlayer2() {
+        const num = document.getElementById('player2Secret').value;
+        if (!isValid(num)) {
+            alert(`Please enter ${digits} different digits. (The first digit cannot be 0.)`);
+            return;
+        }
+        player2Number = num;
+        startGame();
+    }
+
+    function isValid(num) {
+        if (num.length !== digits) return false;
+        if (!/^\d+$/.test(num)) return false;
+        if (new Set(num).size !== digits) return false;
+        if (num[0] === '0') return false;
+        return true;
+    }
+
+    function startGame() {
+        gameActive = true;
+        step = 'game';
+        document.querySelector('.setup').style.display = 'none';
+        document.getElementById('gameBoard').classList.add('active');
+        document.getElementById('statusText').textContent = 'Game started!';
+        document.getElementById('turnText').textContent = "Player 1's turn";
+        document.getElementById('answerBtn').style.display = 'inline-block';
+        updateTurn();
+    }
+
+    function guess(player) {
+        if (!gameActive || currentTurn !== player) return;
+        
+        const input = document.getElementById(`input${player}`);
+        const num = input.value;
+        
+        if (!isValid(num)) {
+            alert(`Please enter ${digits} different digits. (The first digit cannot be 0.)`);
+            return;
+        }
+
+        const target = player === 1 ? player2Number : player1Number;
+        const result = calculate(num, target);
+        
+        if (player === 1) {
+            guesses1.push({guess: num, result});
+            updateHistory(1);
+        } else {
+            guesses2.push({guess: num, result});
+            updateHistory(2);
+        }
+
+        if (result.strikes === digits) {
+            endGame(player);
+            return;
+        }
+
+        input.value = '';
+        currentTurn = currentTurn === 1 ? 2 : 1;
+        updateTurn();
+    }
+
+    function calculate(guess, target) {
+        let strikes = 0, balls = 0;
+        for (let i = 0; i < digits; i++) {
+            if (guess[i] === target[i]) strikes++;
+            else if (target.includes(guess[i])) balls++;
+        }
+        return {strikes, balls};
+    }
+
+    function updateHistory(player) {
+        const history = document.getElementById(`history${player}`);
+        const guesses = player === 1 ? guesses1 : guesses2;
+        const className = player === 1 ? '' : 'player2-guess';
+        const resultClass = player === 1 ? 'result' : 'result player2-result';
+        
+        history.innerHTML = '';
+        guesses.forEach(item => {
+            const div = document.createElement('div');
+            div.className = `history-item ${className}`;
+            div.innerHTML = `
+                <span>${item.guess}</span>
+                <span class="${resultClass}">${item.result.strikes}S ${item.result.balls}B</span>
+            `;
+            history.appendChild(div);
+        });
+    }
+
+    function updateTurn() {
+        const section1 = document.getElementById('section1');
+        const section2 = document.getElementById('section2');
+        const input1 = document.getElementById('input1');
+        const input2 = document.getElementById('input2');
+        const btn1 = document.getElementById('btn1');
+        const btn2 = document.getElementById('btn2');
+
+        if (currentTurn === 1) {
+            document.getElementById('turnText').textContent = "Player 1's turn";
+            section1.classList.add('active-turn');
+            section2.classList.remove('active-turn');
+            input1.disabled = false;
+            input2.disabled = true;
+            btn1.disabled = false;
+            btn2.disabled = true;
+        } else {
+            document.getElementById('turnText').textContent = "Player 2's turn";
+            section1.classList.remove('active-turn');
+            section2.classList.add('active-turn');
+            input1.disabled = true;
+            input2.disabled = false;
+            btn1.disabled = true;
+            btn2.disabled = false;
+        }
+    }
+
+    function endGame(winner) {
+        gameActive = false;
+        const statusEl = document.getElementById('status');
+        document.getElementById('statusText').innerHTML = 
+            `🎉 Player ${winner} wins!<br>Answer: P1=${player1Number}, P2=${player2Number}`;
+        statusEl.style.background = winner === 1 ? 
+            'linear-gradient(135deg, #667eea, #764ba2)' : 
+            'linear-gradient(135deg, #ee5a24, #ff6b6b)';
+        statusEl.style.color = 'white';
+        document.getElementById('turnText').textContent = 'Game over';
+        document.getElementById('input1').disabled = true;
+        document.getElementById('input2').disabled = true;
+        document.getElementById('btn1').disabled = true;
+        document.getElementById('btn2').disabled = true;
+    }
+
+    function showAnswers() {
+        if (gameActive && !confirm('Game is in progress. Would you like to see the answer? (Game will end)')) return;
+        gameActive = false;
+        alert(`Player 1: ${player1Number}\nPlayer 2: ${player2Number}`);
+    }
+
+    function resetGame() {
+        digits = 0;
+        player1Number = '';
+        player2Number = '';
+        currentTurn = 1;
+        gameActive = false;
+        step = 'difficulty';
+        guesses1 = [];
+        guesses2 = [];
+        
+        document.querySelector('.setup').style.display = 'block';
+        document.getElementById('gameBoard').classList.remove('active');
+        showPhase('difficultyPhase');
+        
+        document.getElementById('statusText').textContent = 'Please select difficulty.';
+        document.getElementById('status').style.background = '#f8f9ff';
+        document.getElementById('status').style.color = '#333';
+        document.getElementById('turnText').textContent = '';
+        
+        document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('selected'));
+        document.getElementById('nextBtn').disabled = true;
+        document.getElementById('nextBtn').textContent = 'Please select difficulty';
+        document.getElementById('nextBtn').style.display = 'inline-block';
+        document.getElementById('answerBtn').style.display = 'none';
+        
+        document.getElementById('player1Secret').value = '';
+        document.getElementById('player2Secret').value = '';
+        document.getElementById('input1').value = '';
+        document.getElementById('input2').value = '';
+    }
+
+    // Enter key event
+    document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            if (step === 'player1') setPlayer1();
+            else if (step === 'player2') setPlayer2();
+            else if (gameActive && currentTurn === 1 && !document.getElementById('btn1').disabled) guess(1);
+            else if (gameActive && currentTurn === 2 && !document.getElementById('btn2').disabled) guess(2);
+        }
+    });
+
+    // Only allow numbers
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', e => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+    });
+</script>
+```
+
+</body>
+</html>
