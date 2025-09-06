@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4YZHC1G9FN');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Baseball AI</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+```
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family:'Pretendard',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+        background:#2e8b8b;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .game-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        max-width: 900px;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .header {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size:1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+
+    .game-board {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        padding: 30px;
+    }
+
+    .player-section {
+        background: #f8f9ff;
+        border-radius: 15px;
+        padding: 25px;
+        border: 2px solid #e9ecef;
+    }
+
+    .player-section.active {
+        border-color: #667eea;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    .player-title {
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .ai-title {
+        color: #ee5a24;
+    }
+
+    .input-section {
+        margin-bottom: 20px;
+    }
+
+    .number-input {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.1rem;
+        text-align: center;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .number-input:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .submit-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .history {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 15px;
+    }
+
+    .history-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        margin-bottom: 10px;
+        background: white;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+    }
+
+    .ai-guess {
+        border-left-color: #ee5a24;
+    }
+
+    .guess-number {
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    .result {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 15px;
+        font-weight: bold;
+    }
+
+    .ai-result {
+        background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+    }
+
+    .game-status {
+        text-align: center;
+        padding: 20px;
+        background: #f8f9ff;
+        margin: 20px 30px;
+        border-radius: 15px;
+        border: 2px solid #e9ecef;
+    }
+
+    .status-text {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .turn-indicator {
+        color: #667eea;
+        font-size: 1.1rem;
+    }
+
+    .controls {
+        text-align: center;
+        padding: 20px 30px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .control-btn {
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 20px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+    }
+
+    .control-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .control-btn.primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .winner-announcement {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    .ai-thinking {
+        text-align: center;
+        color: #ee5a24;
+        font-style: italic;
+        margin-top: 10px;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    .rules {
+        background: #e3f2fd;
+        padding: 20px;
+        margin: 20px 30px;
+        border-radius: 15px;
+        border-left: 5px solid #2196f3;
+    }
+
+    .rules h3 {
+        color: #1976d2;
+        margin-bottom: 10px;
+    }
+
+    .rules ul {
+        margin-left: 20px;
+        color: #333;
+    }
+
+    .rules li {
+        margin-bottom: 5px;
+    }
+
+    .difficulty-selection {
+        background: #f8f9ff;
+        margin: 20px 30px;
+        padding: 25px;
+        border-radius: 15px;
+        border: 2px solid #e9ecef;
+    }
+
+    .difficulty-btn {
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    .difficulty-btn:hover {
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    .difficulty-btn.selected {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border-color: #667eea;
+    }
+
+    .difficulty-title {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .difficulty-desc {
+        display: block;
+        font-size: 1.1rem;
+        opacity: 0.8;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>⚾ Number Baseball Game vs AI</h1>
+            <p>Engage in an intense deduction battle with AI!</p>
+        </div>
+
+```
+    <div class="rules">
+        <h3>🎯 Game Rules</h3>
+        <ul>
+            <li>A classic puzzle where you guess the secret number.</li>
+            <li>Try to figure out the secret code made of different digits.</li>
+            <li><b>S (Strike)</b>: Correct number and correct position</li>
+            <li><b>B (Ball)</b>: Correct number but wrong position</li>
+            <li><b>O (Out)</b>: Number not included</li>
+            <li>Guess all positions correctly to win!</li>
+            <li>The first digit cannot be 0.</li>
+        </ul>
+    </div>
+
+    <div class="game-status">
+        <div class="status-text" id="gameStatus">Select difficulty and start the game!</div>
+        <div class="turn-indicator" id="turnIndicator"></div>
+    </div>
+
+    <div class="difficulty-selection" id="difficultySelection">
+        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <button class="difficulty-btn" data-digits="3" onclick="selectDifficulty(3)">
+                <span class="difficulty-title">3 Digits</span>
+            </button>
+            <button class="difficulty-btn" data-digits="4" onclick="selectDifficulty(4)">
+                <span class="difficulty-title">4 Digits</span>
+            </button>
+            <button class="difficulty-btn" data-digits="5" onclick="selectDifficulty(5)">
+                <span class="difficulty-title">5 Digits</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="game-board" id="gameBoard" style="display: none;">
+        <!-- Player Section -->
+        <div class="player-section active" id="playerSection">
+            <div class="player-title">🧑 Your Guess</div>
+            <div class="input-section">
+                <input type="text" class="number-input" id="playerInput" 
+                       placeholder="Enter number" maxlength="3">
+                <button class="submit-btn" id="playerSubmit" onclick="playerGuess()">Make Guess</button>
+            </div>
+            <div class="history" id="playerHistory">
+                <div style="text-align: center; color: #666; padding: 20px;">
+                    No guesses made yet
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Section -->
+        <div class="player-section" id="aiSection">
+            <div class="player-title ai-title">🤖 AI's Guess</div>
+            <div class="ai-thinking" id="aiThinking" style="display: none;">
+                AI is thinking...
+            </div>
+            <div class="history" id="aiHistory">
+                <div style="text-align: center; color: #666; padding: 20px;">
+                    AI hasn't made a guess yet
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn primary" onclick="startGame()" id="startBtn" disabled>Select difficulty first</button>
+        <button class="control-btn" onclick="resetGame()">New Game</button>
+        <button class="control-btn" onclick="showHint()">Hint</button>
+    </div>
+</div>
+
+<script>
+    let playerNumber = '';
+    let aiNumber = '';
+    let playerGuesses = [];
+    let aiGuesses = [];
+    let gameActive = false;
+    let currentTurn = 'player'; // 'player' or 'ai'
+    let aiPossibleNumbers = [];
+    let selectedDigits = 0; // Selected number of digits
+
+    // Difficulty selection
+    function selectDifficulty(digits) {
+        selectedDigits = digits;
+        
+        // Highlight selected button
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        document.querySelector(`[data-digits="${digits}"]`).classList.add('selected');
+        
+        // Enable start game button
+        const startBtn = document.getElementById('startBtn');
+        startBtn.disabled = false;
+        startBtn.textContent = 'Start Game';
+        
+        // Update input field maxlength
+        document.getElementById('playerInput').maxLength = digits;
+        document.getElementById('playerInput').placeholder = `Enter ${digits}-digit number`;
+        
+        // Update game status
+        document.getElementById('gameStatus').textContent = `${digits}-digit difficulty selected. Ready to start!`;
+    }
+
+    // Initialize game
+    function startGame() {
+        if (selectedDigits === 0) {
+            alert('Please select difficulty first!');
+            return;
+        }
+        
+        // Generate N-digit random numbers with unique digits (first digit is not 0)
+        playerNumber = generateRandomNumber(selectedDigits);
+        aiNumber = generateRandomNumber(selectedDigits);
+        
+        playerGuesses = [];
+        aiGuesses = [];
+        gameActive = true;
+        currentTurn = 'player';
+        
+        // Initialize AI possible numbers list
+        initializeAIPossibleNumbers();
+        
+        document.getElementById('difficultySelection').style.display = 'none';
+        document.getElementById('gameBoard').style.display = 'grid';
+        document.getElementById('gameStatus').textContent = 'Game started!';
+        document.getElementById('turnIndicator').textContent = 'Your turn';
+        
+        // Reset history
+        document.getElementById('playerHistory').innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">No guesses made yet</div>';
+        document.getElementById('aiHistory').innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">AI hasn\'t made a guess yet</div>';
+        
+        // Enable input field
+        document.getElementById('playerInput').disabled = false;
+        document.getElementById('playerSubmit').disabled = false;
+        document.getElementById('playerInput').value = '';
+        
+        updateTurnIndicator();
+    }
+
+    function generateRandomNumber(digits) {
+        let numbers = [];
+        
+        // First digit is chosen from 1-9
+        let firstDigit = Math.floor(Math.random() * 9) + 1;
+        numbers.push(firstDigit);
+        
+        // Remaining digits are chosen from 0-9 without duplicates
+        while (numbers.length < digits) {
+            let digit = Math.floor(Math.random() * 10);
+            if (!numbers.includes(digit)) {
+                numbers.push(digit);
+            }
+        }
+        return numbers.join('');
+    }
+
+    function initializeAIPossibleNumbers() {
+        aiPossibleNumbers = [];
+        const minNum = Math.pow(10, selectedDigits - 1); // Minimum value (e.g., 100 for 3 digits)
+        const maxNum = Math.pow(10, selectedDigits) - 1;  // Maximum value (e.g., 999 for 3 digits)
+        
+        for (let i = minNum; i <= maxNum; i++) {
+            let str = i.toString();
+            // Add only if it has correct digits and all digits are unique
+            if (str.length === selectedDigits && new Set(str).size === selectedDigits) {
+                aiPossibleNumbers.push(str);
+            }
+        }
+    }
+
+    function validateInput(input) {
+        if (input.length !== selectedDigits) return false;
+        if (!/^\d+$/.test(input)) return false;
+        if (new Set(input).size !== selectedDigits) return false;
+        if (input[0] === '0') return false; // First digit cannot be 0
+        return true;
+    }
+
+    function calculateResult(guess, target) {
+        let strikes = 0;
+        let balls = 0;
+        
+        for (let i = 0; i < selectedDigits; i++) {
+            if (guess[i] === target[i]) {
+                strikes++;
+            } else if (target.includes(guess[i])) {
+                balls++;
+            }
+        }
+        
+        return { strikes, balls };
+    }
+
+    function playerGuess() {
+        if (!gameActive || currentTurn !== 'player') return;
+        
+        const input = document.getElementById('playerInput').value;
+        
+        if (!validateInput(input)) {
+            alert(`Please enter ${selectedDigits} unique digits! (First digit cannot be 0)`);
+            return;
+        }
+        
+        const result = calculateResult(input, aiNumber);
+        playerGuesses.push({ guess: input, result });
+        
+        updatePlayerHistory();
+        
+        if (result.strikes === selectedDigits) {
+            endGame('player');
+            return;
+        }
+        
+        document.getElementById('playerInput').value = '';
+        currentTurn = 'ai';
+        updateTurnIndicator();
+        
+        // Start AI turn
+        setTimeout(aiGuess, 1500);
+    }
+
+    function aiGuess() {
+        if (!gameActive || currentTurn !== 'ai') return;
+        
+        document.getElementById('aiThinking').style.display = 'block';
+        
+        setTimeout(() => {
+            let guess;
+            
+            if (aiGuesses.length === 0) {
+                // First guess is random
+                guess = aiPossibleNumbers[Math.floor(Math.random() * aiPossibleNumbers.length)];
+            } else {
+                // Filter possible numbers based on previous results
+                filterAIPossibleNumbers();
+                if (aiPossibleNumbers.length > 0) {
+                    guess = aiPossibleNumbers[Math.floor(Math.random() * aiPossibleNumbers.length)];
+                } else {
+                    // Exception handling
+                    guess = generateRandomNumber(selectedDigits);
+                }
+            }
+            
+            const result = calculateResult(guess, playerNumber);
+            aiGuesses.push({ guess, result });
+            
+            document.getElementById('aiThinking').style.display = 'none';
+            updateAIHistory();
+            
+            if (result.strikes === selectedDigits) {
+                endGame('ai');
+                return;
+            }
+            
+            currentTurn = 'player';
+            updateTurnIndicator();
+        }, 2000);
+    }
+
+    function filterAIPossibleNumbers() {
+        // Filter possible numbers based on previous AI guess results
+        const lastGuess = aiGuesses[aiGuesses.length - 1];
+        
+        aiPossibleNumbers = aiPossibleNumbers.filter(num => {
+            const result = calculateResult(lastGuess.guess, num);
+            return result.strikes === lastGuess.result.strikes && 
+                   result.balls === lastGuess.result.balls;
+        });
+    }
+
+    function updatePlayerHistory() {
+        const history = document.getElementById('playerHistory');
+        history.innerHTML = '';
+        
+        playerGuesses.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'history-item';
+            div.innerHTML = `
+                <span class="guess-number">${item.guess}</span>
+                <span class="result">${item.result.strikes}S ${item.result.balls}B</span>
+            `;
+            history.appendChild(div);
+        });
+    }
+
+    function updateAIHistory() {
+        const history = document.getElementById('aiHistory');
+        history.innerHTML = '';
+        
+        aiGuesses.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'history-item ai-guess';
+            div.innerHTML = `
+                <span class="guess-number">${item.guess}</span>
+                <span class="result ai-result">${item.result.strikes}S ${item.result.balls}B</span>
+            `;
+            history.appendChild(div);
+        });
+    }
+
+    function updateTurnIndicator() {
+        const indicator = document.getElementById('turnIndicator');
+        const playerSection = document.getElementById('playerSection');
+        const aiSection = document.getElementById('aiSection');
+        
+        if (currentTurn === 'player') {
+            indicator.textContent = 'Your turn';
+            playerSection.classList.add('active');
+            aiSection.classList.remove('active');
+            document.getElementById('playerInput').disabled = false;
+            document.getElementById('playerSubmit').disabled = false;
+        } else {
+            indicator.textContent = 'AI\'s turn';
+            playerSection.classList.remove('active');
+            aiSection.classList.add('active');
+            document.getElementById('playerInput').disabled = true;
+            document.getElementById('playerSubmit').disabled = true;
+        }
+    }
+
+    function endGame(winner) {
+        gameActive = false;
+        const status = document.getElementById('gameStatus');
+        
+        if (winner === 'player') {
+            status.innerHTML = '🎉 Congratulations! You won!<br>AI\'s number was ' + aiNumber;
+            status.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            status.style.color = 'white';
+        } else {
+            status.innerHTML = '😅 AI won!<br>Your number was ' + playerNumber;
+            status.style.background = 'linear-gradient(135deg, #ee5a24, #ff6b6b)';
+            status.style.color = 'white';
+        }
+        
+        document.getElementById('turnIndicator').textContent = 'Game over';
+        document.getElementById('playerInput').disabled = true;
+        document.getElementById('playerSubmit').disabled = true;
+    }
+
+    function resetGame() {
+        gameActive = false;
+        selectedDigits = 0;
+        document.getElementById('difficultySelection').style.display = 'block';
+        document.getElementById('gameBoard').style.display = 'none';
+        document.getElementById('gameStatus').textContent = 'Select difficulty and start the game!';
+        document.getElementById('gameStatus').style.background = '#f8f9ff';
+        document.getElementById('gameStatus').style.color = '#333';
+        document.getElementById('turnIndicator').textContent = '';
+        
+        // Reset difficulty selection
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        const startBtn = document.getElementById('startBtn');
+        startBtn.disabled = true;
+        startBtn.textContent = 'Select difficulty first';
+    }
+
+    function showHint() {
+        if (!gameActive) {
+            alert('Game hasn\'t started yet!');
+            return;
+        }
+        
+        alert(`Hint: AI's number starts with ${aiNumber[0]}!`);
+    }
+
+    // Press Enter to make guess
+    document.getElementById('playerInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !document.getElementById('playerSubmit').disabled) {
+            playerGuess();
+        }
+    });
+
+    // Only allow numbers in input
+    document.getElementById('playerInput').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+</script>
+```
+
+</body>
+</html>
