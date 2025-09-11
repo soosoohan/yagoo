@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 
-<html lang="ko">
+<html lang="en">
 <head>
- <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
+   <!-- Google tag (gtag.js) with local environment check -->
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-4YZHC1G9FN');
+  // 로컬이 아닐 때만 애널리틱스 로드
+  if (window.location.hostname !== 'localhost' && 
+      window.location.hostname !== '127.0.0.1' &&
+      window.location.protocol !== 'file:') {
+    
+    // 애널리틱스 스크립트 동적 로드
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN';
+    document.head.appendChild(script);
+    
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-4YZHC1G9FN');
+    
+    console.log("애널리틱스 활성화됨");
+  } else {
+    console.log("로컬 환경 - 애널리틱스 비활성화됨");
+  }
 </script>
-   <meta charset="UTF-8">
+ <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>숫자야구AI</title>
+    <title>Number Baseball vs AI</title>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
@@ -218,15 +233,6 @@
         background: linear-gradient(135deg, #667eea, #764ba2);
     }
 
-    .winner-announcement {
-        background: linear-gradient(135deg, #28a745, #20c997);
-        color: white;
-        padding: 20px;
-        text-align: center;
-        font-size: 1.1rem;
-        font-weight: bold;
-    }
-
     .ai-thinking {
         text-align: center;
         color: #ee5a24;
@@ -305,23 +311,6 @@
         font-size: 1.1rem;
         opacity: 0.8;
     }
-
-    .secret-number-display {
-        background: #fff3cd;
-        border: 2px solid #ffeaa7;
-        border-radius: 15px;
-        padding: 20px;
-        margin: 20px 30px;
-        text-align: center;
-    }
-
-    .secret-number {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #d68910;
-        letter-spacing: 8px;
-        margin: 10px 0;
-    }
 </style>
 
 
@@ -329,123 +318,118 @@
 <body>
     <div class="game-container">
         <div class="header">
-            <h1>⚾ 숫자 야구게임 vs AI</h1>
-            <p>하나의 비밀숫자를 두고 AI와 추리 경쟁!</p>
+            <h1>⚾ Number Baseball vs AI</h1>
+            <p>Compete against AI to guess the same secret number!</p>
         </div>
 
 
     <div class="rules">
-        <h3>🎯 게임 규칙</h3>
+        <h3>🎯 Game Rules</h3>
         <ul>
-            <li><strong>S(스트라이크)</strong>: 숫자와 위치가 모두 맞음</li>
-            <li><strong>B(볼)</strong>: 숫자는 맞지만 위치가 다름</li>
-            <li><strong>O(아웃)</strong>: 맞는 숫자가 하나도 없음</li>
-            <li id="gameRuleDigits">하나의 비밀숫자를 두고 교대로 추리합니다</li>
-            <li>첫째 자리는 0이 될 수 없습니다</li>
-            <li>먼저 맞추는 사람이 승리합니다!</li>
+            <li><strong>S(Strike)</strong>: Correct number in correct position</li>
+            <li><strong>B(Ball)</strong>: Correct number in wrong position</li>
+            <li><strong>O(Out)</strong>: No matching numbers</li>
+            <li id="gameRuleDigits">You and AI take turns guessing one secret number</li>
+            <li>The first digit cannot be 0</li>
+            <li>First to guess correctly wins!</li>
         </ul>
     </div>
 
-
-
     <div class="game-status">
-        <div class="status-text" id="gameStatus">자릿수를 선택하고 게임을 시작하세요!</div>
+        <div class="status-text" id="gameStatus">Select difficulty and start the game!</div>
         <div class="turn-indicator" id="turnIndicator"></div>
     </div>
 
     <div class="difficulty-selection" id="difficultySelection">
         <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
             <button class="difficulty-btn" data-digits="3" onclick="selectDifficulty(3)">
-                <span class="difficulty-title">3자리</span>
+                <span class="difficulty-title">3 Digits</span>
             </button>
             <button class="difficulty-btn" data-digits="4" onclick="selectDifficulty(4)">
-                <span class="difficulty-title">4자리</span>
+                <span class="difficulty-title">4 Digits</span>
             </button>
             <button class="difficulty-btn" data-digits="5" onclick="selectDifficulty(5)">
-                <span class="difficulty-title">5자리</span>
+                <span class="difficulty-title">5 Digits</span>
             </button>
         </div>
     </div>
 
     <div class="game-board" id="gameBoard" style="display: none;">
-        
-
-
-<!-- 플레이어 섹션 -->
+        <!-- Player Section -->
         <div class="player-section active" id="playerSection">
-            <div class="player-title">당신의 추리</div>
+            <div class="player-title">🧑 Your Guesses</div>
             <div class="history" id="playerHistory">
                 <div style="text-align: center; color: #666; padding: 20px;">
-                    아직 추리한 기록이 없습니다
+                    No guesses yet
                 </div>
             </div>
-<div class="input-section">
+            <div class="input-section">
                 <input type="text" class="number-input" id="playerInput" 
-                       placeholder="숫자 입력" maxlength="3">
-                <button class="submit-btn" id="playerSubmit" onclick="playerGuess()">추리하기</button>
+                       placeholder="Enter number" maxlength="3">
+                <button class="submit-btn" id="playerSubmit" onclick="playerGuess()">Guess</button>
             </div>
-                    </div>
+        </div>
 
-        <!-- AI 섹션 -->
+        <!-- AI Section -->
         <div class="player-section" id="aiSection">
-            <div class="player-title ai-title">🤖 AI의 추리</div>
+            <div class="player-title ai-title">🤖 AI's Guesses</div>
             <div class="ai-thinking" id="aiThinking" style="display: none;">
-                AI가 추리 중입니다...
+                AI is thinking...
             </div>
             <div class="history" id="aiHistory">
                 <div style="text-align: center; color: #666; padding: 20px;">
-                    AI가 아직 추리하지 않았습니다
+                    AI hasn't guessed yet
                 </div>
             </div>
         </div>
     </div>
 
     <div class="controls">
-        <button class="control-btn primary" onclick="startGame()" id="startBtn" disabled>난이도를 먼저 선택하세요</button>
-        <button class="control-btn" onclick="resetGame()">새 게임</button>
+        <button class="control-btn primary" onclick="startGame()" id="startBtn" disabled>Select difficulty first</button>
+        <button class="control-btn" onclick="resetGame()">New Game</button>
     </div>
 </div>
 
 <script>
-    let secretNumber = ''; // 공통 비밀숫자
+    let secretNumber = ''; // Common secret number
     let playerGuesses = [];
     let aiGuesses = [];
     let gameActive = false;
     let currentTurn = 'player'; // 'player' or 'ai'
     let aiPossibleNumbers = [];
-    let selectedDigits = 0; // 선택된 자릿수
+    let selectedDigits = 0; // Selected difficulty
 
-    // 난이도 선택
+    // Select difficulty
     function selectDifficulty(digits) {
         selectedDigits = digits;
         
-        // 선택된 버튼 하이라이트
+        // Highlight selected button
         document.querySelectorAll('.difficulty-btn').forEach(btn => {
             btn.classList.remove('selected');
         });
         document.querySelector(`[data-digits="${digits}"]`).classList.add('selected');
         
-        // 게임 시작 버튼 활성화
+        // Enable start button
         const startBtn = document.getElementById('startBtn');
         startBtn.disabled = false;
-        startBtn.textContent = '게임 시작';
+        startBtn.textContent = 'Start Game';
         
-        // 입력 필드 maxlength 업데이트
+        // Update input field maxlength
         document.getElementById('playerInput').maxLength = digits;
-        document.getElementById('playerInput').placeholder = `${digits}자리 숫자 입력`;
+        document.getElementById('playerInput').placeholder = `Enter ${digits}-digit number`;
         
-        // 규칙 텍스트 업데이트
-        document.getElementById('gameRuleDigits').textContent = `${digits}자리 서로 다른 숫자를 교대로 추리합니다!`;
+        // Update rule text
+        document.getElementById('gameRuleDigits').textContent = `You and AI take turns guessing a ${digits}-digit number with unique digits!`;
     }
 
-    // 게임 초기화
+    // Initialize game
     function startGame() {
         if (selectedDigits === 0) {
-            alert('먼저 난이도를 선택해주세요!');
+            alert('Please select difficulty first!');
             return;
         }
         
-        // 하나의 공통 비밀숫자 생성
+        // Generate one common secret number
         secretNumber = generateRandomNumber(selectedDigits);
         
         playerGuesses = [];
@@ -453,20 +437,19 @@
         gameActive = true;
         currentTurn = 'player';
         
-        // AI 가능한 숫자 목록 초기화
+        // Initialize AI possible numbers
         initializeAIPossibleNumbers();
         
         document.getElementById('difficultySelection').style.display = 'none';
         document.getElementById('gameBoard').style.display = 'grid';
-
-        document.getElementById('gameStatus').textContent = '게임이 시작되었습니다!';
-        document.getElementById('turnIndicator').textContent = '당신의 차례입니다';
+        document.getElementById('gameStatus').textContent = 'Game started!';
+        document.getElementById('turnIndicator').textContent = 'Your turn';
         
-        // 히스토리 초기화
-        document.getElementById('playerHistory').innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">아직 추리한 기록이 없습니다</div>';
-        document.getElementById('aiHistory').innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">AI가 아직 추리하지 않았습니다</div>';
+        // Reset history
+        document.getElementById('playerHistory').innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">No guesses yet</div>';
+        document.getElementById('aiHistory').innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">AI hasn\'t guessed yet</div>';
         
-        // 입력 필드 활성화
+        // Enable input field
         document.getElementById('playerInput').disabled = false;
         document.getElementById('playerSubmit').disabled = false;
         document.getElementById('playerInput').value = '';
@@ -477,11 +460,11 @@
     function generateRandomNumber(digits) {
         let numbers = [];
         
-        // 첫째 자리는 1-9 중에서 선택
+        // First digit is 1-9
         let firstDigit = Math.floor(Math.random() * 9) + 1;
         numbers.push(firstDigit);
         
-        // 나머지 자릿수는 0-9 중에서 중복되지 않게 선택
+        // Remaining digits are 0-9, no duplicates
         while (numbers.length < digits) {
             let digit = Math.floor(Math.random() * 10);
             if (!numbers.includes(digit)) {
@@ -493,12 +476,12 @@
 
     function initializeAIPossibleNumbers() {
         aiPossibleNumbers = [];
-        const minNum = Math.pow(10, selectedDigits - 1); // 최소값 (예: 3자리면 100)
-        const maxNum = Math.pow(10, selectedDigits) - 1;  // 최대값 (예: 3자리면 999)
+        const minNum = Math.pow(10, selectedDigits - 1); // Minimum (e.g., 100 for 3-digit)
+        const maxNum = Math.pow(10, selectedDigits) - 1;  // Maximum (e.g., 999 for 3-digit)
         
         for (let i = minNum; i <= maxNum; i++) {
             let str = i.toString();
-            // 자릿수가 맞고, 모든 숫자가 서로 다른 경우만 추가
+            // Add only if correct length and all digits are unique
             if (str.length === selectedDigits && new Set(str).size === selectedDigits) {
                 aiPossibleNumbers.push(str);
             }
@@ -509,7 +492,7 @@
         if (input.length !== selectedDigits) return false;
         if (!/^\d+$/.test(input)) return false;
         if (new Set(input).size !== selectedDigits) return false;
-        if (input[0] === '0') return false; // 첫째 자리가 0이면 안됨
+        if (input[0] === '0') return false; // First digit cannot be 0
         return true;
     }
 
@@ -534,7 +517,7 @@
         const input = document.getElementById('playerInput').value;
         
         if (!validateInput(input)) {
-            alert(`${selectedDigits}자리 서로 다른 숫자를 입력해주세요! (첫째 자리는 0이 될 수 없습니다)`);
+            alert(`Please enter ${selectedDigits} unique digits! (First digit cannot be 0)`);
             return;
         }
         
@@ -552,7 +535,7 @@
         currentTurn = 'ai';
         updateTurnIndicator();
         
-        // AI 턴 시작
+        // Start AI turn
         setTimeout(aiGuess, 1500);
     }
 
@@ -565,15 +548,15 @@
             let guess;
             
             if (aiGuesses.length === 0) {
-                // 첫 번째 추리는 랜덤하게
+                // First guess is random
                 guess = aiPossibleNumbers[Math.floor(Math.random() * aiPossibleNumbers.length)];
             } else {
-                // 이전 결과를 바탕으로 가능한 숫자들을 필터링
+                // Filter possible numbers based on previous results
                 filterAIPossibleNumbers();
                 if (aiPossibleNumbers.length > 0) {
                     guess = aiPossibleNumbers[Math.floor(Math.random() * aiPossibleNumbers.length)];
                 } else {
-                    // 예외 상황 처리
+                    // Fallback
                     guess = generateRandomNumber(selectedDigits);
                 }
             }
@@ -595,7 +578,7 @@
     }
 
     function filterAIPossibleNumbers() {
-        // 이전 AI 추리 결과를 바탕으로 가능한 숫자들을 필터링
+        // Filter possible numbers based on AI's previous guess results
         const lastGuess = aiGuesses[aiGuesses.length - 1];
         
         aiPossibleNumbers = aiPossibleNumbers.filter(num => {
@@ -641,13 +624,13 @@
         const aiSection = document.getElementById('aiSection');
         
         if (currentTurn === 'player') {
-            indicator.textContent = '당신의 차례입니다';
+            indicator.textContent = 'Your turn';
             playerSection.classList.add('active');
             aiSection.classList.remove('active');
             document.getElementById('playerInput').disabled = false;
             document.getElementById('playerSubmit').disabled = false;
         } else {
-            indicator.textContent = 'AI의 차례입니다';
+            indicator.textContent = "AI's turn";
             playerSection.classList.remove('active');
             aiSection.classList.add('active');
             document.getElementById('playerInput').disabled = true;
@@ -660,16 +643,16 @@
         const status = document.getElementById('gameStatus');
         
         if (winner === 'player') {
-            status.innerHTML = '🎉 축하합니다! 당신이 승리했습니다!<br>비밀숫자는 ' + secretNumber + '였습니다.';
+            status.innerHTML = '🎉 Congratulations! You won!<br>The secret number was ' + secretNumber + '.';
             status.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
             status.style.color = 'white';
         } else {
-            status.innerHTML = '😅 AI가 승리했습니다!<br>비밀숫자는 ' + secretNumber + '였습니다.';
+            status.innerHTML = '😅 AI won!<br>The secret number was ' + secretNumber + '.';
             status.style.background = 'linear-gradient(135deg, #ee5a24, #ff6b6b)';
             status.style.color = 'white';
         }
         
-        document.getElementById('turnIndicator').textContent = '게임이 종료되었습니다';
+        document.getElementById('turnIndicator').textContent = 'Game Over';
         document.getElementById('playerInput').disabled = true;
         document.getElementById('playerSubmit').disabled = true;
     }
@@ -681,28 +664,28 @@
             btn.classList.remove('selected');
         });
         document.getElementById('startBtn').disabled = true;
-        document.getElementById('startBtn').textContent = '난이도를 먼저 선택하세요';
+        document.getElementById('startBtn').textContent = 'Select difficulty first';
         document.getElementById('difficultySelection').style.display = 'block';
         document.getElementById('gameBoard').style.display = 'none';
-        document.getElementById('secretDisplay').style.display = 'none';
-        document.getElementById('gameStatus').textContent = '자릿수를 선택하고 게임을 시작하세요!';
+        document.getElementById('gameStatus').textContent = 'Select difficulty and start the game!';
         document.getElementById('gameStatus').style.background = '#f8f9ff';
         document.getElementById('gameStatus').style.color = '#333';
         document.getElementById('turnIndicator').textContent = '';
     }
 
+    // Set up event listeners after page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enter key to guess
+        document.getElementById('playerInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !document.getElementById('playerSubmit').disabled) {
+                playerGuess();
+            }
+        });
 
-
-    // Enter 키로 추리하기
-    document.getElementById('playerInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && !document.getElementById('playerSubmit').disabled) {
-            playerGuess();
-        }
-    });
-
-    // 숫자만 입력 가능하도록
-    document.getElementById('playerInput').addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9]/g, '');
+        // Only allow numbers
+        document.getElementById('playerInput').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
     });
 </script>
 
