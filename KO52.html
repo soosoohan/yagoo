@@ -106,7 +106,6 @@ The game ends when you guess the word correctly or use up all attempts.
       <button class="secondary" id="m2">2 letters</button>
   <button class="secondary" id="m3">3 letters</button>
   <button class="secondary" id="m4">4 letters</button>
-  <button class="secondary" id="m5">5 letters</button>
        </div>
 
     <div class="flex" style="margin-bottom:8px;">
@@ -251,7 +250,7 @@ The game ends when you guess the word correctly or use up all attempts.
   }
 
   // ——— 모드 버튼: active 토글 + 배지 제거 버전 ———
-  const modeButtons = ["m2","m3","m4","m5"].map(id=>$("#"+id));
+  const modeButtons = ["m2","m3","m4"].map(id=>$("#"+id));
   modeButtons.forEach(btn=>{
     btn.addEventListener("click", ()=>{
       modeButtons.forEach(b=>b.classList.remove("active"));
