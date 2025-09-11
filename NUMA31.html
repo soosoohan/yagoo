@@ -2,25 +2,18 @@
 
 <html lang="ko">
 <head>
-     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4YZHC1G9FN');
-    </script>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>숫자야구AI</title>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
-* {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
     body {
         font-family:'Pretendard',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
@@ -42,7 +35,7 @@
     }
 
     .header {
-        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        background: #f0b4b4;
         color: white;
         padding: 30px;
         text-align: center;
@@ -304,6 +297,23 @@
         font-size: 1.1rem;
         opacity: 0.8;
     }
+
+    .secret-number-display {
+        background: #fff3cd;
+        border: 2px solid #ffeaa7;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 30px;
+        text-align: center;
+    }
+
+    .secret-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #d68910;
+        letter-spacing: 8px;
+        margin: 10px 0;
+    }
 </style>
 
 
@@ -311,8 +321,8 @@
 <body>
     <div class="game-container">
         <div class="header">
-            <h1>⚾ 숫자 야구게임</h1>
-            <p>AI와 치열한 추리 대결을 펼쳐보세요!</p>
+            <h1>⚾ 숫자 야구게임 vs AI</h1>
+            <p>하나의 비밀숫자를 두고 AI와 추리 경쟁!</p>
         </div>
 
 
@@ -322,11 +332,13 @@
             <li><strong>S(스트라이크)</strong>: 숫자와 위치가 모두 맞음</li>
             <li><strong>B(볼)</strong>: 숫자는 맞지만 위치가 다름</li>
             <li><strong>O(아웃)</strong>: 맞는 숫자가 하나도 없음</li>
-            <li id="gameRuleDigits">3자리 서로 다른 숫자를 맞춰보세요!</li>
+            <li id="gameRuleDigits">하나의 비밀숫자를 두고 교대로 추리합니다</li>
             <li>첫째 자리는 0이 될 수 없습니다</li>
             <li>먼저 맞추는 사람이 승리합니다!</li>
         </ul>
     </div>
+
+
 
     <div class="game-status">
         <div class="status-text" id="gameStatus">자릿수를 선택하고 게임을 시작하세요!</div>
@@ -337,31 +349,34 @@
         <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
             <button class="difficulty-btn" data-digits="3" onclick="selectDifficulty(3)">
                 <span class="difficulty-title">3자리</span>
-                </button>
+            </button>
             <button class="difficulty-btn" data-digits="4" onclick="selectDifficulty(4)">
                 <span class="difficulty-title">4자리</span>
-                </button>
+            </button>
             <button class="difficulty-btn" data-digits="5" onclick="selectDifficulty(5)">
                 <span class="difficulty-title">5자리</span>
-                </button>
+            </button>
         </div>
     </div>
 
     <div class="game-board" id="gameBoard" style="display: none;">
-        <!-- 플레이어 섹션 -->
+        
+
+
+<!-- 플레이어 섹션 -->
         <div class="player-section active" id="playerSection">
-            <div class="player-title">🧑 당신의 추리</div>
-            <div class="input-section">
-                <input type="text" class="number-input" id="playerInput" 
-                       placeholder="숫자 입력" maxlength="3">
-                <button class="submit-btn" id="playerSubmit" onclick="playerGuess()">추리하기</button>
-            </div>
+            <div class="player-title">당신의 추리</div>
             <div class="history" id="playerHistory">
                 <div style="text-align: center; color: #666; padding: 20px;">
                     아직 추리한 기록이 없습니다
                 </div>
             </div>
-        </div>
+<div class="input-section">
+                <input type="text" class="number-input" id="playerInput" 
+                       placeholder="숫자 입력" maxlength="3">
+                <button class="submit-btn" id="playerSubmit" onclick="playerGuess()">추리하기</button>
+            </div>
+                    </div>
 
         <!-- AI 섹션 -->
         <div class="player-section" id="aiSection">
@@ -380,13 +395,11 @@
     <div class="controls">
         <button class="control-btn primary" onclick="startGame()" id="startBtn" disabled>난이도를 먼저 선택하세요</button>
         <button class="control-btn" onclick="resetGame()">새 게임</button>
-        <button class="control-btn" onclick="showHint()">힌트</button>
     </div>
 </div>
 
 <script>
-    let playerNumber = '';
-    let aiNumber = '';
+    let secretNumber = ''; // 공통 비밀숫자
     let playerGuesses = [];
     let aiGuesses = [];
     let gameActive = false;
@@ -414,7 +427,7 @@
         document.getElementById('playerInput').placeholder = `${digits}자리 숫자 입력`;
         
         // 규칙 텍스트 업데이트
-        document.getElementById('gameRuleDigits').textContent = `${digits}자리 서로 다른 숫자를 맞춰보세요!`;
+        document.getElementById('gameRuleDigits').textContent = `${digits}자리 서로 다른 숫자를 교대로 추리합니다!`;
     }
 
     // 게임 초기화
@@ -424,9 +437,8 @@
             return;
         }
         
-        // N자리 서로 다른 난수 생성 (첫째 자리는 0이 아님)
-        playerNumber = generateRandomNumber(selectedDigits);
-        aiNumber = generateRandomNumber(selectedDigits);
+        // 하나의 공통 비밀숫자 생성
+        secretNumber = generateRandomNumber(selectedDigits);
         
         playerGuesses = [];
         aiGuesses = [];
@@ -438,6 +450,7 @@
         
         document.getElementById('difficultySelection').style.display = 'none';
         document.getElementById('gameBoard').style.display = 'grid';
+
         document.getElementById('gameStatus').textContent = '게임이 시작되었습니다!';
         document.getElementById('turnIndicator').textContent = '당신의 차례입니다';
         
@@ -517,7 +530,7 @@
             return;
         }
         
-        const result = calculateResult(input, aiNumber);
+        const result = calculateResult(input, secretNumber);
         playerGuesses.push({ guess: input, result });
         
         updatePlayerHistory();
@@ -553,17 +566,17 @@
                     guess = aiPossibleNumbers[Math.floor(Math.random() * aiPossibleNumbers.length)];
                 } else {
                     // 예외 상황 처리
-                    guess = generateRandomNumber();
+                    guess = generateRandomNumber(selectedDigits);
                 }
             }
             
-            const result = calculateResult(guess, playerNumber);
+            const result = calculateResult(guess, secretNumber);
             aiGuesses.push({ guess, result });
             
             document.getElementById('aiThinking').style.display = 'none';
             updateAIHistory();
             
-            if (result.strikes === 3) {
+            if (result.strikes === selectedDigits) {
                 endGame('ai');
                 return;
             }
@@ -639,11 +652,11 @@
         const status = document.getElementById('gameStatus');
         
         if (winner === 'player') {
-            status.innerHTML = '🎉 축하합니다! 당신이 승리했습니다!<br>AI의 숫자는 ' + aiNumber + '였습니다.';
+            status.innerHTML = '🎉 축하합니다! 당신이 승리했습니다!<br>비밀숫자는 ' + secretNumber + '였습니다.';
             status.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
             status.style.color = 'white';
         } else {
-            status.innerHTML = '😅 AI가 승리했습니다!<br>당신의 숫자는 ' + playerNumber + '였습니다.';
+            status.innerHTML = '😅 AI가 승리했습니다!<br>비밀숫자는 ' + secretNumber + '였습니다.';
             status.style.background = 'linear-gradient(135deg, #ee5a24, #ff6b6b)';
             status.style.color = 'white';
         }
@@ -655,21 +668,22 @@
 
     function resetGame() {
         gameActive = false;
+        selectedDigits = 0;
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        document.getElementById('startBtn').disabled = true;
+        document.getElementById('startBtn').textContent = '난이도를 먼저 선택하세요';
+        document.getElementById('difficultySelection').style.display = 'block';
         document.getElementById('gameBoard').style.display = 'none';
-        document.getElementById('gameStatus').textContent = '게임을 시작하세요!';
+        document.getElementById('secretDisplay').style.display = 'none';
+        document.getElementById('gameStatus').textContent = '자릿수를 선택하고 게임을 시작하세요!';
         document.getElementById('gameStatus').style.background = '#f8f9ff';
         document.getElementById('gameStatus').style.color = '#333';
         document.getElementById('turnIndicator').textContent = '';
     }
 
-    function showHint() {
-        if (!gameActive) {
-            alert('게임이 시작되지 않았습니다!');
-            return;
-        }
-        
-        alert(`힌트: AI의 숫자는 ${aiNumber[0]}로 시작합니다!`);
-    }
+
 
     // Enter 키로 추리하기
     document.getElementById('playerInput').addEventListener('keypress', function(e) {
