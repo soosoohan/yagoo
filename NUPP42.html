@@ -2,7 +2,30 @@
 
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+   <!-- Google tag (gtag.js) with local environment check -->
+<script>
+  // 로컬이 아닐 때만 애널리틱스 로드
+  if (window.location.hostname !== 'localhost' && 
+      window.location.hostname !== '127.0.0.1' &&
+      window.location.protocol !== 'file:') {
+    
+    // 애널리틱스 스크립트 동적 로드
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN';
+    document.head.appendChild(script);
+    
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-4YZHC1G9FN');
+    
+    console.log("애널리틱스 활성화됨");
+  } else {
+    console.log("로컬 환경 - 애널리틱스 비활성화됨");
+  }
+</script>
+ <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Number Baseball Game</title>
     <style>
@@ -35,7 +58,7 @@
     }
 
     .header {
-        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        background: #f0b4b4;
         color: white;
         padding: 30px;
         text-align: center;
@@ -285,7 +308,7 @@
         opacity: 0.8;
     }
 </style>
-
+```
 
 </head>
 <body>
@@ -295,7 +318,7 @@
             <p>Two players compete to guess the same secret number!</p>
         </div>
 
-
+```
     <div class="rules">
         <h3>🎯 Game Rules</h3>
         <ul>
@@ -637,6 +660,7 @@
         });
     });
 </script>
+```
 
 </body>
 </html>
