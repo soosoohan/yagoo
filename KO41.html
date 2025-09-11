@@ -250,7 +250,7 @@ S: 위치가 맞은 자음 <br> B: 자음이 있으나 위치가 다름 <br> Out
   }
 
   // ——— 모드 버튼: active 토글 + 배지 제거 버전 ———
-  const modeButtons = ["m2","m3","m4","m5"].map(id=>$("#"+id));
+  const modeButtons = ["m2","m3","m4"].map(id=>$("#"+id));
   modeButtons.forEach(btn=>{
     btn.addEventListener("click", ()=>{
       modeButtons.forEach(b=>b.classList.remove("active"));
