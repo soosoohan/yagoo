@@ -17,313 +17,402 @@
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    body {
-        font-family:'Pretendard',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-        background:#2e8b8b;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
+body {
+    font-family:'Pretendard',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:#2e8b8b;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
-    .game-container {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        max-width: 900px;
-        width: 100%;
-        overflow: hidden;
-    }
+.game-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    max-width: 900px;
+    width: 100%;
+    overflow: hidden;
+}
 
-    .header {
-        background: #f0b4b4;
-        color: white;
-        padding: 30px;
-        text-align: center;
-    }
+.header {
+    background: #f0b4b4;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
 
-    .header h1 {
-        font-size:1.5rem;
-        margin-bottom: 10px;
-    }
+.header h1 {
+    font-size:1.5rem;
+    margin-bottom: 10px;
+}
 
-    .header p {
-        opacity: 0.9;
-        font-size: 1.1rem;
-    }
+.header p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
 
+.game-board {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 30px;
+}
+
+.player-section {
+    background: #f8f9ff;
+    border-radius: 15px;
+    padding: 25px;
+    border: 2px solid #e9ecef;
+}
+
+.player-section.active {
+    border-color: #667eea;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+.player-title {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.ai-title {
+    color: #ee5a24;
+}
+
+.input-section {
+    margin-bottom: 20px;
+}
+
+.number-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    text-align: center;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.number-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.history {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    margin-bottom: 10px;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.ai-guess {
+    border-left-color: #ee5a24;
+}
+
+.guess-number {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.result {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.ai-result {
+    background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+}
+
+.game-status {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9ff;
+    margin: 20px 30px;
+    border-radius: 15px;
+    border: 2px solid #e9ecef;
+}
+
+.status-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.turn-indicator {
+    color: #667eea;
+    font-size: 1.1rem;
+}
+
+.controls {
+    text-align: center;
+    padding: 20px 30px;
+    border-top: 1px solid #e9ecef;
+}
+
+.control-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+}
+
+.control-btn.primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.winner-announcement {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.ai-thinking {
+    text-align: center;
+    color: #ee5a24;
+    font-style: italic;
+    margin-top: 10px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.rules {
+    background: #e3f2fd;
+    padding: 20px;
+    margin: 20px 30px;
+    border-radius: 15px;
+    border-left: 5px solid #2196f3;
+}
+
+.rules h3 {
+    color: #1976d2;
+    margin-bottom: 10px;
+}
+
+.rules ul {
+    margin-left: 20px;
+    color: #333;
+}
+
+.rules li {
+    margin-bottom: 5px;
+}
+
+.difficulty-selection {
+    background: #f8f9ff;
+    margin: 20px 30px;
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid #e9ecef;
+}
+
+.difficulty-btn {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+.difficulty-btn:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+.difficulty-btn.selected {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: #667eea;
+}
+
+.difficulty-title {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.difficulty-desc {
+    display: block;
+    font-size: 1.1rem;
+    opacity: 0.8;
+}
+
+
+/* 숫자 키패드 스타일 */
+.number-keypad {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 15px 0;
+}
+
+.number-btn {
+    padding: 12px 8px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background: #667eea;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 40px;
+}
+
+.number-btn:hover {
+    background: #5a6fd8;
+    transform: translateY(-1px);
+}
+
+.number-btn:active {
+    transform: translateY(0);
+}
+
+.number-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.number-btn.used {
+    background: #999;
+    color: #666;
+}
+
+.control-btn-keypad {
+    background: #52a4c7;
+    color: white;
+}
+
+.control-btn-keypad:hover {
+    background: #3d7187;
+}
+
+.keypad-section {
+    margin: 10px 0;
+}
+
+.keypad-title {
+    color: #667eea;
+    font-size: 14px;
+    margin-bottom: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 768px) {
     .game-board {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        padding: 30px;
-    }
-
-    .player-section {
-        background: #f8f9ff;
-        border-radius: 15px;
-        padding: 25px;
-        border: 2px solid #e9ecef;
-    }
-
-    .player-section.active {
-        border-color: #667eea;
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-    }
-
-    .player-title {
-        text-align: center;
-        font-size: 1.1rem;
-        font-weight: bold;
-        margin-bottom: 20px;
-        color: #333;
-    }
-
-    .ai-title {
-        color: #ee5a24;
-    }
-
-    .input-section {
-        margin-bottom: 20px;
-    }
-
-    .number-input {
-        width: 100%;
-        padding: 15px;
-        font-size: 1.1rem;
-        text-align: center;
-        border: 2px solid #e9ecef;
-        border-radius: 10px;
-        margin-bottom: 15px;
-    }
-
-    .number-input:focus {
-        outline: none;
-        border-color: #667eea;
-    }
-
-    .submit-btn {
-        width: 100%;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        border: none;
-        padding: 15px;
-        border-radius: 10px;
-        font-size: 1.1rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .submit-btn:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-    }
-
-    .submit-btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-
-    .history {
-        max-height: 300px;
-        overflow-y: auto;
-        border: 1px solid #e9ecef;
-        border-radius: 10px;
-        padding: 15px;
-    }
-
-    .history-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        margin-bottom: 10px;
-        background: white;
-        border-radius: 8px;
-        border-left: 4px solid #667eea;
-    }
-
-    .ai-guess {
-        border-left-color: #ee5a24;
-    }
-
-    .guess-number {
-        font-weight: bold;
-        font-size: 1.1rem;
-    }
-
-    .result {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        padding: 8px 15px;
-        border-radius: 15px;
-        font-weight: bold;
-    }
-
-    .ai-result {
-        background: linear-gradient(135deg, #ee5a24, #ff6b6b);
-    }
-
-    .game-status {
-        text-align: center;
+        grid-template-columns: 1fr;
+        gap: 20px;
         padding: 20px;
-        background: #f8f9ff;
-        margin: 20px 30px;
-        border-radius: 15px;
-        border: 2px solid #e9ecef;
     }
-
-    .status-text {
-        font-size: 1.1rem;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 10px;
+    
+    .number-keypad {
+        gap: 6px;
     }
-
-    .turn-indicator {
-        color: #667eea;
-        font-size: 1.1rem;
+    
+    .number-btn {
+        padding: 10px 6px;
+        font-size: 14px;
+        min-height: 35px;
     }
+    
+    .header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .header p {
+        font-size: 1rem;
+    }
+}
 
+@media (max-width: 600px) {
+    .difficulty-selection > div {
+        flex-direction: column;
+    }
+    
     .controls {
-        text-align: center;
-        padding: 20px 30px;
-        border-top: 1px solid #e9ecef;
+        padding: 15px 20px;
     }
-
+    
     .control-btn {
-        background: #6c757d;
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 20px;
-        font-size: 1.1rem;
-        cursor: pointer;
-        margin: 0 10px;
-        transition: all 0.3s ease;
+        margin: 5px 0;
+        width: 100%;
     }
+}
 
-    .control-btn:hover {
-        transform: translateY(-2px);
-    }
 
-    .control-btn.primary {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-    }
-
-    .winner-announcement {
-        background: linear-gradient(135deg, #28a745, #20c997);
-        color: white;
-        padding: 20px;
-        text-align: center;
-        font-size: 1.1rem;
-        font-weight: bold;
-    }
-
-    .ai-thinking {
-        text-align: center;
-        color: #ee5a24;
-        font-style: italic;
-        margin-top: 10px;
-        animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
-    }
-
-    .rules {
-        background: #e3f2fd;
-        padding: 20px;
-        margin: 20px 30px;
-        border-radius: 15px;
-        border-left: 5px solid #2196f3;
-    }
-
-    .rules h3 {
-        color: #1976d2;
-        margin-bottom: 10px;
-    }
-
-    .rules ul {
-        margin-left: 20px;
-        color: #333;
-    }
-
-    .rules li {
-        margin-bottom: 5px;
-    }
-
-    .difficulty-selection {
-        background: #f8f9ff;
-        margin: 20px 30px;
-        padding: 25px;
-        border-radius: 15px;
-        border: 2px solid #e9ecef;
-    }
-
-    .difficulty-btn {
-        background: white;
-        border: 2px solid #e9ecef;
-        border-radius: 15px;
-        padding: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        min-width: 120px;
-        text-align: center;
-    }
-
-    .difficulty-btn:hover {
-        border-color: #667eea;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-    }
-
-    .difficulty-btn.selected {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        border-color: #667eea;
-    }
-
-    .difficulty-title {
-        display: block;
-        font-size: 1.1rem;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .difficulty-desc {
-        display: block;
-        font-size: 1.1rem;
-        opacity: 0.8;
-    }
-
-    .secret-number-display {
-        background: #fff3cd;
-        border: 2px solid #ffeaa7;
-        border-radius: 15px;
-        padding: 20px;
-        margin: 20px 30px;
-        text-align: center;
-    }
-
-    .secret-number {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #d68910;
-        letter-spacing: 8px;
-        margin: 10px 0;
-    }
 </style>
-
 
 </head>
 <body>
@@ -334,76 +423,99 @@
         </div>
 
 
-    <div class="rules">
-        <h3>🎯 게임 규칙</h3>
-        <ul>
-            <li><strong>S(스트라이크)</strong>: 숫자와 위치가 모두 맞음</li>
-            <li><strong>B(볼)</strong>: 숫자는 맞지만 위치가 다름</li>
-            <li><strong>O(아웃)</strong>: 맞는 숫자가 하나도 없음</li>
-            <li id="gameRuleDigits">하나의 비밀숫자를 두고 교대로 추리합니다</li>
-            <li>첫째 자리는 0이 될 수 없습니다</li>
-            <li>먼저 맞추는 사람이 승리합니다!</li>
-        </ul>
+<div class="rules">
+    <h3>🎯 게임 규칙</h3>
+    <ul>
+        <li><strong>S(스트라이크)</strong>: 숫자와 위치가 모두 맞음</li>
+        <li><strong>B(볼)</strong>: 숫자는 맞지만 위치가 다름</li>
+        <li><strong>O(아웃)</strong>: 맞는 숫자가 하나도 없음</li>
+        <li id="gameRuleDigits">하나의 비밀숫자를 두고 교대로 추리합니다</li>
+        <li>첫째 자리는 0이 될 수 없습니다</li>
+        <li>먼저 맞추는 사람이 승리합니다!</li>
+    </ul>
+</div>
+
+
+
+<div class="game-status">
+    <div class="status-text" id="gameStatus">자릿수를 선택하고 게임을 시작하세요!</div>
+    <div class="turn-indicator" id="turnIndicator"></div>
+</div>
+
+<div class="difficulty-selection" id="difficultySelection">
+    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+        <button class="difficulty-btn" data-digits="3" onclick="selectDifficulty(3)">
+            <span class="difficulty-title">3자리</span>
+        </button>
+        <button class="difficulty-btn" data-digits="4" onclick="selectDifficulty(4)">
+            <span class="difficulty-title">4자리</span>
+        </button>
+        <button class="difficulty-btn" data-digits="5" onclick="selectDifficulty(5)">
+            <span class="difficulty-title">5자리</span>
+        </button>
     </div>
+</div>
 
-
-
-    <div class="game-status">
-        <div class="status-text" id="gameStatus">자릿수를 선택하고 게임을 시작하세요!</div>
-        <div class="turn-indicator" id="turnIndicator"></div>
-    </div>
-
-    <div class="difficulty-selection" id="difficultySelection">
-        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-            <button class="difficulty-btn" data-digits="3" onclick="selectDifficulty(3)">
-                <span class="difficulty-title">3자리</span>
-            </button>
-            <button class="difficulty-btn" data-digits="4" onclick="selectDifficulty(4)">
-                <span class="difficulty-title">4자리</span>
-            </button>
-            <button class="difficulty-btn" data-digits="5" onclick="selectDifficulty(5)">
-                <span class="difficulty-title">5자리</span>
-            </button>
-        </div>
-    </div>
-
-    <div class="game-board" id="gameBoard" style="display: none;">
-        
+<div class="game-board" id="gameBoard" style="display: none;">
 
 
 <!-- 플레이어 섹션 -->
-        <div class="player-section active" id="playerSection">
-            <div class="player-title">당신의 추리</div>
-            <div class="history" id="playerHistory">
-                <div style="text-align: center; color: #666; padding: 20px;">
-                    아직 추리한 기록이 없습니다
-                </div>
-            </div>
-<div class="input-section">
-                <input type="text" class="number-input" id="playerInput" 
-                       placeholder="숫자 입력" maxlength="3">
-                <button class="submit-btn" id="playerSubmit" onclick="playerGuess()">추리하기</button>
-            </div>
-                    </div>
 
-        <!-- AI 섹션 -->
-        <div class="player-section" id="aiSection">
-            <div class="player-title ai-title">🤖 AI의 추리</div>
-            <div class="ai-thinking" id="aiThinking" style="display: none;">
-                AI가 추리 중입니다...
+
+    <div class="player-section active" id="playerSection">
+        <div class="player-title">당신의 추리</div>
+        <div class="history" id="playerHistory">
+            <div style="text-align: center; color: #666; padding: 20px;">
+                아직 추리한 기록이 없습니다
             </div>
-            <div class="history" id="aiHistory">
-                <div style="text-align: center; color: #666; padding: 20px;">
-                    AI가 아직 추리하지 않았습니다
+        </div>
+        <div class="input-section">
+            <input type="text" class="number-input" id="playerInput" 
+                   placeholder="숫자 입력" maxlength="3" readonly>
+            
+            <!-- 숫자 키패드 추가 -->
+            <div class="keypad-section">
+                <div class="number-keypad" id="keypad">
+                    <button class="number-btn" data-number="1">1</button>
+                    <button class="number-btn" data-number="2">2</button>
+                    <button class="number-btn" data-number="3">3</button>
+                    <button class="number-btn" data-number="4">4</button>
+                    <button class="number-btn" data-number="5">5</button>
+                    <button class="number-btn" data-number="6">6</button>
+                    <button class="number-btn" data-number="7">7</button>
+                    <button class="number-btn" data-number="8">8</button>
+                    <button class="number-btn" data-number="9">9</button>
+                    <button class="number-btn" data-number="0">0</button>
+                    <button class="number-btn control-btn-keypad" id="backspace">지우기</button>
+                    <button class="number-btn control-btn-keypad" id="clear">전체<br>삭제</button>
+                    <button class="number-btn control-btn-keypad" id="playerSubmit" onclick="playerGuess()">입력<br>하기</button>
                 </div>
             </div>
+            
+            
         </div>
     </div>
 
-    <div class="controls">
-        <button class="control-btn primary" onclick="startGame()" id="startBtn" disabled>난이도를 먼저 선택하세요</button>
-        <button class="control-btn" onclick="resetGame()">새 게임</button>
+    <!-- AI 섹션 -->
+    <div class="player-section" id="aiSection">
+        <div class="player-title ai-title">🤖 AI의 추리</div>
+        <div class="ai-thinking" id="aiThinking" style="display: none;">
+            AI가 추리 중입니다...
+        </div>
+        <div class="history" id="aiHistory">
+            <div style="text-align: center; color: #666; padding: 20px;">
+                AI가 아직 추리하지 않았습니다
+            </div>
+        </div>
     </div>
+</div>
+
+<div class="controls">
+    <button class="control-btn primary" onclick="startGame()" id="startBtn" disabled>난이도를 먼저 선택하세요</button>
+    <button class="control-btn" onclick="resetGame()">새 게임</button>
+</div>
+
+
 </div>
 
 <script>
@@ -414,6 +526,72 @@
     let currentTurn = 'player'; // 'player' or 'ai'
     let aiPossibleNumbers = [];
     let selectedDigits = 0; // 선택된 자릿수
+
+    // 키패드 업데이트 함수
+    function updateKeypad() {
+        const numberBtns = document.querySelectorAll('.number-btn[data-number]');
+        const currentInput = document.getElementById('playerInput').value;
+        
+        numberBtns.forEach(btn => {
+            const number = btn.dataset.number;
+            const isUsed = currentInput.includes(number);
+            const isFirstPosition = currentInput.length === 0;
+            
+            // 0은 첫 자리에 올 수 없음
+            if (number === '0' && isFirstPosition) {
+                btn.disabled = true;
+                btn.classList.add('used');
+            }
+            // 이미 사용된 숫자면 비활성화
+            else if (isUsed) {
+                btn.disabled = true;
+                btn.classList.add('used');
+            }
+            // 입력 길이가 최대치면 모든 숫자 비활성화
+            else if (selectedDigits > 0 && currentInput.length >= selectedDigits) {
+                btn.disabled = true;
+            }
+            else {
+                btn.disabled = false;
+                btn.classList.remove('used');
+            }
+        });
+    }
+
+    // 키패드 이벤트 리스너
+    document.getElementById('keypad').addEventListener('click', (e) => {
+        if (!gameActive || currentTurn !== 'player') return;
+        
+        const target = e.target;
+        if (target.classList.contains('number-btn')) {
+            const playerInput = document.getElementById('playerInput');
+            
+            if (target.dataset.number) {
+                // 숫자 버튼 클릭
+                const number = target.dataset.number;
+                const currentInput = playerInput.value;
+                
+                // 길이 체크 및 중복 체크
+                if (currentInput.length < selectedDigits && !currentInput.includes(number)) {
+                    // 첫 자리 0 체크
+                    if (number === '0' && currentInput.length === 0) return;
+                    
+                    playerInput.value += number;
+                    updateKeypad();
+                }
+            }
+            else if (target.id === 'backspace') {
+                // 지우기 버튼
+                playerInput.value = playerInput.value.slice(0, -1);
+                updateKeypad();
+            }
+            else if (target.id === 'clear') {
+                // 전체 삭제 버튼
+                playerInput.value = '';
+                updateKeypad();
+            }
+        }
+    });
 
     // 난이도 선택
     function selectDifficulty(digits) {
@@ -472,6 +650,7 @@
         document.getElementById('playerInput').value = '';
         
         updateTurnIndicator();
+        updateKeypad(); // 키패드 초기화
     }
 
     function generateRandomNumber(digits) {
@@ -551,6 +730,7 @@
         document.getElementById('playerInput').value = '';
         currentTurn = 'ai';
         updateTurnIndicator();
+        updateKeypad(); // 키패드 리셋
         
         // AI 턴 시작
         setTimeout(aiGuess, 1500);
@@ -591,6 +771,7 @@
             
             currentTurn = 'player';
             updateTurnIndicator();
+            updateKeypad(); // 키패드 업데이트
         }, 2000);
     }
 
@@ -672,6 +853,7 @@
         document.getElementById('turnIndicator').textContent = '게임이 종료되었습니다';
         document.getElementById('playerInput').disabled = true;
         document.getElementById('playerSubmit').disabled = true;
+        updateKeypad(); // 게임 종료시 키패드 비활성화
     }
 
     function resetGame() {
@@ -684,14 +866,13 @@
         document.getElementById('startBtn').textContent = '난이도를 먼저 선택하세요';
         document.getElementById('difficultySelection').style.display = 'block';
         document.getElementById('gameBoard').style.display = 'none';
-        document.getElementById('secretDisplay').style.display = 'none';
         document.getElementById('gameStatus').textContent = '자릿수를 선택하고 게임을 시작하세요!';
         document.getElementById('gameStatus').style.background = '#f8f9ff';
         document.getElementById('gameStatus').style.color = '#333';
         document.getElementById('turnIndicator').textContent = '';
+        document.getElementById('playerInput').value = '';
+        updateKeypad(); // 키패드 리셋
     }
-
-
 
     // Enter 키로 추리하기
     document.getElementById('playerInput').addEventListener('keypress', function(e) {
@@ -700,12 +881,21 @@
         }
     });
 
-    // 숫자만 입력 가능하도록
+    // 직접 키보드 입력 차단 (키패드만 사용)
     document.getElementById('playerInput').addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9]/g, '');
+        e.preventDefault();
+        return false;
+    });
+
+    document.getElementById('playerInput').addEventListener('keydown', function(e) {
+        // Enter 키만 허용
+        if (e.key === 'Enter') {
+            return true;
+        }
+        e.preventDefault();
+        return false;
     });
 </script>
-
 
 </body>
 </html>
