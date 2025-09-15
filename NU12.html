@@ -1,8 +1,6 @@
-
-
 <!DOCTYPE html>
 
-<html lang="ko">
+<html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
@@ -36,37 +34,37 @@
   }
 
 input#guess {
-    font-size: 20px;
-    background: #1e3a52; /* ← 이 부분이 배경색입니다 */
-    border: 3px solid #2c4157;
-    color: white;
+font-size: 20px;
+background: #1e3a52;
+border: 3px solid #2c4157;
+color: white;
 }
 
-  button { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px; }
-  .primary { background:var(--accent); color:#00121d; }
-  .secondary { background:#2c4157; color:#d7e7f5; }
-  .ghost { background:transparent; color:var(--muted); border:1px dashed rgba(255,255,255,.2); }
-  button:disabled { opacity:.45; cursor:not-allowed; }
-  .hint { margin-top:10px; color:var(--muted); font-size:20px;}
-  .warn { margin-top:6px; color:#ffb8c1; font-size:20px; min-height:1.3em; }
-  .log { margin-top:18px; background:#0f1c2a; border-radius:14px; border:1px solid rgba(255,255,255,.08); max-height:50vh; overflow:auto;}
-  .log table { width:100%; border-collapse:collapse; font-variant-numeric: tabular-nums; font-size:20px; }
-  .log th, .log td { padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
-  .log tr:last-child td { border-bottom:0; }
-  .badge { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px;display:inline-block;  background:#ff6b6b;}
-  .mode-buttons { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
-  .ok { color:#b8ffb8; }
-  .fail { color:#ffb8c1; }
+button { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px; }
+.primary { background:var(–accent); color:#00121d; }
+.secondary { background:#2c4157; color:#d7e7f5; }
+.ghost { background:transparent; color:var(–muted); border:1px dashed rgba(255,255,255,.2); }
+button:disabled { opacity:.45; cursor:not-allowed; }
+.hint { margin-top:10px; color:var(–muted); font-size:20px;}
+.warn { margin-top:6px; color:#ffb8c1; font-size:20px; min-height:1.3em; }
+.log { margin-top:18px; background:#0f1c2a; border-radius:14px; border:1px solid rgba(255,255,255,.08); max-height:50vh; overflow:auto;}
+.log table { width:100%; border-collapse:collapse; font-variant-numeric: tabular-nums; font-size:20px; }
+.log th, .log td { padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
+.log tr:last-child td { border-bottom:0; }
+.badge { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px;display:inline-block;  background:#50a3c7;}
+.mode-buttons { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+.ok { color:#b8ffb8; }
+.fail { color:#ffb8c1; }
 #modeLabel:empty {
-  display: none;
+display: none;
 }
-/* 선택 사항: 새 게임 버튼 주목 효과 */
+/* New game button attention effect */
 .attention {
-  animation: pulse 1.2s ease-in-out infinite;
+animation: pulse 1.2s ease-in-out infinite;
 }
 @keyframes pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
-  50% { transform: scale(1.03); box-shadow: 0 8px 20px rgba(0,0,0,.25); }
+0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+50% { transform: scale(1.03); box-shadow: 0 8px 20px rgba(0,0,0,.25); }
 }
 
 input#guess {
@@ -76,43 +74,154 @@ border: 3px solid #2c4157;
 color:white;
 }
 
+/* Number keypad styles */
+.number-keypad {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+gap: 8px;
+margin: 15px 0;
+max-width: 500px;
+}
+
+.number-btn {
+padding: 15px 10px;
+font-size: 18px;
+font-weight: bold;
+border: none;
+border-radius: 10px;
+background: #2c4157;
+color: #d7e7f5;
+cursor: pointer;
+transition: all 0.2s ease;
+min-height: 50px;
+}
+
+.number-btn:hover {
+background: #3a5068;
+transform: translateY(-2px);
+}
+
+.number-btn:active {
+transform: translateY(0);
+}
+
+.number-btn:disabled {
+background: #1a2a3a;
+color: #666;
+cursor: not-allowed;
+opacity: 0.5;
+}
+
+.number-btn.used {
+background: #4a4a4a;
+color: #999;
+}
+
+.control-btn {
+background: #50a3c7;
+color: white;
+}
+
+.control-btn:hover {
+background: #3d7187;
+}
+
+.keypad-section {
+margin: 15px 0;
+}
+
+.keypad-title {
+color: var(–muted);
+font-size: 16px;
+margin-bottom: 8px;
+text-align: center;
+}
+
+/* Mobile keypad optimization */
+@media (max-width: 600px) {
+.number-keypad {
+grid-template-columns: repeat(5, 1fr);
+gap: 6px;
+}
+
+.number-btn {
+padding: 12px 8px;
+font-size: 16px;
+min-height: 45px;
+}
+
+input#guess {
+width: 100%;
+font-size: 18px;
+}
+
+.row {
+flex-direction: column;
+align-items: stretch;
+}
+
+.row > * {
+width: 100%;
+margin-bottom: 8px;
+}
+}
+
 </style>
 
 </head>
 <body>
 <div class="wrap">
   <div class="card">
-    <h1>Soosooland Number Baseball </h1>
+    <h1>SoosooNumber Baseball Game</h1>
     <div style="margin:10px 0;padding:10px 14px;border:1px solid #ccc;border-radius:8px;background:#143148;color:#d7e7f5;font-size:20px;line-height:1.6">
-  <strong>Game rules:</strong> <br>
-  - A classic puzzle where you guess the secret number.<br>
-- Try to figure out the secret code made of different digits.<br>
-  - <b>S (Strike)</b>: Correct number and correct position<br>
-- <b>B (Ball)</b>: Correct number but wrong position<br>
-- <b>O (Out)</b>: Number not included<br>
-Guess all positions correctly to win!
+  <strong>Game Rules:</strong> <br>
+  - A classic number guessing puzzle game.<br>
+  - Guess the secret code made of unique digits.<br>
+  - <b>S (Strike)</b>: Right number in right position<br>
+  - <b>B (Ball)</b>: Right number in wrong position<br>
+  - <b>O (Out)</b>: Number not in secret code<br>
+  Get all strikes to win!
 </div>
 
 <div class="mode-buttons">
-<button class="secondary" id="m3e">3 digits (1–9)</button>
-<button class="secondary" id="m3i">3 digits (0–9)</button>
-<button class="secondary" id="m4e">4 digits (1–9)</button>
-<button class="secondary" id="m4i">4 digits (0–9)</button>
-</div>
-    
+      <button class="secondary" id="m3e">3 digits (1~9)</button>
+      <button class="secondary" id="m3i">3 digits (0~9)</button>
+      <button class="secondary" id="m4e">4 digits (1~9)</button>
+      <button class="secondary" id="m4i">4 digits (0~9)</button>
+    </div>
 
 <div class="row">
-  <input id="guess" autocomplete="off" inputmode="numeric" maxlength="4" placeholder="예: 573" />
+  <input id="guess" autocomplete="off" inputmode="none" maxlength="4" placeholder="e.g: 573" readonly />
   <button id="btn-try" class="primary" disabled>Submit</button>
   <button id="btn-reset" class="secondary">New Game</button>
-  <button id="btn-giveup" class="ghost">Give up</button>
- <span id="status" class="badge">Select a mode first.</span>
+  <button id="btn-giveup" class="ghost">Give Up</button>
+ <span id="status" class="badge">Please select a mode first.</span>
   <span id="modeLabel" class="badge"></span>
 <span id="summary" class="hint"></span>
 </div>
 <div id="warn" class="warn"></div>
 
-<div class="hint"></div>
+<!-- Number keypad -->
+
+<div class="keypad-section">
+  <div class="keypad-title">Click the numbers</div>
+  <div class="number-keypad" id="keypad">
+    <button class="number-btn" data-number="1">1</button>
+    <button class="number-btn" data-number="2">2</button>
+    <button class="number-btn" data-number="3">3</button>
+    <button class="number-btn" data-number="4">4</button>
+    <button class="number-btn" data-number="5">5</button>
+    <button class="number-btn" data-number="6">6</button>
+    <button class="number-btn" data-number="7">7</button>
+    <button class="number-btn" data-number="8">8</button>
+    <button class="number-btn" data-number="9">9</button>
+    <button class="number-btn" data-number="0">0</button>
+    <button class="number-btn control-btn" id="backspace">Delete</button>
+    <button class="number-btn control-btn" id="clear">Clear</button>
+  </div>
+</div>
+
+<div class="hint">S = Right digit in right place, B = Right digit in wrong place, O = Wrong digit</div>
 
 <div class="log">
   <table>
@@ -123,10 +232,8 @@ Guess all positions correctly to win!
   </table>
 </div>
 
-
   </div>
 </div>
-
 
 <script>
 (function () {
@@ -141,10 +248,10 @@ Guess all positions correctly to win!
   let currentModeKey = null; // m3e, m3i, m4e, m4i
 
   const modes = {
-    m3e: {len:3, zero:false, label:"3 digits (1-9)"},
-    m3i: {len:3, zero:true, label:"3 digit (0-9)"},
-    m4e: {len:4, zero:false, label:"4 digits (1-9)"},
-    m4i: {len:4, zero:true, label:"4 digits (0-9)"}
+    m3e: {len:3, zero:false, label:"3 digits · no 0"},
+    m3i: {len:3, zero:true, label:"3 digits · with 0"},
+    m4e: {len:4, zero:false, label:"4 digits · no 0"},
+    m4i: {len:4, zero:true, label:"4 digits · with 0"}
   };
 
   Object.keys(modes).forEach(id=>{
@@ -153,6 +260,7 @@ Guess all positions correctly to win!
       currentModeKey = id;
       modeLabel.textContent = mode.label;
       reset();
+      updateKeypad(); // Update keypad
     });
   });
 
@@ -162,7 +270,7 @@ Guess all positions correctly to win!
       const r = Math.floor(Math.random() * (i + 1));
       [digits[i], digits[r]] = [digits[r], digits[i]];
     }
-    // 첫자리 0 방지
+    // Prevent 0 as first digit
     if (digits[0] === "0") {
       for (let i = 1; i < digits.length; i++) {
         if (digits[i] !== "0") { [digits[0], digits[i]] = [digits[i], digits[0]]; break; }
@@ -174,48 +282,117 @@ Guess all positions correctly to win!
   
 
 function reset() {
-  if (!mode) { warnEl.textContent = "Select a mode first."; return; }
+  if (!mode) { warnEl.textContent = "Please select a mode first."; return; }
   secret = newSecret();
   tries = 0; finished = false;
   tbody.innerHTML = "";
-  statusEl.textContent = "In progress";
+  statusEl.textContent = "In Progress";
   statusEl.classList.remove("ok","fail");
   summaryEl.textContent = "";
   warnEl.textContent = "";
   guessEl.value = "";
   btnTry.disabled = true;
   guessEl.maxLength = mode.len;
-  guessEl.placeholder = (mode.len === 3) ? "예: 573" : "예: 5073";
-  guessEl.focus();
+  guessEl.placeholder = (mode.len === 3) ? "e.g: 573" : "e.g: 5073";
 
-  updateButtons(false);        // ← 추가: 진행 중 UI
+  updateButtons(false);        
+  updateKeypad(); // Update keypad state
 }
 
-function validate(input) {
-  if (!mode) return "Please select a mode first.";
-  if (input.length < mode.len) return `Please enter all ${mode.len} digits.`;
-    let regex = mode.zero ? /^\d+$/ : /^[1-9]+$/;
+  // Update keypad function
+  function updateKeypad() {
+    const numberBtns = document.querySelectorAll('.number-btn[data-number]');
+    const currentInput = guessEl.value;
     
-if (!regex.test(input)) 
-  return mode.zero 
-    ? "Only digits 0–9 are allowed." 
-    : "Only digits 1–9 are allowed (0 not allowed).";
+    numberBtns.forEach(btn => {
+      const number = btn.dataset.number;
+      const isUsed = currentInput.includes(number);
+      const isZeroAllowed = mode && mode.zero;
+      const isFirstPosition = currentInput.length === 0;
+      
+      // Handle 0: disable if first position and 0 not allowed
+      if (number === '0' && (!isZeroAllowed || isFirstPosition)) {
+        btn.disabled = true;
+        btn.classList.add('used');
+      }
+      // Disable if already used
+      else if (isUsed) {
+        btn.disabled = true;
+        btn.classList.add('used');
+      }
+      // Disable all numbers if max length reached
+      else if (mode && currentInput.length >= mode.len) {
+        btn.disabled = true;
+      }
+      else {
+        btn.disabled = false;
+        btn.classList.remove('used');
+      }
+    });
+  }
 
-if (new Set(input).size !== mode.len) 
-  return "All digits must be different.";
+  // Keypad event listeners
+  document.getElementById('keypad').addEventListener('click', (e) => {
+    if (!mode || finished) return;
+    
+    const target = e.target;
+    if (target.classList.contains('number-btn')) {
+      if (target.dataset.number) {
+        // Number button clicked
+        const number = target.dataset.number;
+        const currentInput = guessEl.value;
+        
+        // Length check and duplicate check
+        if (currentInput.length < mode.len && !currentInput.includes(number)) {
+          // First position 0 check
+          if (number === '0' && currentInput.length === 0) return;
+          
+          guessEl.value += number;
+          updateKeypad();
+          validateInput();
+        }
+      }
+      else if (target.id === 'backspace') {
+        // Delete button
+        guessEl.value = guessEl.value.slice(0, -1);
+        updateKeypad();
+        validateInput();
+      }
+      else if (target.id === 'clear') {
+        // Clear all button
+        guessEl.value = '';
+        updateKeypad();
+        validateInput();
+      }
+    }
+  });
 
-    if (input[0] === "0") return "The first digit cannot be 0.";
+  function validateInput() {
+    const v = guessEl.value;
+    const err = validate(v);
+    btnTry.disabled = !!err;
+    warnEl.textContent = (v.length === (mode ? mode.len : 0) && err) ? err : "";
+  }
+
+
+  function validate(input) {
+    if (!mode) return "Please select a mode first.";
+    if (input.length < mode.len) return `Enter all ${mode.len} digits.`;
+    let regex = mode.zero ? /^\d+$/ : /^[1-9]+$/;
+    if (!regex.test(input)) return mode.zero ? "Only digits 0~9" : "Only digits 1~9 (no 0)";
+    if (new Set(input).size !== mode.len) return "All digits must be different.";
+    if (input[0] === "0") return "First digit cannot be 0";
     return "";
   }
 
   
 
 function score(guess, ans) {
-  const res = Array(guess.length).fill("O"); // 기본 OUT
+  const res = Array(guess.length).fill("O"); // Default OUT
   const remainAns = {}; 
   const remainIdx = [];
 
-  // 1) 스트라이크 먼저
+  // 1) Strikes first
   for (let i = 0; i < guess.length; i++) {
     if (guess[i] === ans[i]) {
       res[i] = "S";
@@ -225,7 +402,7 @@ function score(guess, ans) {
     }
   }
 
-  // 2) 볼 처리
+  // 2) Balls
   for (const i of remainIdx) {
     const d = guess[i];
     if (remainAns[d] > 0) {
@@ -234,7 +411,7 @@ function score(guess, ans) {
     }
   }
 
-  return res.join(""); // 예: "BSOO"
+  return res.join(""); // e.g: "BSOO"
 }
 
 function addRow(guess, pattern) {
@@ -248,7 +425,7 @@ function onTry() {
   if (finished || !mode) return;
   const g = guessEl.value.trim();
   const err = validate(g);
-  if (err) { warnEl.textContent = err; guessEl.focus(); return; }
+  if (err) { warnEl.textContent = err; return; }
   warnEl.textContent = "";
   tries++;
 
@@ -268,7 +445,7 @@ function onTry() {
 
   guessEl.value = "";
   btnTry.disabled = true;
-  guessEl.focus();
+  updateKeypad(); // Reset keypad
 }   
 
 
@@ -276,39 +453,45 @@ function onTry() {
 function giveUp() {
   if (finished || !mode) return;
   finished = true;
-  statusEl.textContent = `Out of tries! The answer was ${secret}`;
+  statusEl.textContent = `Give up! Answer: ${secret}`;
   statusEl.classList.add("fail");
   btnTry.disabled = true;
 
-  updateButtons(true);         // ← 추가: 끝난 UI
+  updateButtons(true);
 }
 
 
  
 function updateButtons(isFinished) {
-  // 제출 버튼: 끝났으면 덜 눈에 띄게(secondary), 진행 중이면 primary
+  // Submit button: less prominent (secondary) when finished, primary when in progress
   btnTry.classList.toggle("primary", !isFinished);
   btnTry.classList.toggle("secondary", isFinished);
 
-  // 새 게임 버튼: 끝났으면 눈에 띄게(primary), 진행 중이면 secondary
+  // New game button: prominent (primary) when finished, secondary when in progress
   btnReset.classList.toggle("primary", isFinished);
   btnReset.classList.toggle("secondary", !isFinished);
 
-  // 선택: 새 게임 버튼에 주목 효과
+  // Optional: attention effect for new game button
   btnReset.classList.toggle("attention", isFinished);
 }
 
   function onInput(e) {
-    let v = e.target.value.replace(/[^\d]/g, "").slice(0, mode ? mode.len : 4);
-    e.target.value = v;
-    const err = validate(v);
-    btnTry.disabled = !!err;
-    warnEl.textContent = (v.length === (mode ? mode.len : 0) && err) ? err : "";
+    // Restrict direct input when using keypad
+    e.preventDefault();
+    return false;
   }
 
 
   guessEl.addEventListener("input", onInput);
-  guessEl.addEventListener("keydown", e => { if (e.key === "Enter" && !btnTry.disabled) onTry(); });
+  guessEl.addEventListener("keydown", e => { 
+    // Allow Enter key
+    if (e.key === "Enter" && !btnTry.disabled) {
+      onTry();
+    } else {
+      // Block other key inputs (keypad only)
+      e.preventDefault();
+    }
+  });
   btnTry.addEventListener("click", onTry);
   btnReset.addEventListener("click", reset);
   btnGiveup.addEventListener("click", giveUp);
