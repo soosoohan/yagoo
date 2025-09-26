@@ -27,13 +27,13 @@
           padding:8px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.3);z-index:100
         }
         .language-button{
-          background:#145454;color:#fff;border:none;padding:6px 12px;margin:2px;border-radius:5px;
+          background:#e5c07b;color:#fff;border:none;padding:6px 12px;margin:2px;border-radius:5px;
           cursor:pointer;font-size:clamp(.8rem,2vw,1rem);transition:.3s
         }
-        .language-button:hover{background:#20b2aa}
-        .language-button.active{background:#ff69b4}
+        .language-button:hover{background:#8c7a2c}
+        .language-button.active{background:#b2924f}
         .main-title{
-          font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#f0f8ff;margin-top:20px
+          font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#e6b800;margin-top:20px
         }
 
         .content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:20px;max-width:900px;margin:0 auto;width:100%}
@@ -49,19 +49,18 @@
         .group h4{color:#eaf7ff;margin-bottom:12px;font-size:clamp(1rem,2.5vw,1.2rem)}
         .buttons{display:flex;flex-wrap:wrap;gap:12px}
         .main-game-button{
-          background:rgba(255,255,255,.92);color:#2e8b8b;padding:14px 18px;border:none;border-radius:10px;
+          background:#e6b800;color:#4d3900;padding:14px 18px;border:none;border-radius:10px;
           font-size:clamp(1rem,3vw,1.1rem);font-weight:700;cursor:pointer;transition:.25s;
           box-shadow:0 4px 10px rgba(0,0,0,.2)
         }
         .main-game-button:hover{background:#f0f8ff;transform:translateY(-2px);box-shadow:0 6px 15px rgba(0,0,0,.3)}
         .main-game-button:active{transform:translateY(0)}
 
-        .footer{margin-top:auto;padding:20px;display:flex;justify-content:center;align-items:center}
         .square-button{
-          width:250px;height:45px;background:#FFB3D9;color:#fff;border:none;border-radius:12px;cursor:pointer;
+          width:250px;height:45px;background:#d4af37;color:#2e2b23;border:none;border-radius:12px;cursor:pointer;
           font-size:1.1rem;font-weight:700;display:flex;justify-content:center;align-items:center;line-height:1.2;margin:8px;transition:.3s;font-family:Arial, sans-serif
         }
-        .square-button:hover{background:#FF8FAB;transform:scale(1.05);box-shadow:0 4px 8px rgba(0,0,0,.2)}
+        .square-button:hover{background:#8c7a2c;transform:scale(1.05);box-shadow:0 4px 8px rgba(0,0,0,.2)}
         .square-button:active{transform:scale(.95)}
         .credits{margin-top:50px;font-size:.9em;color:#fff;background: #0f172a;padding:20px;border-radius:10px;width:300px;justify-content:center}
 
@@ -134,7 +133,13 @@
               <button class="main-game-button" onclick="location.href='KO31.html'">수수 한글야구 </button>
               <button class="main-game-button" onclick="location.href='KO61.html'">한글야구 쉬움</button>
             </div>
-          </div>
+      
+  </div>    <div class="credits">
+        <button class="square-button" onclick="location.href='https://soosoohan.github.io/soosooland/'">
+          즐거운 퍼즐, 수수랜드  
+        </button>
+        <p>© 2025 한수수. All rights reserved.</p>
+      </div>
         </div>
       </div>
 
@@ -174,20 +179,17 @@
               <button class="main-game-button" onclick="location.href='KO62.html'"> Hangul Baseball easy</button>
             </div>
           </div>
-        </div>
+        <div class="credits">
+        <button class="square-button" onclick="location.href='https://soosoohan.github.io/soosooland/'">
+          Fun Puzzles, Soosooland  
+        </button>
+        <p>© 2025 Han Soosoo. All rights reserved.</p>
+         </div>
+ </div>
       </div>
     </div>
 
-    <!-- 푸터 -->
-    <div class="footer">
-      <div class="credits">
-        <button class="square-button" onclick="location.href='https://soosoohan.github.io/soosooland/'">
-          재미있게 공부하는 수수랜드
-        </button>
-        <p>© 2025 Soosoo Han. All rights reserved.</p>
       </div>
-    </div>
-  </div>
 
   <script>
     function toggleLanguage(lang){
