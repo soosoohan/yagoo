@@ -1,8 +1,9 @@
-# ⚠️ 안내
+## ⚠️ 안내
 본 저장소의 소스코드와 자료는 작성자(한수수)의 허락 없이 **복사·수정·배포·상업적 이용**할 수 없습니다.  
 이 저장소는 오픈소스가 아니며, 교육 및 참고 목적으로만 열람 가능합니다.
 
-# 📄 단어 야구 (Word Baseball)
+---
+## 📄 단어 야구 (Word Baseball)
 
 ## 🎯 게임 소개
 단어 야구는 **단어 맞히기 퍼즐 게임**입니다.  
@@ -36,7 +37,7 @@
 - 다양한 난이도 모드 추가  
 
 ---
-# 한글야구 (Hangul Baseball)
+## 한글야구 (Hangul Baseball)
 
 완성형 한글(가–힣)로 즐기는 **자음 기반 S/B/OUT 추리 게임**입니다.  
 선택한 글자수(2–5글자)의 비밀 단어를 맞히세요. **힌트(모음 시퀀스)** 는 공개되고, **자음만** 점수에 반영됩니다.
@@ -95,7 +96,7 @@ Hangul Baseball is a consonant-based deduction game for Korean words (2–5 syll
 
 ---
 
-# 수학야구 – Soosooland Edition
+## 수학야구 – Soosooland Edition
 
 브라우저에서 바로 즐기는 **수학야구** 게임입니다.  
 자리 수와 0 포함 여부를 고를 수 있는 **4가지 모드**를 지원합니다.
@@ -127,33 +128,16 @@ Hangul Baseball is a consonant-based deduction game for Korean words (2–5 syll
 | **4자리 · 1-9 | 4 | ❌ | 1–9만 사용 |
 | **4자리 · 0-9 | 4 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
 
-## 🛠 설치 & 실행
-이 프로젝트는 **단일 HTML 파일**로 동작합니다.
-
-```text
-project/
-└─ index.html   # 그대로 열면 실행
-
-로컬에서 실행
-	•	파일을 더블클릭해서 브라우저로 열기, 또는
-	•	간단한 정적 서버 사용:
-	•	VS Code: “Live Server” 확장
-	•	Python: python -m http.server
-
-GitHub Pages 배포
-	1.	레포에 index.html 커밋/푸시
-	2.	Settings → Pages → Build and deployment에서
-Deploy from a branch 선택
-	3.	Branch: main / Folder: /root 저장
-	4.	제공된 URL로 접속
-
 ---
 
-## 🌟 Soosooland - Game Demo Hub by Han Soosoo
+## 야구게임 주소 : https://soosooland.com/yagoo/
+---
+
+## 🌟 Soosooland - Puzzle Game Hub by Han Soosoo
 
  "Learning through fun, and fun through learning."
 
-Explore more brain games and puzzles in **[Soosooland](https://soosoohan.github.io/soosooland/)**    
+Explore more brain games and puzzles in **[Soosooland](https://soosooland.com/)**    
 — a digital playground designed to improve memory, logic, and creativity while having fun!
 
 
