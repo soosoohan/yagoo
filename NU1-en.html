@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
+  
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -11,8 +13,8 @@
       gtag('config', 'G-4YZHC1G9FN');
     </script>
 
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
    <title>Number Baseball Easy - Number Guessing Game | Soosooland</title>
     
     <!-- SEO Meta Tags -->
@@ -31,8 +33,7 @@
     <link rel="canonical" href="https://soosooland.com/yagoo/NU1-en.html">
     <link rel="alternate" hreflang="en" href="https://soosooland.com/yagoo/NU1-en.html">
     <link rel="alternate" hreflang="ko" href="https://soosooland.com/yagoo/NU1-ko.html">
-
-  <style>
+   <style>
   :root { --bg:#0b1520; --card:#122233; --accent:#6ee7ff; --muted:#9db3c7; }
   * { box-sizing: border-box; }
   body { margin:0; font-family: system-ui, sans-serif; background: var(--bg); color:#eef6ff; display:flex; min-height:100vh; }
@@ -59,16 +60,13 @@ color: white;
 }
 
 button { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px; }
-.primary { background:var(–accent); color:#00121d; }
+.primary { background:var(--accent); color:#00121d; }
 .secondary { background:#2c4157; color:#d7e7f5; }
-.ghost { background:transparent; color:var(–muted); border:1px dashed rgba(255,255,255,.2); }
+.ghost { background:transparent; color:var(--muted); border:1px dashed rgba(255,255,255,.2); }
 button:disabled { opacity:.45; cursor:not-allowed; }
-.hint { margin-top:10px; color:var(–muted); font-size:20px;}
+.hint { margin-top:10px; color:var(--muted); font-size:20px;}
 .warn { margin-top:6px; color:#ffb8c1; font-size:20px; min-height:1.3em; }
 .log { margin-top:18px; background:#0f1c2a; border-radius:14px; border:1px solid rgba(255,255,255,.08); max-height:50vh; overflow:auto;}
-.log table { width:100%; border-collapse:collapse; font-variant-numeric: tabular-nums; font-size:20px; }
-.log th, .log td { padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
-.log tr:last-child td { border-bottom:0; }
 .badge { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px;display:inline-block;  background:#50a3c7;}
 .mode-buttons { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
 .ok { color:#b8ffb8; }
@@ -87,7 +85,7 @@ animation: pulse 1.2s ease-in-out infinite;
 
 input#guess {
 font-size: 20px;
-background: var(–bg);
+background: var(--bg);
 border: 3px solid #2c4157;
 color:white;
 }
@@ -149,10 +147,55 @@ margin: 15px 0;
 }
 
 .keypad-title {
-color: var(–muted);
+color: var(--muted);
 font-size: 16px;
 margin-bottom: 8px;
 text-align: center;
+}
+
+/* Result item styles - NEW */
+.result-item {
+  background: #1a2a3a;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,.1);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.result-number {
+  color: var(--muted);
+  font-size: 16px;
+  min-width: 40px;
+}
+
+.result-guess {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #e9f5ff;
+  flex: 1;
+}
+
+.result-score {
+  font-size: 20px;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.results-container {
+  margin-top: 20px;
+  max-height: 50vh;
+  overflow-y: auto;
 }
 
 /* Mobile keypad optimization */
@@ -209,18 +252,26 @@ margin-bottom: 8px;
     </div>
 
 <div class="row">
-  <input id="guess" autocomplete="off" inputmode="none" maxlength="4" placeholder="e.g: 573" readonly />
-  <button id="btn-try" class="primary" disabled>Submit</button>
   <button id="btn-reset" class="secondary">New Game</button>
   <button id="btn-giveup" class="ghost">Give Up</button>
  <span id="status" class="badge">Please select a mode first.</span>
   <span id="modeLabel" class="badge"></span>
 <span id="summary" class="hint"></span>
 </div>
-<div id="warn" class="warn"></div>
+
+<!-- Results show here immediately after each attempt -->
+<div class="results-container" id="resultsContainer"></div>
+
+<!-- Input area - stays at top -->
+<div style="margin-top: 20px;">
+  <div class="row">
+    <input id="guess" autocomplete="off" inputmode="none" maxlength="4" placeholder="e.g: 573" readonly />
+    <button id="btn-try" class="primary" disabled>Submit</button>
+  </div>
+  <div id="warn" class="warn"></div>
+</div>
 
 <!-- Number keypad -->
-
 <div class="keypad-section">
   <div class="keypad-title">Click the numbers</div>
   <div class="number-keypad" id="keypad">
@@ -241,14 +292,8 @@ margin-bottom: 8px;
 
 <div class="hint">S = Right digit in right place, B = Right digit in wrong place, O = Wrong digit</div>
 
-<div class="log">
-  <table>
-    <thead>
-      <tr><th>#</th><th>Guess</th><th>Result</th></tr>
-    </thead>
-    <tbody id="tbody"></tbody>
-  </table>
-</div>
+<!-- Results show here immediately after each attempt -->
+<div class="results-container" id="resultsContainer"></div>
 
   </div>
 </div>
@@ -256,14 +301,16 @@ margin-bottom: 8px;
 <script>
 (function () {
   const $ = sel => document.querySelector(sel);
-  const guessEl = $("#guess"), tbody = $("#tbody"), statusEl = $("#status"),
+  const guessEl = $("#guess"), statusEl = $("#status"),
         summaryEl = $("#summary"), btnTry = $("#btn-try"),
         btnReset = $("#btn-reset"), btnGiveup = $("#btn-giveup"),
-        warnEl = $("#warn"), modeLabel = $("#modeLabel");
+        warnEl = $("#warn"), modeLabel = $("#modeLabel"),
+        resultsContainer = $("#resultsContainer");
 
   let secret = "", tries = 0, finished = false;
   let mode = null; // {len:3|4, zero:true|false}
   let currentModeKey = null; // m3e, m3i, m4e, m4i
+  let guessHistory = new Set(); // Track all guesses
 
   const modes = {
     m3e: {len:3, zero:false, label:"3 digits · no 0"},
@@ -297,13 +344,12 @@ margin-bottom: 8px;
     return digits.slice(0, mode.len).join("");
   }
 
-  
-
 function reset() {
   if (!mode) { warnEl.textContent = "Please select a mode first."; return; }
   secret = newSecret();
   tries = 0; finished = false;
-  tbody.innerHTML = "";
+  guessHistory.clear(); // Clear guess history
+  resultsContainer.innerHTML = ""; // Clear results
   statusEl.textContent = "In Progress";
   statusEl.classList.remove("ok","fail");
   summaryEl.textContent = "";
@@ -392,18 +438,21 @@ function reset() {
     warnEl.textContent = (v.length === (mode ? mode.len : 0) && err) ? err : "";
   }
 
-
   function validate(input) {
     if (!mode) return "Please select a mode first.";
     if (input.length < mode.len) return `Enter all ${mode.len} digits.`;
+    
+    // Check for duplicate guess
+    if (guessHistory.has(input)) {
+      return "You already tried this number!";
+    }
+    
     let regex = mode.zero ? /^\d+$/ : /^[1-9]+$/;
     if (!regex.test(input)) return mode.zero ? "Only digits 0~9" : "Only digits 1~9 (no 0)";
     if (new Set(input).size !== mode.len) return "All digits must be different.";
     if (input[0] === "0") return "First digit cannot be 0";
     return "";
   }
-
-  
 
 function score(guess, ans) {
   const res = Array(guess.length).fill("O"); // Default OUT
@@ -432,42 +481,49 @@ function score(guess, ans) {
   return res.join(""); // e.g: "BSOO"
 }
 
-function addRow(guess, pattern) {
-  const tr = document.createElement("tr");
-  tr.innerHTML = `<td>${tries}</td><td><strong>${guess}</strong></td><td>${pattern}</td>`;
-  tbody.prepend(tr);
+// Modified: Single line result display
+function addResult(guess, pattern, tryNumber) {
+  const resultItem = document.createElement("div");
+  resultItem.className = "result-item";
+  resultItem.innerHTML = `
+    <span class="result-number">#${tryNumber}</span>
+    <span class="result-guess">${guess}</span>
+    <span class="result-score">${pattern}</span>
+  `;
+  
+  // Insert at the beginning (most recent on top)
+  resultsContainer.insertBefore(resultItem, resultsContainer.firstChild);
 }
- 
   
 function onTry() {
   if (finished || !mode) return;
   const g = guessEl.value.trim();
   const err = validate(g);
   if (err) { warnEl.textContent = err; return; }
+  
   warnEl.textContent = "";
   tries++;
+  guessHistory.add(g); // Add to history
 
   const pattern = score(g, secret);
-  addRow(g, pattern);
+  addResult(g, pattern, tries); // Show result immediately
 
   if (pattern.split("").every(ch => ch === "S")) {
     finished = true;
     statusEl.textContent = `Correct! (${secret})`;
     statusEl.classList.add("ok");
-    summaryEl.textContent = ``;
+    summaryEl.textContent = `You won in ${tries} tries!`;
     btnTry.disabled = true;
     updateButtons(true);
   } else {
     summaryEl.textContent = ``;
   }
 
+  // Clear input and reset keypad for next attempt
   guessEl.value = "";
   btnTry.disabled = true;
-  updateKeypad(); // Reset keypad
+  updateKeypad();
 }   
-
-
-
 function giveUp() {
   if (finished || !mode) return;
   finished = true;
@@ -476,10 +532,7 @@ function giveUp() {
   btnTry.disabled = true;
 
   updateButtons(true);
-}
-
-
- 
+} 
 function updateButtons(isFinished) {
   // Submit button: less prominent (secondary) when finished, primary when in progress
   btnTry.classList.toggle("primary", !isFinished);
@@ -492,13 +545,11 @@ function updateButtons(isFinished) {
   // Optional: attention effect for new game button
   btnReset.classList.toggle("attention", isFinished);
 }
-
   function onInput(e) {
     // Restrict direct input when using keypad
     e.preventDefault();
     return false;
   }
-
 
   guessEl.addEventListener("input", onInput);
   guessEl.addEventListener("keydown", e => { 
