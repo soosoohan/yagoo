@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ko">
 <head>
  <!-- Google tag (gtag.js) -->
@@ -33,7 +32,6 @@
 
  <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-
 
 * {
     margin: 0;
@@ -439,8 +437,6 @@ body {
             <h1>⚾ 숫자 야구게임 vs AI</h1>
             <p>하나의 비밀숫자를 두고 AI와 추리 경쟁!</p>
         </div>
-
-
 <div class="rules">
     <h3>🎯 게임 규칙</h3>
     <ul>
@@ -452,9 +448,6 @@ body {
         <li>먼저 맞추는 사람이 승리합니다!</li>
     </ul>
 </div>
-
-
-
 <div class="game-status">
     <div class="status-text" id="gameStatus">자릿수를 선택하고 게임을 시작하세요!</div>
     <div class="turn-indicator" id="turnIndicator"></div>
@@ -473,13 +466,8 @@ body {
         </button>
     </div>
 </div>
-
 <div class="game-board" id="gameBoard" style="display: none;">
-
-
 <!-- 플레이어 섹션 -->
-
-
     <div class="player-section active" id="playerSection">
         <div class="player-title">당신의 추리</div>
         <div class="history" id="playerHistory">
@@ -508,10 +496,8 @@ body {
                     <button class="number-btn control-btn-keypad" id="clear">전체<br>삭제</button>
                     <button class="number-btn control-btn-keypad" id="playerSubmit" onclick="playerGuess()">입력<br>하기</button>
                 </div>
-            </div>
-            
-            
-        </div>
+            </div>          
+       </div>
     </div>
 
     <!-- AI 섹션 -->
@@ -532,10 +518,7 @@ body {
     <button class="control-btn primary" onclick="startGame()" id="startBtn" disabled>난이도를 먼저 선택하세요</button>
     <button class="control-btn" onclick="resetGame()">새 게임</button>
 </div>
-
-
 </div>
-
 <script>
     let secretNumber = ''; // 공통 비밀숫자
     let playerGuesses = [];
@@ -610,7 +593,6 @@ body {
             }
         }
     });
-
     // 난이도 선택
     function selectDifficulty(digits) {
         selectedDigits = digits;
@@ -633,7 +615,6 @@ body {
         // 규칙 텍스트 업데이트
         document.getElementById('gameRuleDigits').textContent = `${digits}자리 서로 다른 숫자를 교대로 추리합니다!`;
     }
-
     // 게임 초기화
     function startGame() {
         if (selectedDigits === 0) {
