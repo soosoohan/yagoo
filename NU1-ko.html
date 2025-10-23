@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-
 <html lang="ko">
 <head>
-  <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -32,7 +31,7 @@
     <link rel="alternate" hreflang="ko" href="https://soosooland.com/yagoo/NU1-ko.html">
     <link rel="alternate" hreflang="en" href="https://soosooland.com/yagoo/NU1-en.html">
 
-  <style>
+   <style>
   :root { --bg:#0b1520; --card:#122233; --accent:#6ee7ff; --muted:#9db3c7; }
   * { box-sizing: border-box; }
   body { margin:0; font-family: system-ui, sans-serif; background: var(--bg); color:#eef6ff; display:flex; min-height:100vh; }
@@ -53,22 +52,19 @@
 
 input#guess {
 font-size: 20px;
-background: #1e3a52; /* ← 이 부분이 배경색입니다 */
+background: #1e3a52;
 border: 3px solid #2c4157;
 color: white;
 }
 
 button { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px; }
-.primary { background:var(–accent); color:#00121d; }
+.primary { background:var(--accent); color:#00121d; }
 .secondary { background:#2c4157; color:#d7e7f5; }
-.ghost { background:transparent; color:var(–muted); border:1px dashed rgba(255,255,255,.2); }
+.ghost { background:transparent; color:var(--muted); border:1px dashed rgba(255,255,255,.2); }
 button:disabled { opacity:.45; cursor:not-allowed; }
-.hint { margin-top:10px; color:var(–muted); font-size:20px;}
+.hint { margin-top:10px; color:var(--muted); font-size:20px;}
 .warn { margin-top:6px; color:#ffb8c1; font-size:20px; min-height:1.3em; }
 .log { margin-top:18px; background:#0f1c2a; border-radius:14px; border:1px solid rgba(255,255,255,.08); max-height:50vh; overflow:auto;}
-.log table { width:100%; border-collapse:collapse; font-variant-numeric: tabular-nums; font-size:20px; }
-.log th, .log td { padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
-.log tr:last-child td { border-bottom:0; }
 .badge { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:20px;display:inline-block;  background:#50a3c7;}
 .mode-buttons { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
 .ok { color:#b8ffb8; }
@@ -76,7 +72,7 @@ button:disabled { opacity:.45; cursor:not-allowed; }
 #modeLabel:empty {
 display: none;
 }
-/* 선택 사항: 새 게임 버튼 주목 효과 */
+/* New game button attention effect */
 .attention {
 animation: pulse 1.2s ease-in-out infinite;
 }
@@ -87,12 +83,12 @@ animation: pulse 1.2s ease-in-out infinite;
 
 input#guess {
 font-size: 20px;
-background: var(–bg);
+background: var(--bg);
 border: 3px solid #2c4157;
 color:white;
 }
 
-/* 숫자 키패드 스타일 */
+/* Number keypad styles */
 .number-keypad {
 display: grid;
 grid-template-columns: repeat(5, 1fr);
@@ -149,13 +145,51 @@ margin: 15px 0;
 }
 
 .keypad-title {
-color: var(–muted);
+color: var(--muted);
 font-size: 16px;
 margin-bottom: 8px;
 text-align: center;
 }
 
-/* 모바일에서 키패드 최적화 */
+/* Result item styles - Single line display */
+.result-item {
+  background: #1a2a3a;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,.1);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.result-number {
+  color: var(--muted);
+  font-size: 16px;
+  min-width: 40px;
+}
+
+.result-guess {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #e9f5ff;
+  flex: 1;
+}
+
+.result-score {
+  font-size: 20px;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.results-container {
+  margin-top: 20px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+/* Mobile keypad optimization */
 @media (max-width: 600px) {
 .number-keypad {
 grid-template-columns: repeat(5, 1fr);
@@ -182,6 +216,15 @@ align-items: stretch;
 width: 100%;
 margin-bottom: 8px;
 }
+
+.result-item {
+  gap: 12px;
+}
+
+.result-guess {
+  font-size: 20px;
+  letter-spacing: 3px;
+}
 }
 
 </style>
@@ -190,37 +233,45 @@ margin-bottom: 8px;
 <body>
 <div class="wrap">
   <div class="card">
-    <h1> 숫자 야구 쉬움</h1>
+    <h1>숫자야구 게임 (쉬움)</h1>
     <div style="margin:10px 0;padding:10px 14px;border:1px solid #ccc;border-radius:8px;background:#143148;color:#d7e7f5;font-size:20px;line-height:1.6">
   <strong>게임 규칙:</strong> <br>
-  - 비밀 숫자를 맞추는 고전 퍼즐입니다.<br>
-  - 서로 다른 숫자로 구성된 비밀 코드를 추측합니다.<br>
-  - <b>S(스트라이크)</b>: 숫자와 자리 모두 맞음<br>
-  - <b>B(볼)</b>: 숫자는 맞지만 자리 다름<br>
-  - <b>O(아웃)</b>: 없는 숫자<br>
-  모든 자리를 맞추면 승리!
+  - 숫자 추리 퍼즐 게임입니다.<br>
+  - 중복되지 않는 숫자로 만든 비밀 코드를 맞춰보세요.<br>
+  - <b>S (스트라이크)</b>: 숫자와 위치가 모두 맞음<br>
+  - <b>B (볼)</b>: 숫자는 맞지만 위치가 틀림<br>
+  - <b>O (아웃)</b>: 숫자가 포함되지 않음<br>
+  모든 스트라이크를 완성하면 승리!
 </div>
 
 <div class="mode-buttons">
-      <button class="secondary" id="m3e">3자리 1~9</button>
-      <button class="secondary" id="m3i">3자리 0~9</button>
-      <button class="secondary" id="m4e">4자리 1~9</button>
-      <button class="secondary" id="m4i">4자리 0~9</button>
+      <button class="secondary" id="m3e">3자리 (1~9)</button>
+      <button class="secondary" id="m3i">3자리 (0~9)</button>
+      <button class="secondary" id="m4e">4자리 (1~9)</button>
+      <button class="secondary" id="m4i">4자리 (0~9)</button>
     </div>
 
 <div class="row">
-  <input id="guess" autocomplete="off" inputmode="none" maxlength="4" placeholder="예: 573" readonly />
-  <button id="btn-try" class="primary" disabled>제출</button>
   <button id="btn-reset" class="secondary">새 게임</button>
   <button id="btn-giveup" class="ghost">포기</button>
- <span id="status" class="badge">먼저 자릿수를 선택하세요.</span>
+ <span id="status" class="badge">먼저 모드를 선택하세요.</span>
   <span id="modeLabel" class="badge"></span>
 <span id="summary" class="hint"></span>
 </div>
-<div id="warn" class="warn"></div>
 
-<!-- 숫자 키패드 추가 -->
+<!-- Results show here immediately after each attempt -->
+<div class="results-container" id="resultsContainer"></div>
 
+<!-- Input area - stays at top -->
+<div style="margin-top: 20px;">
+  <div class="row">
+    <input id="guess" autocomplete="off" inputmode="none" maxlength="4" placeholder="예: 573" readonly />
+    <button id="btn-try" class="primary" disabled>제출</button>
+  </div>
+  <div id="warn" class="warn"></div>
+</div>
+
+<!-- Number keypad -->
 <div class="keypad-section">
   <div class="keypad-title">숫자를 클릭하세요</div>
   <div class="number-keypad" id="keypad">
@@ -234,21 +285,12 @@ margin-bottom: 8px;
     <button class="number-btn" data-number="8">8</button>
     <button class="number-btn" data-number="9">9</button>
     <button class="number-btn" data-number="0">0</button>
-    <button class="number-btn control-btn" id="backspace">지우기</button>
+    <button class="number-btn control-btn" id="backspace">삭제</button>
     <button class="number-btn control-btn" id="clear">전체삭제</button>
   </div>
 </div>
 
-<div class="hint">1S=자리·숫자 일치, 1B=숫자만 존재. 나머지는 OUT.</div>
-
-<div class="log">
-  <table>
-    <thead>
-      <tr><th>#</th><th>추측</th><th>결과</th></tr>
-    </thead>
-    <tbody id="tbody"></tbody>
-  </table>
-</div>
+<div class="hint">S = 숫자와 위치 모두 맞음, B = 숫자만 맞고 위치 틀림, O = 틀린 숫자</div>
 
   </div>
 </div>
@@ -256,20 +298,22 @@ margin-bottom: 8px;
 <script>
 (function () {
   const $ = sel => document.querySelector(sel);
-  const guessEl = $("#guess"), tbody = $("#tbody"), statusEl = $("#status"),
+  const guessEl = $("#guess"), statusEl = $("#status"),
         summaryEl = $("#summary"), btnTry = $("#btn-try"),
         btnReset = $("#btn-reset"), btnGiveup = $("#btn-giveup"),
-        warnEl = $("#warn"), modeLabel = $("#modeLabel");
+        warnEl = $("#warn"), modeLabel = $("#modeLabel"),
+        resultsContainer = $("#resultsContainer");
 
   let secret = "", tries = 0, finished = false;
   let mode = null; // {len:3|4, zero:true|false}
   let currentModeKey = null; // m3e, m3i, m4e, m4i
+  let guessHistory = new Set(); // Track all guesses
 
   const modes = {
-    m3e: {len:3, zero:false, label:"3자리 · 0 제외"},
-    m3i: {len:3, zero:true, label:"3자리 · 0 포함"},
-    m4e: {len:4, zero:false, label:"4자리 · 0 제외"},
-    m4i: {len:4, zero:true, label:"4자리 · 0 포함"}
+    m3e: {len:3, zero:false, label:"3자리 · 0제외"},
+    m3i: {len:3, zero:true, label:"3자리 · 0포함"},
+    m4e: {len:4, zero:false, label:"4자리 · 0제외"},
+    m4i: {len:4, zero:true, label:"4자리 · 0포함"}
   };
 
   Object.keys(modes).forEach(id=>{
@@ -278,7 +322,7 @@ margin-bottom: 8px;
       currentModeKey = id;
       modeLabel.textContent = mode.label;
       reset();
-      updateKeypad(); // 키패드 업데이트
+      updateKeypad(); // Update keypad
     });
   });
 
@@ -288,7 +332,7 @@ margin-bottom: 8px;
       const r = Math.floor(Math.random() * (i + 1));
       [digits[i], digits[r]] = [digits[r], digits[i]];
     }
-    // 첫자리 0 방지
+    // Prevent 0 as first digit
     if (digits[0] === "0") {
       for (let i = 1; i < digits.length; i++) {
         if (digits[i] !== "0") { [digits[0], digits[i]] = [digits[i], digits[0]]; break; }
@@ -303,7 +347,8 @@ function reset() {
   if (!mode) { warnEl.textContent = "먼저 모드를 선택하세요."; return; }
   secret = newSecret();
   tries = 0; finished = false;
-  tbody.innerHTML = "";
+  guessHistory.clear(); // Clear guess history
+  resultsContainer.innerHTML = ""; // Clear results
   statusEl.textContent = "진행 중";
   statusEl.classList.remove("ok","fail");
   summaryEl.textContent = "";
@@ -313,11 +358,11 @@ function reset() {
   guessEl.maxLength = mode.len;
   guessEl.placeholder = (mode.len === 3) ? "예: 573" : "예: 5073";
 
-  updateButtons(false);        // ← 추가: 진행 중 UI
-  updateKeypad(); // 키패드 상태 업데이트
+  updateButtons(false);        
+  updateKeypad(); // Update keypad state
 }
 
-  // 키패드 업데이트 함수
+  // Update keypad function
   function updateKeypad() {
     const numberBtns = document.querySelectorAll('.number-btn[data-number]');
     const currentInput = guessEl.value;
@@ -328,17 +373,17 @@ function reset() {
       const isZeroAllowed = mode && mode.zero;
       const isFirstPosition = currentInput.length === 0;
       
-      // 0 처리: 첫 자리이고 0이 허용되지 않는 모드면 비활성화
+      // Handle 0: disable if first position and 0 not allowed
       if (number === '0' && (!isZeroAllowed || isFirstPosition)) {
         btn.disabled = true;
         btn.classList.add('used');
       }
-      // 이미 사용된 숫자면 비활성화
+      // Disable if already used
       else if (isUsed) {
         btn.disabled = true;
         btn.classList.add('used');
       }
-      // 입력 길이가 최대치면 모든 숫자 비활성화
+      // Disable all numbers if max length reached
       else if (mode && currentInput.length >= mode.len) {
         btn.disabled = true;
       }
@@ -349,20 +394,20 @@ function reset() {
     });
   }
 
-  // 키패드 이벤트 리스너
+  // Keypad event listeners
   document.getElementById('keypad').addEventListener('click', (e) => {
     if (!mode || finished) return;
     
     const target = e.target;
     if (target.classList.contains('number-btn')) {
       if (target.dataset.number) {
-        // 숫자 버튼 클릭
+        // Number button clicked
         const number = target.dataset.number;
         const currentInput = guessEl.value;
         
-        // 길이 체크 및 중복 체크
+        // Length check and duplicate check
         if (currentInput.length < mode.len && !currentInput.includes(number)) {
-          // 첫 자리 0 체크
+          // First position 0 check
           if (number === '0' && currentInput.length === 0) return;
           
           guessEl.value += number;
@@ -371,13 +416,13 @@ function reset() {
         }
       }
       else if (target.id === 'backspace') {
-        // 지우기 버튼
+        // Delete button
         guessEl.value = guessEl.value.slice(0, -1);
         updateKeypad();
         validateInput();
       }
       else if (target.id === 'clear') {
-        // 전체 삭제 버튼
+        // Clear all button
         guessEl.value = '';
         updateKeypad();
         validateInput();
@@ -394,23 +439,29 @@ function reset() {
 
 
   function validate(input) {
-    if (!mode) return "모드를 먼저 선택하세요.";
-    if (input.length < mode.len) return `${mode.len}자리 모두 입력하세요.`;
+    if (!mode) return "먼저 모드를 선택하세요.";
+    if (input.length < mode.len) return `${mode.len}자리 숫자를 모두 입력하세요.`;
+    
+    // Check for duplicate guess
+    if (guessHistory.has(input)) {
+      return "이미 시도한 숫자입니다!";
+    }
+    
     let regex = mode.zero ? /^\d+$/ : /^[1-9]+$/;
-    if (!regex.test(input)) return mode.zero ? "0~9 숫자만" : "1~9 숫자만 (0 금지)";
-    if (new Set(input).size !== mode.len) return "모든 숫자는 달라야 합니다.";
-    if (input[0] === "0") return "첫 자리에 0 불가";
+    if (!regex.test(input)) return mode.zero ? "0~9 숫자만 입력" : "1~9 숫자만 입력 (0 제외)";
+    if (new Set(input).size !== mode.len) return "모든 숫자가 달라야 합니다.";
+    if (input[0] === "0") return "첫 번째 숫자는 0이 될 수 없습니다";
     return "";
   }
 
   
 
 function score(guess, ans) {
-  const res = Array(guess.length).fill("O"); // 기본 OUT
+  const res = Array(guess.length).fill("O"); // Default OUT
   const remainAns = {}; 
   const remainIdx = [];
 
-  // 1) 스트라이크 먼저
+  // 1) Strikes first
   for (let i = 0; i < guess.length; i++) {
     if (guess[i] === ans[i]) {
       res[i] = "S";
@@ -420,7 +471,7 @@ function score(guess, ans) {
     }
   }
 
-  // 2) 볼 처리
+  // 2) Balls
   for (const i of remainIdx) {
     const d = guess[i];
     if (remainAns[d] > 0) {
@@ -429,13 +480,21 @@ function score(guess, ans) {
     }
   }
 
-  return res.join(""); // 예: "BSOO"
+  return res.join(""); // e.g: "BSOO"
 }
 
-function addRow(guess, pattern) {
-  const tr = document.createElement("tr");
-  tr.innerHTML = `<td>${tries}</td><td><strong>${guess}</strong></td><td>${pattern}</td>`;
-  tbody.prepend(tr);
+// Modified: Single line result display
+function addResult(guess, pattern, tryNumber) {
+  const resultItem = document.createElement("div");
+  resultItem.className = "result-item";
+  resultItem.innerHTML = `
+    <span class="result-number">#${tryNumber}</span>
+    <span class="result-guess">${guess}</span>
+    <span class="result-score">${pattern}</span>
+  `;
+  
+  // Insert at the beginning (most recent on top)
+  resultsContainer.insertBefore(resultItem, resultsContainer.firstChild);
 }
  
   
@@ -444,26 +503,29 @@ function onTry() {
   const g = guessEl.value.trim();
   const err = validate(g);
   if (err) { warnEl.textContent = err; return; }
+  
   warnEl.textContent = "";
   tries++;
+  guessHistory.add(g); // Add to history
 
   const pattern = score(g, secret);
-  addRow(g, pattern);
+  addResult(g, pattern, tries); // Show result immediately
 
   if (pattern.split("").every(ch => ch === "S")) {
     finished = true;
     statusEl.textContent = `정답! (${secret})`;
     statusEl.classList.add("ok");
-    summaryEl.textContent = ``;
+    summaryEl.textContent = `${tries}번 만에 성공!`;
     btnTry.disabled = true;
     updateButtons(true);
   } else {
     summaryEl.textContent = ``;
   }
 
+  // Clear input and reset keypad for next attempt
   guessEl.value = "";
   btnTry.disabled = true;
-  updateKeypad(); // 키패드 리셋
+  updateKeypad();
 }   
 
 
@@ -475,26 +537,26 @@ function giveUp() {
   statusEl.classList.add("fail");
   btnTry.disabled = true;
 
-  updateButtons(true);         // ← 추가: 끝난 UI
+  updateButtons(true);
 }
 
 
  
 function updateButtons(isFinished) {
-  // 제출 버튼: 끝났으면 덜 눈에 띄게(secondary), 진행 중이면 primary
+  // Submit button: less prominent (secondary) when finished, primary when in progress
   btnTry.classList.toggle("primary", !isFinished);
   btnTry.classList.toggle("secondary", isFinished);
 
-  // 새 게임 버튼: 끝났으면 눈에 띄게(primary), 진행 중이면 secondary
+  // New game button: prominent (primary) when finished, secondary when in progress
   btnReset.classList.toggle("primary", isFinished);
   btnReset.classList.toggle("secondary", !isFinished);
 
-  // 선택: 새 게임 버튼에 주목 효과
+  // Optional: attention effect for new game button
   btnReset.classList.toggle("attention", isFinished);
 }
 
   function onInput(e) {
-    // 키패드 사용 시에는 직접 입력 제한
+    // Restrict direct input when using keypad
     e.preventDefault();
     return false;
   }
@@ -502,11 +564,11 @@ function updateButtons(isFinished) {
 
   guessEl.addEventListener("input", onInput);
   guessEl.addEventListener("keydown", e => { 
-    // Enter 키는 허용
+    // Allow Enter key
     if (e.key === "Enter" && !btnTry.disabled) {
       onTry();
     } else {
-      // 다른 키 입력은 차단 (키패드만 사용)
+      // Block other key inputs (keypad only)
       e.preventDefault();
     }
   });
