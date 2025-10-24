@@ -69,9 +69,27 @@ background: #374151;
 }
 
 .length-btn.active {
-background: #059669;
-border-color: #10b981;
-color: white;
+background: #FFD700;
+color: #0f172a;
+}
+#newGame {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background: #6f85b0;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  position: relative;
+  color:white;
+  font-size:30px;
+}
+
+#newGame:hover {
+  background: #9ca3af;
 }
 
 /* === 현재 입력 중인 단어 표시 === */
@@ -152,7 +170,7 @@ transition: all 0.2s;
     <button class="length-btn active" data-length="4">4</button>
     <button class="length-btn" data-length="5">5</button>
     <button class="length-btn" data-length="6">6</button>
-    <button id="newGame">새 게임</button>
+    <button id="newGame">▶</button>
 </div>
   </div>
 
@@ -437,7 +455,7 @@ const WORDPOOL = [
         btn.classList.add('active');
         // 길이 설정
         length = parseInt(btn.dataset.length, 10);
-        setStatus('글자수를 선택했습니다. [새 게임]을 누르세요.','warn');
+        setStatus('Word length selected. Press ▶.','warn');
       });
     });
 
@@ -457,7 +475,7 @@ const WORDPOOL = [
 
     // 초기
     toggleInput(false);
-    setStatus('글자수를 선택하고 [새 게임]을 누르세요.','warn');
+    setStatus('Word length selected. Press ▶.','warn');
     renderAlphabetKeyboard();
   </script>
 
