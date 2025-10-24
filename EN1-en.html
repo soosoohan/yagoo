@@ -68,12 +68,30 @@ background: #374151;
 }
 
 .length-btn.active {
-background: #059669;
-border-color: #10b981;
-color: white;
+background: #FFD700;
+color: #0f172a;
 }
 
-/* === 현재 입력 중인 단어 표시 === */
+#newGame {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background: #6f85b0;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  position: relative;
+  color:white;
+  font-size:30px;
+}
+
+#newGame:hover {
+  background: #9ca3af;
+}
+
 .current-word {
 font-size: 28px;
 font-weight: bold;
@@ -130,7 +148,7 @@ transition: all 0.2s;
 </head>
 <body>
 
-  <div class="app">
+<div class="app">
     <h1>English Baseball (easy)<span style="color:#94a3b8"></span></h1>
 
 <div class="card">
@@ -152,7 +170,7 @@ transition: all 0.2s;
     <button class="length-btn active" data-length="4">4</button>
     <button class="length-btn" data-length="5">5</button>
     <button class="length-btn" data-length="6">6</button>
-    <button id="newGame">New Game</button>
+    <button id="newGame">▶</button>
 </div>
   </div>
 
@@ -441,7 +459,7 @@ currentInput = "";
         btn.classList.add('active');
         // 길이 설정
         length = parseInt(btn.dataset.length, 10);
-setStatus('Word length selected. Press [New Game].','warn');
+setStatus('Word length selected. Press ▶.','warn');
 
       });
     });
@@ -462,7 +480,7 @@ setStatus('Word length selected. Press [New Game].','warn');
 
     // 초기
     toggleInput(false);
-    setStatus('Word length selected. Press [New Game].','warn');
+    setStatus('Word length selected. Press ▶.','warn');
     renderAlphabetKeyboard();
   </script>
 
