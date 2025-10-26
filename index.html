@@ -84,14 +84,26 @@
         .main-game-button:hover{background:#f0f8ff;transform:translateY(-2px);box-shadow:0 6px 15px rgba(0,0,0,.3)}
         .main-game-button:active{transform:translateY(0)}
 
-        .square-button{
-          width:250px;height:45px;background:#145454;color:#00e6cc;border:none;border-radius:12px;cursor:pointer;
-          font-size:1.1rem;font-weight:700;display:flex;justify-content:center;align-items:center;line-height:1.2;margin:8px;transition:.3s;font-family:Arial, sans-serif
-        }
-        .square-button:hover{background:#20b2aa;transform:scale(1.05);box-shadow:0 4px 8px rgba(0,0,0,.2)}
-        .square-button:active{transform:scale(.95)}
-        .credits{margin-top:50px;font-size:.9em;color:#fff;background: #0f172a;padding:20px;border-radius:10px;width:300px;justify-content:center}
+     
+  .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        font-size: 1em;
+        background-color: #FFD6BA;
+        color: #7A2E2E;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 100;
+    }
 
+    .back-button:hover {
+        background-color: #FF9494;
+        color: white;
+    }
         .hidden{display:none}
 
         @media (max-width: 768px){
@@ -109,9 +121,11 @@
         @media (max-height:600px) and (orientation:landscape){
           .content{justify-content:flex-start;padding-top:10px}
         }
-    </style>
+</style>
 </head>
 <body>
+  <button class="back-button" onclick="location.href='https://soosooland.com/'">
+    Soosooland </button>
   <div class="container">
     <!-- 헤더 -->
     <div class="header">
@@ -161,13 +175,7 @@
               <button class="main-game-button" onclick="location.href='KO3-ko.html'">한글야구 기본</button>
               <button class="main-game-button" onclick="location.href='KO6-ko.html'">한글야구 보통</button>
             </div>
-      
-  </div>    <div class="credits">
-        <button class="square-button" onclick="location.href='https://soosoohan.github.io/soosooland/'">
-          즐거운 퍼즐, 수수랜드  
-        </button>
-        <p>© 2025 한수수. All rights reserved.</p>
-      </div>
+  </div>
         </div>
       </div>
 
