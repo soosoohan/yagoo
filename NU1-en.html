@@ -34,6 +34,25 @@
   :root { --bg:#0b1520; --card:#122233; --accent:#6ee7ff; --muted:#9db3c7; }
   * { box-sizing: border-box; }
   body { margin:0; font-family: system-ui, sans-serif; background: var(--bg); color:#eef6ff; display:flex; min-height:100vh; }
+  .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 8px 10px; 
+    font-size: 1.5em;
+    font-weight: bold;
+   background: #E6B800;
+    color: #0f172a;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+.back-button:hover {
+    background-color: #B2924F;
+    color: #0f172a;
+}
   .wrap { margin:auto; width:min(720px, 100%); padding:24px; }
   .card { background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:22px; box-shadow: 0 10px 30px rgba(0,0,0,.35);}
   h1 { margin:0 0 8px; font-size: 30px;}
@@ -207,27 +226,23 @@ padding: 12px 8px;
 font-size: 16px;
 min-height: 45px;
 }
-
 input#guess {
 width: 100%;
 font-size: 18px;
 }
-
 .row {
 flex-direction: column;
 align-items: stretch;
 }
-
 .row > * {
 width: 100%;
 margin-bottom: 8px;
 }
 }
-
 </style>
-
 </head>
 <body>
+<button class="back-button" onclick="location.href='index.html'"> ← </button>
 <div class="wrap">
   <div class="card">
     <h1>Number Baseball Game (easy)</h1>
