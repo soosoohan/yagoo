@@ -32,6 +32,25 @@
 
   <style>
   body { font-family: Arial, sans-serif; background: #0f172a; color: #e5e7eb; display: flex; justify-content: center; padding: 20px; font-size:20px;}
+ .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 8px 10px; 
+    font-size: 1.5em;
+    font-weight: bold;
+   background: #E6B800;
+    color: #0f172a;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+.back-button:hover {
+    background-color: #B2924F;
+    color: #0f172a;
+}
   .app { max-width: 600px; width: 100%; background: #111827; padding: 20px; border-radius: 10px; }
   h1 { margin-top: 0; font-size:30px;}
   select, input, button { padding: 8px; margin: 4px; border-radius: 5px; border: none;  font-size:20px;}
@@ -58,6 +77,7 @@
 </head>
 <body>
 <div class="app">
+<button class="back-button" onclick="location.href='index.html'"> ← </button>
   <h1>Word baseball (medium)<span style="color:#94a3b8"></span></h1>
   <div class="card">
     <strong>Game Rules</strong>
