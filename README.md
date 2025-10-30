@@ -2,8 +2,10 @@
 
 야구 게임은  고전 게임 bulls and cows 를  다양한 코드를 넣어서 만들었습니다.
 찾아야할 비밀코드에는 숫자, 영어 단어, 한글 단어가 있습니다.
+각 야구게임의 쉬운 버전은 야구 게임의 초심자를 위하여 만들었습니다. 
 
 The baseball game is based on the classic Bulls and Cows game, but I created it with various code types. The secret codes to find include numbers, English words, and Korean words.     
+The easy version of each Baseball Game was created for beginners.
 
 ---
 ## 📄 단어 야구 (Word Baseball)
