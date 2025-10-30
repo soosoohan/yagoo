@@ -48,7 +48,25 @@ body {
     align-items: center;
     padding: 20px;
 }
-
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 8px 10px; 
+    font-size: 1.5em;
+    font-weight: bold;
+   background: #E6B800;
+    color: #0f172a;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+.back-button:hover {
+    background-color: #B2924F;
+    color: #0f172a;
+}
 .game-container {
     background: white;
     border-radius: 20px;
@@ -426,13 +444,11 @@ body {
         width: 100%;
     }
 }
-
-
 </style>
-
 </head>
 <body>
-    <div class="game-container">
+<button class="back-button" onclick="location.href='index.html'"> ← </button>
+ <div class="game-container">
         <div class="header">
             <h1>⚾ 숫자 야구게임 vs AI</h1>
             <p>하나의 비밀숫자를 두고 AI와 추리 경쟁!</p>
