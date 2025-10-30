@@ -58,8 +58,6 @@ The baseball game is based on the classic Bulls and Cows game, but I created it 
 - **단일 HTML**로 오프라인 실행 가능
 - **전통적인 단어야구 게임에 한글단어를 넣고 모음을 공개하고 아래쪽에 자음버튼을 넣어 난이도를 줄였습니다.   
 - **한국어기초사전과  한국어능력시험용 단어들이 워드풀에 들어갔습니다.
-  
----
 
 ## 🎮 플레이 방법
 
@@ -70,8 +68,6 @@ The baseball game is based on the classic Bulls and Cows game, but I created it 
 4. 결과 표의 `S/B/OUT`을 보고 다음 추측을 조정하세요.  
 5. **정답**을 맞히거나, 정해진 시도 내에 못 맞히면 게임이 종료됩니다. (포기 가능)
 
----
-
 ## 🧠 채점 규칙(요약)
 
 - 한 글자를 **초성/중성/종성**으로 분해합니다.  
@@ -80,18 +76,6 @@ The baseball game is based on the classic Bulls and Cows game, but I created it 
 - **S**: 같은 글자 인덱스, 같은 슬롯(초/종), 같은 순번(겹받침 위치), 같은 자음일 때 카운트  
 - **B**: 남은 자음들 간 **멀티셋 교집합** 개수  
 - **OUT**: 이번 추측 자음 수 − (S + B)
-
----
-
-English Summary
-
-Hangul Baseball is a consonant-based deduction game for Korean words (2–5 syllables).  
-- You see the vowel sequence as a hint, and must guess words with the same vowels.  
--	Scoring uses only consonants (initial + final; double finals decomposed).  
-- S: same position/slot/index & consonant  
-- B: consonant exists but at a different position/slot  
-- OUT: consonant not in the secret  
-- Word list is a single mixed array; filt
 
 ---
 
@@ -129,7 +113,8 @@ Hangul Baseball is a consonant-based deduction game for Korean words (2–5 syll
 
 ---
 
-## 야구게임 주소 : https://soosooland.com/yagoo/
+## 야구게임 주소 : https://soosooland.com/yagoo/  
+
 ---
 
 ## 🌟 Soosooland - Puzzle Game Hub by Han Soosoo
