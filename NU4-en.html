@@ -2,28 +2,13 @@
 
 <html lang="en">
 <head>
-   <!-- Google tag (gtag.js) with local environment check -->
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
 <script>
-  // 로컬이 아닐 때만 애널리틱스 로드
-  if (window.location.hostname !== 'localhost' && 
-      window.location.hostname !== '127.0.0.1' &&
-      window.location.protocol !== 'file:') {
-    
-    // 애널리틱스 스크립트 동적 로드
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN';
-    document.head.appendChild(script);
-    
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-4YZHC1G9FN');
-    
-    console.log("애널리틱스 활성화됨");
-  } else {
-    console.log("로컬 환경 - 애널리틱스 비활성화됨");
-  }
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4YZHC1G9FN');
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
