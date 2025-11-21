@@ -414,12 +414,20 @@ function reset() {
     tr.innerHTML = `<td>${tries}</td><td><strong>${guess}</strong></td><td>${result}</td>`;
     tbody.prepend(tr);
   }
-
-function onTry() {
+ function onTry() {
     if (finished || !mode) return;
     const g = guessEl.value.trim();
     const err = validate(g);
     if (err) { warnEl.textContent = err; return; }
+    
+    // 여기에 추가! 이미 시도한 숫자인지 체크
+    const previousGuesses = Array.from(tbody.querySelectorAll('tr td:nth-child(2) strong'))
+      .map(el => el.textContent);
+    if (previousGuesses.includes(g)) {
+      warnEl.textContent = "이미 시도하셨습니다.";
+      setTimeout(() => { warnEl.textContent = ""; }, 2000);
+      return;
+    }
     warnEl.textContent = "";
     tries++;
     const { s, b, outs } = score(g, secret);
