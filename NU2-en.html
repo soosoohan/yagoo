@@ -270,8 +270,8 @@ font-size: 24px;
   let currentModeKey = null;
 
   const modes = {
-    m3i: {len:3, zero:true, label:"3 digits"},
-    m4i: {len:4, zero:true, label:"4 digits"}
+    m3i: {len:3, zero:true, label:"3 digits · with 0"},
+    m4i: {len:4, zero:true, label:"4 digits · with 0"}
   };
 
   Object.keys(modes).forEach(id=>{
@@ -413,12 +413,21 @@ function reset() {
     tr.innerHTML = `<td>${tries}</td><td><strong>${guess}</strong></td><td>${result}</td>`;
     tbody.prepend(tr);
   }
-
 function onTry() {
     if (finished || !mode) return;
     const g = guessEl.value.trim();
     const err = validate(g);
     if (err) { warnEl.textContent = err; return; }
+    
+    // 여기에 추가! 이미 시도한 숫자인지 체크
+    const previousGuesses = Array.from(tbody.querySelectorAll('tr td:nth-child(2) strong'))
+      .map(el => el.textContent);
+    if (previousGuesses.includes(g)) {
+      warnEl.textContent = "Already tried!";
+      setTimeout(() => { warnEl.textContent = ""; }, 2000);
+      return;
+    }
+    
     warnEl.textContent = "";
     tries++;
     const { s, b, outs } = score(g, secret);
