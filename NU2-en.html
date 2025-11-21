@@ -212,10 +212,8 @@ font-size: 24px;
 </div>
 
 <div class="mode-buttons">
-      <button class="secondary" id="m3e">3 digits (1~9)</button>
-      <button class="secondary" id="m3i">3 digits (0~9)</button>
-      <button class="secondary" id="m4e">4 digits (1~9)</button>
-      <button class="secondary" id="m4i">4 digits (0~9)</button>
+      <button class="secondary" id="m3i">3 digits</button>
+      <button class="secondary" id="m4i">4 digits</button>
     </div>
 
 <div class="row">
@@ -272,9 +270,7 @@ font-size: 24px;
   let currentModeKey = null;
 
   const modes = {
-    m3e: {len:3, zero:false, label:"3 digits · no 0"},
     m3i: {len:3, zero:true, label:"3 digits · with 0"},
-    m4e: {len:4, zero:false, label:"4 digits · no 0"},
     m4i: {len:4, zero:true, label:"4 digits · with 0"}
   };
 
