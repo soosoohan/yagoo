@@ -213,10 +213,8 @@ font-size: 24px;
 </div>
 
 <div class="mode-buttons">
-      <button class="secondary" id="m3e">3자리 (1~9)</button>
-      <button class="secondary" id="m3i">3자리 (0~9)</button>
-      <button class="secondary" id="m4e">4자리 (1~9)</button>
-      <button class="secondary" id="m4i">4자리 (0~9)</button>
+      <button class="secondary" id="m3i">3자리</button>
+      <button class="secondary" id="m4i">4자리</button>
     </div>
 
 <div class="row">
@@ -273,10 +271,8 @@ font-size: 24px;
   let currentModeKey = null;
 
   const modes = {
-    m3e: {len:3, zero:false, label:"3자리 · 0 제외"},
-    m3i: {len:3, zero:true, label:"3자리 · 0 포함"},
-    m4e: {len:4, zero:false, label:"4자리 · 0 제외"},
-    m4i: {len:4, zero:true, label:"4자리 · 0 포함"}
+    m3i: {len:3, zero:true, label:"3자리"},
+    m4i: {len:4, zero:true, label:"4자리"}
   };
 
   Object.keys(modes).forEach(id=>{
