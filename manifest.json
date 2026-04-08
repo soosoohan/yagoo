@@ -1,0 +1,20 @@
+{
+  "name": "야구게임 - Soosooland",
+  "short_name": "야구게임",
+  "start_url": "/yagoo/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "https://soosooland.com/images/yagoo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://soosooland.com/images/yagoo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
