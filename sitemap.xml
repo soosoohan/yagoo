@@ -18,13 +18,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://soosooland.com/yagoo/EN2-en.html</loc>
+    <lastmod>2025-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://soosooland.com/yagoo/EN2-ko.html</loc>
     <lastmod>2025-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://soosooland.com/yagoo/EN2-en.html</loc>
+    <loc>https://soosooland.com/yagoo/NU1-en.html</loc>
+    <lastmod>2025-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://soosooland.com/yagoo/NU1-ko.html</loc>
+    <lastmod>2025-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://soosooland.com/yagoo/NU2-en.html</loc>
     <lastmod>2025-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -36,9 +54,29 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://soosooland.com/yagoo/NU2-en.html</loc>
+    <loc>https://soosooland.com/yagoo/NU3-en.html</loc>
     <lastmod>2025-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-</urlset>
+  <url>
+    <loc>https://soosooland.com/yagoo/NU3-ko.html</loc>
+    <lastmod>2025-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://soosooland.com/yagoo/NU4-en.html</loc>
+    <lastmod>2025-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://soosooland.com/yagoo/NU4-ko.html</loc>
+    <lastmod>2025-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  </urlset>
+
+
