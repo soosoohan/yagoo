@@ -69,7 +69,6 @@ Word Baseball is a word-guessing puzzle game.You guess the answer word based on 
 
 ---
 
-
 ## 숫자야구
 
 브라우저에서 바로 즐기는 **수학야구** 게임입니다.  
@@ -94,6 +93,13 @@ Word Baseball is a word-guessing puzzle game.You guess the answer word based on 
 - 추측을 제출하면 `S`, `B`, `OUT` 개수가 표시됩니다.
 - `S`가 자리 수와 같아지면 승리!
 
+| 버튼 | 자리 수 | 0 포함 | 비고 |
+|:---:|:---:|:---:|:---|
+| 3자리 · 1-9 | 3 | ❌ | 1–9만 사용 |
+| 3자리 · 0-9 | 3 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
+| 4자리 · 1-9 | 4 | ❌ | 1–9만 사용 |
+| 4자리 · 0-9 | 4 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
+
 ## 🔀 모드
 
 | 모드 | 자리 수 | 0 포함 | 결과 표시|
@@ -103,40 +109,25 @@ Word Baseball is a word-guessing puzzle game.You guess the answer word based on 
 |컴퓨터와 숫자야구|3,4,5 | ✅| SBO의 개수|
 |숫자야구 대결|3,4,5|  ✅| SBO의 개수|
 
-| 버튼 | 자리 수 | 0 포함 | 비고 |
-|:---:|:---:|:---:|:---|
-| 3자리 · 1-9 | 3 | ❌ | 1–9만 사용 |
-| 3자리 · 0-9 | 3 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
-| 4자리 · 1-9 | 4 | ❌ | 1–9만 사용 |
-| 4자리 · 0-9 | 4 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
 ---
 ## Number Baseball.  
 
 A math baseball game you can enjoy directly in your browser.Supports 4 modes where you can choose the number of digits and whether to include 0.  
 1S = Correct digit in the correct position1B = Correct digit but in the wrong positionThe rest are OUTExample: 0S 0B 3OUT, 1S 1B 1OUT.   
 
-##✨ Features.  
+## ✨ Features.  
 	•	4 modes: 3-digit / 4-digit × with 0 / without 0.  
 	•	Only non-repeating digits are allowed.   
 	•	Real-time validation → submission only allowed when exactly N digits are entered  
 	•	Results displayed in S/B/OUT format in the log (newest on top). 
 	•	Mobile-friendly UI (large input field, large text, enhanced accessibility). 
 
-##🎮 Game Rules  
+## 🎮 Game Rules  
 	•	The secret number consists of unique digits.  
 	•	(3-digit) Answer length: 3 / (4-digit) Answer length: 4  
 	•	Even in 0-included mode, the first digit cannot be 0.  
 	•	After submitting a guess, the count of S, B, and OUT is displayed.  
 	•	You win when the number of S matches the digit count!  
-
-##🔀 Modes
-
-|Mode                    |Digits |Includes 0|Result Display     |
-|:------------------------|:------:|:--------|:-------------------|
-|Number Baseball (easy)  |3, 4   |❌ ✅     |Position of S, B, O|
-|Number Baseball (medium)|3, 4   |❌ ✅      |Count of S, B, O   |
-|Number Baseball vs AI   |3, 4, 5|✅         |Count of S, B, O   |
-|Number Baseball Battle  |3, 4, 5|✅         |Count of S, B, O   |
 
 |Button       |Digits|Includes 0|Notes                            |
 |:-------------:|:-----:|:--------:|:---------------------------------|
@@ -145,6 +136,14 @@ A math baseball game you can enjoy directly in your browser.Supports 4 modes whe
 |4-digit · 1–9|4     |❌         |Uses 1–9 only                    |
 |4-digit · 0–9|4     |✅         |Uses 0–9, first digit cannot be 0|
 
+## 🔀 Modes
+
+|Mode                    |Digits |Includes 0|Result Display     |
+|:------------------------|:------:|:--------|:-------------------|
+|Number Baseball (easy)  |3, 4   |❌ ✅     |Position of S, B, O|
+|Number Baseball (medium)|3, 4   |❌ ✅      |Count of S, B, O   |
+|Number Baseball vs AI   |3, 4, 5|✅         |Count of S, B, O   |
+|Number Baseball Battle  |3, 4, 5|✅         |Count of S, B, O   |
 
 ---
 
