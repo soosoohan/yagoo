@@ -36,9 +36,9 @@ The easy version of each Baseball Game was created for beginners.
 - 잘못된 입력 방지 (단어 사전 검증)
 
 | 버튼 | 단어길이 | 결과 표시 |
-|:---:|:---:|:---:|
-|영어야구 쉬움| 3,4,5,6 | S,B,O의 위치 표시 |
-|영어야구 보통| 3,4,5,6 | S,B,O의 개수 표시|
+|:---|:---:|:---:|
+|수수영어야구| 3,4,5,6 | S,B,O의 위치 표시 |
+|영어야구| 3,4,5,6 | S,B,O의 개수 표시|
 
 ---
 ## 🎯 About Word Baseball
@@ -64,8 +64,8 @@ Word Baseball is a word-guessing puzzle game.You guess the answer word based on 
 
 |Button                        |Word Length|Result Display        |
 |:-----------------------------|:---------:|:------------------------|
-|Word Baseball (easy)  |3, 4, 5, 6 |Shows position of S, B, O|
-|Word Baseball (medium)|3, 4, 5, 6 |Shows count of S, B, O   |
+|Soosoo Word Baseball |3, 4, 5, 6 |Shows position of S, B, O|
+|Word Baseball |3, 4, 5, 6 |Shows count of S, B, O   |
 
 ---
 
@@ -104,8 +104,8 @@ Word Baseball is a word-guessing puzzle game.You guess the answer word based on 
 
 | 모드 | 자리 수 | 0 포함 | 결과 표시|
 |:---|:---|:---|:---:|
-|숫자야구 쉬움| 3,4 | ❌ ✅| SBO의 위치|
-|숫자야구 보통|3,4|  ❌ ✅| SBO의 개수|
+|수수숫자야구 | 3,4 | ❌ ✅| SBO의 위치|
+|숫자야구|3,4|  ❌ ✅| SBO의 개수|
 |컴퓨터와 숫자야구|3,4,5 | ✅| SBO의 개수|
 |숫자야구 대결|3,4,5|  ✅| SBO의 개수|
 
@@ -140,8 +140,8 @@ A math baseball game you can enjoy directly in your browser.Supports 4 modes whe
 
 |Mode                    |Digits |Includes 0|Result Display     |
 |:------------------------|:------:|:--------|:-------------------|
-|Number Baseball (easy)  |3, 4   |❌ ✅     |Position of S, B, O|
-|Number Baseball (medium)|3, 4   |❌ ✅      |Count of S, B, O   |
+|Soosoo Number Baseball|3, 4   |❌ ✅     |Position of S, B, O|
+|Number Baseball |3, 4   |❌ ✅      |Count of S, B, O   |
 |Number Baseball vs AI   |3, 4, 5|✅         |Count of S, B, O   |
 |Number Baseball Battle  |3, 4, 5|✅         |Count of S, B, O   |
 
@@ -157,7 +157,6 @@ A math baseball game you can enjoy directly in your browser.Supports 4 modes whe
  B: 자음이 있지만 **자리/슬롯이 다름**  
  OUT: **해당 자음 없음**  
  (항상 `S + B + OUT = 이번 추측의 자음 수`)
-
 
 ## ✨ 한글 야구의 특징
 
@@ -188,6 +187,10 @@ A math baseball game you can enjoy directly in your browser.Supports 4 modes whe
 - **S**: 같은 글자 인덱스, 같은 슬롯(초/종), 같은 순번(겹받침 위치), 같은 자음일 때 카운트  
 - **B**: 남은 자음들 간 **멀티셋 교집합** 개수  
 - **OUT**: 이번 추측 자음 수 − (S + B)
+| 모드 | 정답에 받침 없음 | 받침 있는 단어 포함 |비고|
+|:---:|:---|:---|:---|
+|SBO의 위치|수수한글야구(쉬움)  |수수한글야구 |아무 단어나 입력 가능|
+|SBO의 개수|한글야구(쉬움)|한글야구| 워드풀의 단어만 입력 가능|
 
 
 ---
