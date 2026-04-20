@@ -8,14 +8,13 @@ The baseball game is based on the classic Bulls and Cows game, but I created it 
 The easy version of each Baseball Game was created for beginners.
 
 ---
-## 📄 단어 야구 (Word Baseball)
+## 📄 영어 야구 (Word Baseball)
 
-## 🎯 단어 야구 소개
+## 🎯 영어 야구 소개
 
-단어 야구는 **단어 맞히기 퍼즐 게임**입니다.  
+영어 야구는 **단어 맞히기 퍼즐 게임**입니다.  
 주어진 힌트를 바탕으로 정답 단어를 추측하며, 각 시도마다 **스트라이크(S)**와 **볼(B)** 판정을 통해 정답에 가까워집니다.
-전통적인  영어 단어 야구 게임에 자음버튼을 넣어서 난이도를 낮추는 방향으로 변형했습니다.
-워드풀을 제공하여 단어를 쉽게 찾을 수 있습니다. 
+워드풀을 제공하여 단어를  찾을 수 있습니다. 
 
 - **스트라이크 (S)** : 글자와 위치가 모두 맞음  
 - **볼 (B)** : 글자는 맞지만 위치가 다름  
@@ -35,6 +34,39 @@ The easy version of each Baseball Game was created for beginners.
 - 글자 중복 허용 여부 설정  
 - 정답 공개 및 재도전 기능  
 - 잘못된 입력 방지 (단어 사전 검증)
+
+| 버튼 | 단어길이 | 비고 |
+|:---|:---:|:---|
+|  영어야구 쉬움 Word Baseball(easy) | 3,4,5,6 | S,B,O의 위치 표시 |
+|  영어야구 보통 Word Baseball(medium)| 3,4,5,6 | S,B,O의 개수 표시|
+
+
+🎯 About Word Baseball
+Word Baseball is a word-guessing puzzle game.
+You guess the answer word based on hints, and with each attempt, Strike (S) and Ball (B) judgments guide you closer to the answer.
+A word pool is provided to help you find words.
+	•	Strike (S) : Correct letter in the correct position
+	•	Ball (B) : Correct letter but in the wrong position
+	•	Out : The letter is not in the word
+
+🕹️ How to Play
+	1.	At the start of the game, select the word length and whether duplicate letters are allowed.
+	2.	Enter a guess and check the result.
+	3.	Use the result to make your next guess.
+	4.	Guess the answer correctly to win!
+	5.	If you give up, the answer will be revealed.
+⚙️ Features
+	•	Word length selection (e.g., 4 letters, 5 letters)
+	•	Duplicate letter setting
+	•	Answer reveal and retry function
+	•	Invalid input prevention (dictionary validation)
+
+
+
+|Button                        |Word Length|Notes                    |
+|:-----------------------------|:---------:|:------------------------|
+|영어야구 쉬움 Word Baseball (easy)  |3, 4, 5, 6 |Shows position of S, B, O|
+|영어야구 보통 Word Baseball (medium)|3, 4, 5, 6 |Shows count of S, B, O   |
 
 ---
 
