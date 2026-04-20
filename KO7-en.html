@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4YZHC1G9FN');
+
+  const isLocal = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' ||
+                  window.location.hostname.includes('192.168.');
+
+  const originalGtag = gtag;
+  function gtag() {
+    if (isLocal) {
+      return;
+    }
+    originalGtag.apply(this, arguments);
+  }
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Hangul Baseball medium - Korean Bulls and Cows | Soosooland</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Hangul baseball! Korean word guessing puzzle for language learners.">
+    <meta name="keywords" content="hangul baseball, korean word game, bulls and cows korean, korean puzzle, vocabulary game, korean learning game">
+    <meta name="author" content="Soosooland">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Hangul Baseball Easy - Classic Korean Word Game">
+    <meta property="og:description" content="Hangul baseball! Classic version with total S/B count for learners">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://soosooland.com/yagoo/KO7-en.html">
+    <meta property="og:image" content="https://soosooland.com/images/yagoo.png">
+    <meta property="og:site_name" content="Soosooland">
+
+    <link rel="canonical" href="https://soosooland.com/yagoo/KO7-en.html">
+    <link rel="alternate" hreflang="en" href="https://soosooland.com/yagoo/KO7-en.html">
+    <link rel="alternate" hreflang="ko" href="https://soosooland.com/yagoo/KO7-ko.html">
+    <link rel="stylesheet" href="https://soosooland.com/css/protection.css">
+    <script src="https://soosooland.com/js/protection.js"></script>
+<style>
+  :root { --bg:#0b1520; --card:#122233; --accent:#6ee7ff; --muted:#9db3c7;
+          --hit:#8fd3ff; --out:#ff9bb3; --idle:#7b8ea3; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background: var(--bg); color:#eef6ff; display:flex; min-height:100vh; }
+ .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 8px 10px; 
+    font-size: 1.5em;
+    font-weight: bold;
+   background: #E6B800;
+    color: #0f172a;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+.back-button:hover {
+    background-color: #B2924F;
+    color: #0f172a;
+}
+  .wrap { margin:auto; width:min(820px, 100%); padding:24px; }
+  .card { background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:22px; box-shadow: 0 10px 30px rgba(0,0,0,.35);}
+  h1 { margin:0 0 8px; font-size: 25px;}
+  .sub { color:var(--muted); margin-bottom:18px; font-size: 20px; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+input {
+font: inherit;
+padding: 14px 16px;
+border-radius: 14px;
+border: 1px solid rgba(255,255,255,.14);
+background: #0f1c2a;
+color: #e9f5ff;
+text-align: center;
+min-width:260px;
+font-size:20px;
+}
+button { cursor:pointer; border:0; border-radius:12px; padding:12px 16px; font-size:18px; }
+.primary { background:var(–accent); color:#00121d; }
+.secondary { background:#2c4157; color:#d7e7f5; }
+.ghost { background:transparent; color:var(–muted); border:1px dashed rgba(255,255,255,.2); }
+button:disabled { opacity:.45; cursor:not-allowed; }
+.hint { margin-top:10px; color:#c7d9eb; font-size:20px;}
+.warn { margin-top:6px; color:#ffb8c1; font-size:20px; min-height:1.3em; }
+.log { margin-top:18px; background:#0f1c2a; border-radius:14px; border:1px solid rgba(255,255,255,.08); max-height:46vh; overflow:auto;}
+.log table { width:100%; border-collapse:collapse; font-variant-numeric: tabular-nums; font-size:18px; }
+.log th, .log td { padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
+.log tr:last-child td { border-bottom:0; }
+.badge { display:inline-block; border-radius:12px; padding:8px 12px; font-size:20px; background:#21415c; color:#d7e7f5;}
+.ok { color:#b8ffb8; }
+.fail { color:#ffb8c1; }
+.attention { animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+
+/* 모드 버튼 active 스타일 */
+.mode-buttons { display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+.mode-buttons .secondary.active {
+background: var(–accent);
+color: #00121d;
+font-weight: 700;
+box-shadow: 0 0 0 2px rgba(110,231,255,.25) inset;
+}
+
+/* 자음 키보드 */
+.kb { margin-top:14px; display:grid; grid-template-columns: repeat(auto-fit, minmax(44px,1fr)); gap:8px; }
+.key {
+padding:10px 8px; border-radius:10px; text-align:center; font-size:20px;
+background:#1a2f44; color:#d0ddea; border:1px solid rgba(255,255,255,.08);
+user-select:none;
+}
+.key.idle { background:#1a2430; color:#d0ddea; border-color:rgba(255,255,255,.1); }
+.key.hit  { background:#a6edc0; color:#062033; border-color:transparent; font-weight:700; }
+.key.out  { background:#f2c9d4; color:#3a0010; border-color:transparent; font-weight:700; }
+.flex { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+/* 워드풀 보기 관련 스타일 */
+.wordpool-section { margin-top:20px; }
+.wordpool-toggle { margin-bottom:10px; }
+.wordpool-display {
+max-height:200px;
+overflow-y:auto;
+background:#0f1c2a;
+border:1px solid rgba(255,255,255,.08);
+border-radius:10px;
+padding:10px;
+font-size:16px;
+line-height:1.4;
+display:none;
+}
+.wordpool-display.show { display:block; }
+.word-item { display:inline-block; margin:2px 4px; padding:2px 6px; background:#2c4157; border-radius:6px; }
+</style>
+
+</head>
+<body>
+<button class="back-button" onclick="location.href='index.html'"> ← </button>
+<div class="wrap">
+  <div class="card">
+    <h1>Hangul Baseball (medium)</h1>
+    <div class="sub">
+A game where you guess the secret Korean word chosen by the computer.<br>
+S: Consonant exists and position matches <br> B: Consonant exists but wrong position <br>Out: Consonant does not exist<br>
+This game contains only 2, 3, and 4-character nouns.<br>
+​​​​​​​​​​​​The game ends when you guess the word correctly or use up all attempts. <br>
+<strong>Only words in the word pool can be used..</strong>
+    </div>
+
+
+<div class="mode-buttons">
+  <button class="secondary" id="m2">2 letters</button>
+  <button class="secondary" id="m3">3 letters</button>
+  <button class="secondary" id="m4">4 letters</button>
+ </div>
+
+<div class="flex" style="margin-bottom:8px;">
+  <span id="vowelHint" class="hint"></span>
+</div>
+
+<div class="row">
+  <input id="guess" autocomplete="off" placeholder="Enter a word with the same vowels as the hint" />
+  <button id="btn-try" class="primary" disabled>Submit</button>
+  <button id="btn-reset" class="secondary">New Game</button>
+  <button id="btn-giveup" class="ghost">Give up</button>
+  <span id="status" class="badge">Select word length.</span>
+  <span id="summary" class="hint"></span>
+</div>
+<div id="warn" class="warn"></div>
+
+<div class="log">
+  <table>
+    <thead>
+      <tr><th>#</th><th>Guess</th><th>Result</th></tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<div class="hint">Consonant hint (below): <span class="key idle" style="padding:2px 8px;">Not tried</span> <span class="key hit" style="padding:2px 8px;">Exists:S/B</span> <span class="key out" style="padding:2px 8px;">Not Exists :OUT</span></div>
+<div id="kb" class="kb" aria-label="consonants hint"></div>
+
+<div class="wordpool-section">
+  <div class="wordpool-toggle">
+    <button id="btn-wordpool" class="ghost">View Wordpool</button>
+  </div>
+  <div id="wordpool-display" class="wordpool-display"></div>
+</div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  const $ = sel => document.querySelector(sel);
+  const guessEl = $("#guess"), tbody = $("#tbody"), statusEl = $("#status"),
+        summaryEl = $("#summary"), btnTry = $("#btn-try"),
+        btnReset = $("#btn-reset"), btnGiveup = $("#btn-giveup"),
+        warnEl = $("#warn"), vowelHintEl = $("#vowelHint"),
+        kbEl = $("#kb"), btnWordpool = $("#btn-wordpool"),
+        wordpoolDisplay = $("#wordpool-display");
+
+  // 
+  const WORDS = [
+ "애수", "대우", "매우", 
+ "아래", "나래", "토기",      
+ "세례", "세수", "가게", "가구", "가루", "가마", "가수", "가스", "가요", "가위", "가재", "가지", "가짜", "개미", "거리", "거미", "거위", "거즈", "겨자", "고개", "고기", "고래", "고리", "고모", "고무", "고추", "고치", "과거", "과외", "교사", "교수", "교재", "교포", "교회", "구두", "구리", "기자", "기차", "기초", "기타", "까치", "꼬리", "꼬마", "나라", "나루", "나리", "나무", "나비", "노래", "노루", "노트", "누나", "다리", "대구", "대기", "대지", "더위", "도구", "도로", "도마", "도시", "돼지", "두뇌", "두부", "띠지", "마디", "마루", "매미", "머리", "메뉴", "메모", "모래", "모자", "무게", "무늬", "무대", "무리", "미래", "미소", "바다", "바위", "바지", "바퀴", "배구", "배우", "배추", "버스", "버터", "베개", "부리", "부모", "부채", "부추", "비누", "비서", "비자", "뿌리", "사과", "사위", "사자", "사회", "새우", "샤워", "서류", "서리", "세계", "세제", "세포", "소고", "소녀", "소라", "소리", "소매", "소스", "소포", "수로", "수소", "수수", "수재", "수저", "수조", "수초", "수표", "스키", "스프", "시계", "쐐기", "쓰기", "아기", "아내", "야구", "어깨", "여가", "여우", "여치", "오리", "오빠", "오이", "오후", "외모", "요리", "우리", "우비", "우유", "우주", "우표", "유도", "유리", "유머", "유치", "의류", "의사", "의자", "이리", "이마", "이모", "이사", "이자", "자녀", "자라", "자료", "자리", "자매", "자유", "재료", "제비", "제사", "제자", "조개", "조기", "조카", "주부", "주사", "주소", "지구", "지폐", "지혜", "차고", "차례", "채소", "처마", "추수", "추위", "치마", "치아", "치즈", "커피", "타조", "토끼", "토대", "토시", "토지", "파도", "파래", "파리", "파티", "포도", "포크", "피리", "피부", "하루", "허리", "호두", "호주", "화가", "화폐", "회화", "휴지", "가계부", "가로수", "가르마", "가리개", "가오리", "개구리", "개나리", "거주지", "고구마", "고사리", "교과서", "귀고리", "그리기", "그저께", "나머지", "너구리", "노가리", "노리개", "대나무", "대도시", "도깨비", "도너츠", "도자기", "도화지", "드라마", "디스크", "라디오", "라이터", "러시아", "레이저", "로터리", "리코더", "마누라", "마무리", "마사지", "마이크", "메시지", "며느리", "모니터", "무더위", "무지개", "미디어", "바가지", "바구니", "바나나", "배우자", "보고서", "보너스", "보따리", "보리수", "보리차", "보자기", "비디오", "비비추", "사나이", "사마귀", "사무소", "사투리", "서비스", "서커스", "세미나", "소나기", "소나무", "소쿠리", "소포지", "소화기", "소화제", "수세미", "수화기", "스웨터", "스위치", "스포츠", "스피커", "시래기", "시리즈", "싸구려", "쏘가리", "쓰레기", "아가미", "아버지", "아시아", "아저씨", "아파트", "어머니", "어저께", "에너지", "여우비", "오로라", "오페라", "요리사", "우거지", "우체부", "이미지", "이야기", "저고리", "제주도", "주꾸미", "주머니", "지우개", "카메라", "코미디", "테니스", "토마토", "피아노", "해파리", "회계사", "가재도구", "귀뚜라미", "다이어트", "돼지고기", "드라이어", "디자이너", "마요네즈", "미루나무", "바이러스", "스케이트", "스테이크", "스튜디오", "스트레스", "스파게티", "스프레이", "시나리오", "시내버스", "시외버스", "아보카도", "아이디어", "아주머니", "아프리카", "오미자차", "오아시스", "오토바이", "와이셔츠", "요가매트", "우리나라", "우회도로", "지느러미", "지하차도", "코스모스", "크레파스", "하모니카", "해바라기", "호루라기", "호주머니"
+  ];
+
+  // 워드풀 검증 함수
+  function isValidWord(word) {
+    return WORDS.includes(word);
+  }
+
+  // 워드풀 표시 토글 기능
+  btnWordpool.addEventListener("click", () => {
+    const isShowing = wordpoolDisplay.classList.contains("show");
+    if (isShowing) {
+      wordpoolDisplay.classList.remove("show");
+      btnWordpool.textContent = "Show word pool";
+    } else {
+      displayWordpool();
+      wordpoolDisplay.classList.add("show");
+      btnWordpool.textContent = "Hide word pool";
+    }
+  });
+
+  // 워드풀 표시 기능
+  function displayWordpool() {
+    if (!modeLen) {
+      wordpoolDisplay.textContent = "select the word length first";
+      return;
+    }
+    
+    const filteredWords = WORDS.filter(w => [...w].length === modeLen);
+    wordpoolDisplay.innerHTML = "";
+    
+    if (filteredWords.length === 0) {
+      wordpoolDisplay.textContent = `${modeLen} character words are not available in the word pool.`;
+      return;
+    }
+
+    const title = document.createElement("div");
+    title.textContent = `${modeLen} character word pool (total ${filteredWords.length}):`;
+    title.style.marginBottom = "10px";
+    title.style.fontWeight = "bold";
+    wordpoolDisplay.appendChild(title);
+
+    filteredWords.forEach(word => {
+      const span = document.createElement("span");
+      span.className = "word-item";
+      span.textContent = word;
+      wordpoolDisplay.appendChild(span);
+    });
+  }
+
+  // ——— 한글 분해/조립 유틸 ———
+  const CHO_LIST = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ".split("");
+  const JUNG_LIST = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
+  const JONG_LIST  = ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+  const COMPOUND_JONG = {"ㄳ":["ㄱ","ㅅ"],"ㄵ":["ㄴ","ㅈ"],"ㄶ":["ㄴ","ㅎ"],"ㄺ":["ㄹ","ㄱ"],"ㄻ":["ㄹ","ㅁ"],"ㄼ":["ㄹ","ㅂ"],"ㄽ":["ㄹ","ㅅ"],"ㄾ":["ㄹ","ㅌ"],"ㄿ":["ㄹ","ㅍ"],"ㅀ":["ㄹ","ㅎ"],"ㅄ":["ㅂ","ㅅ"]};
+
+  function decomposeChar(ch){
+    const code = ch.charCodeAt(0);
+    const base = code - 0xAC00;
+    if (base < 0 || base > 11171) return null;
+    const cho  = Math.floor(base / 588);
+    const jung = Math.floor((base % 588) / 28);
+    const jong = base % 28;
+    const arr = [
+      { slot: "초", jamo: CHO_LIST[cho] },
+      { slot: "중", jamo: JUNG_LIST[jung] }
+    ];
+    const jongSym = JONG_LIST[jong];
+    if (jongSym) {
+      const parts = COMPOUND_JONG[jongSym];
+      if (parts) parts.forEach(p => arr.push({ slot: "종", jamo: p }));
+      else arr.push({ slot: "종", jamo: jongSym });
+    }
+    return arr;
+  }
+
+  function getConsonantItems(word){
+    const items = [];
+    const chars = [...word];
+    for (let i = 0; i < chars.length; i++){
+      const parts = decomposeChar(chars[i]);
+      if (!parts) return null;
+      let jongIndex = 0;
+      for (const p of parts){
+        if (p.slot === "중") continue;
+        const idx = (p.slot === "종") ? (jongIndex++) : 0;
+        items.push({ i, slot: p.slot, idx, jamo: p.jamo });
+      }
+    }
+    return items;
+  }
+
+  function decomposeWordToJamo(word){
+    const perSyllable = [], flat = [], consonants = [], vowels = [], choSeq = [];
+    const chars = [...word];
+    for (let i=0;i<chars.length;i++){
+      const d = decomposeChar(chars[i]);
+      if (!d) return null;
+      perSyllable.push(d);
+      let choHere = null;
+      for (const x of d) {
+        flat.push(x.jamo);
+        if (x.slot === "중") vowels.push(x.jamo);
+        else {
+          consonants.push(x.jamo);
+          if (x.slot === "초") choHere = x.jamo;
+        }
+      }
+      choSeq.push(choHere);
+    }
+    return { perSyllable, flat, vowels, consonants, choSeq };
+  }
+
+  function countMap(arr){ const m=new Map(); for(const k of arr) m.set(k,(m.get(k)||0)+1); return m; }
+
+  // ——— 상태 ———
+  let secret = "", tries = 0, finished = false;
+  let modeLen = null, guessed = new Set();
+  let secretDecomp = null;
+
+  // 자음 키보드 (초성 19자)
+  const KB_CONSONANTS = "ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ".split(" ");
+  const keyStates = new Map();
+
+  function renderKeyboard(){
+    kbEl.innerHTML = "";
+    KB_CONSONANTS.forEach(j=>{
+      const div = document.createElement("div");
+      div.className = "key " + (keyStates.get(j) || "idle");
+      div.textContent = j;
+      div.title = "Consonant status indicator";
+      kbEl.appendChild(div);
+    });
+  }
+
+  function updateKeyStateFromGuess(guessWord){
+    const secretConsSet = new Set(getConsonantItems(secret).map(x=>x.jamo));
+    const usedCon = new Set(getConsonantItems(guessWord).map(x=>x.jamo));
+    usedCon.forEach(c=>{
+      const prev = keyStates.get(c) || "idle";
+      const now = secretConsSet.has(c) ? "hit" : "out";
+      keyStates.set(c, (prev === "hit") ? "hit" : now);
+    });
+    renderKeyboard();
+  }
+
+  // ——— 모드 버튼: 5글자 제거, active 토글 ———
+  const modeButtons = ["m2","m3","m4"].map(id=>$("#"+id));
+  modeButtons.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      modeButtons.forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      modeLen = parseInt(btn.id.slice(1),10);
+      reset();
+    });
+  });
+
+  function pickSecret() {
+    const cand = WORDS.filter(w => /^[가-힣]+$/.test(w) && [...w].length === modeLen);
+    if (cand.length === 0) {
+      warnEl.textContent = `${modeLen}`;
+      return "";
+    }
+    return cand[Math.floor(Math.random()*cand.length)];
+  }
+
+  function reset() {
+    if (!modeLen) { warnEl.textContent = "select the word length first."; return; }
+    secret = pickSecret();
+    if (!secret) return;
+    secretDecomp = decomposeWordToJamo(secret);
+    tries = 0; finished = false; guessed.clear();
+    tbody.innerHTML = "";
+    statusEl.textContent = "in process";
+    statusEl.classList.remove("ok","fail");
+    summaryEl.textContent = ""; warnEl.textContent = "";
+    guessEl.value = ""; btnTry.disabled = true;
+    guessEl.placeholder = "Enter a word with the same vowels as the hint ";
+    // 힌트(모음 시퀀스)
+    const hint = secretDecomp.vowels.join("");
+    vowelHintEl.textContent = `hint: ${hint}`;
+    // 키보드 초기화
+    keyStates.clear(); KB_CONSONANTS.forEach(c=>keyStates.set(c,"idle")); renderKeyboard();
+    guessEl.focus();
+    updateButtons(false);
+  }
+
+  function validate(input) {
+    if (!modeLen) return "Please select the word ength first.";
+    if (!/^[가-힣]+$/.test(input)) return "Please enter only complete Hangul syllables. (가–힣)";
+    if ([...input].length !== modeLen) return `${modeLen}글자를 정확히 입력하세요.`;
+    
+    // 워드풀 검증 추가
+    if (!isValidWord(input)) return "This word is not in the word pool. ";
+    
+    const g = decomposeWordToJamo(input);
+    const hint = secretDecomp.vowels;
+    for (let i=0;i<hint.length;i++){
+      const gs = g.perSyllable[i].find(x=>x.slot==="중").jamo;
+      if (gs !== hint[i]) return "Enter a word with the same vowels as the hint";
+    }
+    return "";
+  }
+
+  function scoreByConsonants(guess, secret){
+    const gi = getConsonantItems(guess);
+    const si = getConsonantItems(secret);
+    if (!gi || !si) return { S:0, B:0, OUT:0, gi:null, si:null };
+
+    let S = 0;
+    const usedS = new Array(si.length).fill(false);
+    const usedG = new Array(gi.length).fill(false);
+
+    for (let gk = 0; gk < gi.length; gk++){
+      const g = gi[gk];
+      for (let sk = 0; sk < si.length; sk++){
+        const s = si[sk];
+        if (usedS[sk]) continue;
+        if (g.i === s.i && g.slot === s.slot && g.idx === s.idx && g.jamo === s.jamo){
+          usedS[sk] = true; usedG[gk] = true; S++;
+          break;
+        }
+      }
+    }
+
+    const gLeft = []; const sLeft = [];
+    for (let k=0;k<gi.length;k++) if (!usedG[k]) gLeft.push(gi[k].jamo);
+    for (let k=0;k<si.length;k++) if (!usedS[k]) sLeft.push(si[k].jamo);
+
+    const gMap = countMap(gLeft);
+    const sMap = countMap(sLeft);
+    let overlap = 0;
+    for (const [j, gv] of gMap.entries()){
+      const sv = sMap.get(j) || 0;
+      overlap += Math.min(gv, sv);
+    }
+    const B = overlap;
+    const OUT = Math.max(0, gi.length - (S + B));
+    return { S, B, OUT };
+  }
+
+  function addRow(guess, S, B, OUT) {
+    let result = `${S}S ${B}B`;
+    if (OUT > 0) result += ` ${OUT}OUT`;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${tries}</td><td><strong>${guess}</strong></td><td>${result}</td>`;
+    tbody.prepend(tr);
+  }
+
+  function onTry() {
+    if (finished || !modeLen) return;
+    const g = guessEl.value.trim();
+    const err = validate(g);
+    if (err) { warnEl.textContent = err; guessEl.focus(); return; }
+    if (guessed.has(g)) { warnEl.textContent = "This word has already been tried."; guessEl.focus(); return; }
+
+    warnEl.textContent = "";
+    guessed.add(g); tries++;
+
+    const { S, B, OUT } = scoreByConsonants(g, secret);
+    addRow(g, S, B, OUT);
+    updateKeyStateFromGuess(g);
+
+    if (g === secret) {
+      finished = true;
+      statusEl.textContent = `Correct! (${secret})`;
+      statusEl.classList.add("ok");
+      summaryEl.textContent = ``;
+      btnTry.disabled = true;
+      updateButtons(true);
+    } else {
+      summaryEl.textContent = ``;
+    }
+
+    guessEl.value = ""; btnTry.disabled = true; guessEl.focus();
+  }
+
+  function giveUp() {
+    if (finished || !modeLen) return;
+    finished = true;
+    statusEl.textContent = `Answer: ${secret}`;
+    statusEl.classList.add("fail");
+    btnTry.disabled = true;
+    updateButtons(true);
+  }
+
+  function updateButtons(isFinished) {
+    btnTry.classList.toggle("primary", !isFinished);
+    btnTry.classList.toggle("secondary", isFinished);
+    btnReset.classList.toggle("primary", isFinished);
+    btnReset.classList.toggle("secondary", !isFinished);
+    btnReset.classList.toggle("attention", isFinished);
+  }
+
+  function onInput(e) {
+    let v = e.target.value.replace(/\s+/g,"");
+    e.target.value = v;
+    const err = v ? validate(v) : "Enter a word first.";
+    btnTry.disabled = !!v && !!err;
+    warnEl.textContent = (v && err) ? err : "";
+  }
+
+  guessEl.addEventListener("input", onInput);
+  guessEl.addEventListener("keydown", e => { if (e.key === "Enter" && !btnTry.disabled) onTry(); });
+  btnTry.addEventListener("click", onTry);
+  btnReset.addEventListener("click", reset);
+  btnGiveup.addEventListener("click", giveUp);
+
+  // 초기 키보드 렌더링
+  renderKeyboard();
+})();
+</script>
+
+</body>
+</html>
