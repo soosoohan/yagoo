@@ -42,23 +42,23 @@ The easy version of each Baseball Game was created for beginners.
 
 
 🎯 About Word Baseball
-Word Baseball is a word-guessing puzzle game.You guess the answer word based on hints, and with each attempt, Strike (S) and Ball (B) judgments guide you closer to the answer.A word pool is provided to help you find words.
-	•	Strike (S) : Correct letter in the correct position
-	•	Ball (B) : Correct letter but in the wrong position
-	•	Out : The letter is not in the word
-🕹️ How to Play
-	1.	At the start of the game, select the word length and whether duplicate letters are allowed.
-	2.	Enter a guess and check the result.
-	3.	Use the result to make your next guess.
-	4.	Guess the answer correctly to win!
-	5.	If you give up, the answer will be revealed.
-⚙️ Features
-	•	Word length selection (e.g., 4 letters, 5 letters)
-	•	Duplicate letter setting
-	•	Answer reveal and retry function
-	•	Invalid input prevention (dictionary validation)
-
-
+Word Baseball is a word-guessing puzzle game.You guess the answer word based on hints, and with each attempt, Strike (S) and Ball (B) judgments guide you closer to the answer.A word pool is provided to help you find words.   
+	•	Strike (S) : Correct letter in the correct position  
+	•	Ball (B) : Correct letter but in the wrong position   
+	•	Out : The letter is not in the word   
+	
+🕹️ How to Play   
+	1.	At the start of the game, select the word length and whether duplicate letters are allowed.   
+	2.	Enter a guess and check the result.   
+	3.	Use the result to make your next guess.   
+	4.	Guess the answer correctly to win!   
+	5.	If you give up, the answer will be revealed.   
+	
+⚙️ Features   
+	•	Word length selection (e.g., 4 letters, 5 letters)  
+	•	Duplicate letter setting   
+	•	Answer reveal and retry function   
+	•	Invalid input prevention (dictionary validation)   
 
 |Button                        |Word Length|Notes                    |
 |:-----------------------------|:---------:|:------------------------|
