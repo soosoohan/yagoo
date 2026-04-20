@@ -107,14 +107,42 @@ Word Baseball is a word-guessing puzzle game.You guess the answer word based on 
 | **3자리 · 0-9 | 3 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
 | **4자리 · 1-9 | 4 | ❌ | 1–9만 사용 |
 | **4자리 · 0-9 | 4 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
+---
+## Number Baseball.  
 
+A math baseball game you can enjoy directly in your browser.Supports 4 modes where you can choose the number of digits and whether to include 0.  
+1S = Correct digit in the correct position1B = Correct digit but in the wrong positionThe rest are OUTExample: 0S 0B 3OUT, 1S 1B 1OUT.   
 
-| 모드 | 자리 수 | 0 포함 | 결과 표시|
-|---|---:|:---:|---|
-| Number Baseball (easy) | 3,4 | ❌ ✅| SBO의 위치|
-| Number Baseball (medium)|3,4|  ❌ ✅| SBO의 개수|
-| Number Baseball vs AI|3,4,5 | ✅| SBO의 개수|
-| Number Baseball battle |3,4,5|  ✅| SBO의 개수|
+##✨ Features.  
+	•	4 modes: 3-digit / 4-digit × with 0 / without 0.  
+	•	Only non-repeating digits are allowed.   
+	•	Real-time validation → submission only allowed when exactly N digits are entered  
+	•	Results displayed in S/B/OUT format in the log (newest on top). 
+	•	Mobile-friendly UI (large input field, large text, enhanced accessibility). 
+
+##🎮 Game Rules  
+	•	The secret number consists of unique digits.  
+	•	(3-digit) Answer length: 3 / (4-digit) Answer length: 4  
+	•	Even in 0-included mode, the first digit cannot be 0.  
+	•	After submitting a guess, the count of S, B, and OUT is displayed.  
+	•	You win when the number of S matches the digit count!  
+
+##🔀 Modes
+
+|Mode                    |Digits |Includes 0|Result Display     |
+|------------------------|------:|:--------:|-------------------|
+|Number Baseball (easy)  |3, 4   |❌ ✅     |Position of S, B, O|
+|Number Baseball (medium)|3, 4   |❌ ✅       |Count of S, B, O   |
+|Number Baseball vs AI   |3, 4, 5|✅         |Count of S, B, O   |
+|Number Baseball Battle  |3, 4, 5|✅         |Count of S, B, O   |
+
+|Button       |Digits|Includes 0|Notes                            |
+|-------------|-----:|:--------:|---------------------------------|
+|3-digit · 1–9|3     |❌         |Uses 1–9 only                    |
+|3-digit · 0–9|3     |✅         |Uses 0–9, first digit cannot be 0|
+|4-digit · 1–9|4     |❌         |Uses 1–9 only                    |
+|4-digit · 0–9|4     |✅         |Uses 0–9, first digit cannot be 0|
+
 
 ---
 
@@ -164,39 +192,6 @@ Word Baseball is a word-guessing puzzle game.You guess the answer word based on 
 - **B**: 남은 자음들 간 **멀티셋 교집합** 개수  
 - **OUT**: 이번 추측 자음 수 − (S + B)
 
----
-
-## 숫자야구
-
-브라우저에서 바로 즐기는 **수학야구** 게임입니다.  
-자리 수와 0 포함 여부를 고를 수 있는 **4가지 모드**를 지원합니다.
-
-> 1S = 자리·숫자 모두 일치  
-> 1B = 숫자만 존재(자리 다름)  
-> 나머지는 OUT  
-> 예: `0S 0B 3OUT`, `1S 1B 1OUT`
-
-## ✨ 특징
-- **4모드 지원:** 3자리/4자리 × 0 포함/제외
-- **중복 없는 숫자**만 허용
-- **실시간 유효성 검사** → 정확히 N자리 입력 시만 제출 가능
-- 결과는 `S/B/OUT` 형식으로 로그에 표시 (최신 기록이 위로)
-- 모바일 친화 UI (큰 입력창, 큰 글자, 접근성 강화)
-
-## 🎮 게임 규칙
-- 비밀 숫자는 **서로 다른 숫자**로 구성됩니다.
-- (3자리) 정답 길이 3 / (4자리) 정답 길이 4
-- 0 포함 모드에서도 **첫 자리는 0이 되지 않습니다.**
-- 추측을 제출하면 `S`, `B`, `OUT` 개수가 표시됩니다.
-- `S`가 자리 수와 같아지면 승리!
-
-## 🔀 모드
-| 버튼 | 자리 수 | 0 포함 | 비고 |
-|---|---:|:---:|---|
-| **3자리 · 1-9 | 3 | ❌ | 1–9만 사용 |
-| **3자리 · 0-9 | 3 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
-| **4자리 · 1-9 | 4 | ❌ | 1–9만 사용 |
-| **4자리 · 0-9 | 4 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
 
 ---
 
