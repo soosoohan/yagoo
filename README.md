@@ -35,32 +35,34 @@ The easy version of each Baseball Game was created for beginners.
 - 정답 공개 및 재도전 기능  
 - 잘못된 입력 방지 (단어 사전 검증)
 
-| 버튼 | 단어길이 | 비고 |
+| 버튼 | 단어길이 | 결과 표시 |
 |:---:|:---:|:---:|
 |영어야구 쉬움| 3,4,5,6 | S,B,O의 위치 표시 |
 |영어야구 보통| 3,4,5,6 | S,B,O의 개수 표시|
 
+---
+##🎯 About Word Baseball
 
-🎯 About Word Baseball
 Word Baseball is a word-guessing puzzle game.You guess the answer word based on hints, and with each attempt, Strike (S) and Ball (B) judgments guide you closer to the answer.A word pool is provided to help you find words.   
 	•	Strike (S) : Correct letter in the correct position  
 	•	Ball (B) : Correct letter but in the wrong position   
 	•	Out : The letter is not in the word   
 	
-🕹️ How to Play   
+##🕹️ How to Play   
+
 	1.	At the start of the game, select the word length and whether duplicate letters are allowed.   
 	2.	Enter a guess and check the result.   
 	3.	Use the result to make your next guess.   
 	4.	Guess the answer correctly to win!   
 	5.	If you give up, the answer will be revealed.   
 	
-⚙️ Features   
+##⚙️ Features   
 	•	Word length selection (e.g., 4 letters, 5 letters)  
 	•	Duplicate letter setting   
 	•	Answer reveal and retry function   
 	•	Invalid input prevention (dictionary validation)   
 
-|Button                        |Word Length|Notes                    |
+|Button                        |Word Length|Result Display        |
 |:-----------------------------|:---------:|:------------------------|
 |Word Baseball (easy)  |3, 4, 5, 6 |Shows position of S, B, O|
 |Word Baseball (medium)|3, 4, 5, 6 |Shows count of S, B, O   |
