@@ -36,9 +36,9 @@ The easy version of each Baseball Game was created for beginners.
 - 잘못된 입력 방지 (단어 사전 검증)
 
 | 버튼 | 단어길이 | 비고 |
-|:---:|:---:|:---|
-|  영어야구 쉬움| 3,4,5,6 | S,B,O의 위치 표시 |
-|  영어야구 보통| 3,4,5,6 | S,B,O의 개수 표시|
+|:---:|:---:|:---:|
+|영어야구 쉬움| 3,4,5,6 | S,B,O의 위치 표시 |
+|영어야구 보통| 3,4,5,6 | S,B,O의 개수 표시|
 
 
 🎯 About Word Baseball
@@ -95,18 +95,18 @@ Word Baseball is a word-guessing puzzle game.You guess the answer word based on 
 ## 🔀 모드
 
 | 모드 | 자리 수 | 0 포함 | 결과 표시|
-|---|---:|:---:|---|
+|:---|:---|:---|:---:|
 |숫자야구 쉬움| 3,4 | ❌ ✅| SBO의 위치|
 |숫자야구 보통|3,4|  ❌ ✅| SBO의 개수|
 |컴퓨터와 숫자야구|3,4,5 | ✅| SBO의 개수|
 |숫자야구 대결|3,4,5|  ✅| SBO의 개수|
 
 | 버튼 | 자리 수 | 0 포함 | 비고 |
-|---|---:|:---:|---|
-| **3자리 · 1-9 | 3 | ❌ | 1–9만 사용 |
-| **3자리 · 0-9 | 3 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
-| **4자리 · 1-9 | 4 | ❌ | 1–9만 사용 |
-| **4자리 · 0-9 | 4 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
+|:---:|:---:|:---:|:---|
+| 3자리 · 1-9 | 3 | ❌ | 1–9만 사용 |
+| 3자리 · 0-9 | 3 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
+| 4자리 · 1-9 | 4 | ❌ | 1–9만 사용 |
+| 4자리 · 0-9 | 4 | ✅ | 0–9 사용, 첫 자리는 0 금지 |
 ---
 ## Number Baseball.  
 
@@ -130,14 +130,14 @@ A math baseball game you can enjoy directly in your browser.Supports 4 modes whe
 ##🔀 Modes
 
 |Mode                    |Digits |Includes 0|Result Display     |
-|------------------------|------:|:--------:|-------------------|
+|:------------------------|:------:|:--------|:-------------------|
 |Number Baseball (easy)  |3, 4   |❌ ✅     |Position of S, B, O|
-|Number Baseball (medium)|3, 4   |❌ ✅       |Count of S, B, O   |
+|Number Baseball (medium)|3, 4   |❌ ✅      |Count of S, B, O   |
 |Number Baseball vs AI   |3, 4, 5|✅         |Count of S, B, O   |
 |Number Baseball Battle  |3, 4, 5|✅         |Count of S, B, O   |
 
 |Button       |Digits|Includes 0|Notes                            |
-|-------------|-----:|:--------:|---------------------------------|
+|:-------------:|:-----:|:--------:|:---------------------------------|
 |3-digit · 1–9|3     |❌         |Uses 1–9 only                    |
 |3-digit · 0–9|3     |✅         |Uses 0–9, first digit cannot be 0|
 |4-digit · 1–9|4     |❌         |Uses 1–9 only                    |
@@ -145,11 +145,6 @@ A math baseball game you can enjoy directly in your browser.Supports 4 modes whe
 
 
 ---
-
-
-
-
-
 
 ## 한글야구 (Hangul Baseball)
 
