@@ -275,7 +275,7 @@ function appendLog(word, score){
 function startGame(){
   dict = buildDict(length);
   if (dict.length === 0){
-    setStatus('No words of that length in the word pool.','err');
+    setStatus('해당 글자 수의 단어가 없어요.','err');
     toggleInput(false);
     return;
   }
@@ -287,7 +287,7 @@ function startGame(){
   guessInput.value = '';
   gameOver = false;
   toggleInput(true);
-  setStatus('Type your guess to begin.','ok');
+  setStatus('단어를 입력하고 시작하세요.','ok');
   keyStates.clear();
   ALPHABETS.forEach(ch=>keyStates.set(ch,'idle'));
   renderAlphabetKeyboard();
