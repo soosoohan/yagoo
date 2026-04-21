@@ -1,6 +1,8 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
+    
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YZHC1G9FN"></script>
 <script>
@@ -8,11 +10,24 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-4YZHC1G9FN');
+
+  const isLocal = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' ||
+                  window.location.hostname.includes('192.168.');
+
+  const originalGtag = gtag;
+  function gtag() {
+    if (isLocal) {
+      return;
+    }
+    originalGtag.apply(this, arguments);
+  }
 </script>
-    <meta charset="UTF-8" />
+
+<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Word Baseball - English Word Bulls and Cows | Soosooland</title>
-        
+
     <!-- SEO Meta Tags -->
     <meta name="description" content="Guess the hidden English word using strike and ball hints. A fun word puzzle that trains your brain and improves vocabulary!">
     <meta name="keywords" content="word baseball, word guessing game, bulls and cows, Soosooland, logic puzzle, english learning, brain training">
@@ -34,11 +49,15 @@
 
   <style>
     * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
- }
-  body { font-family: Arial, sans-serif; background: #0f172a; color: #e5e7eb; display: flex; justify-content: center; padding: 20px; font-size:20px;}
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      touch-action: manipulation;
+      user-select: none;
+    }
+    body { font-family: Arial, sans-serif; background: #0f172a; color: #e5e7eb; display: flex; justify-content: center; padding: 20px; font-size:20px;}
  .back-button {
     position: absolute;
     top: 20px;
@@ -58,29 +77,54 @@
     background-color: #B2924F;
     color: #0f172a;
 }
-  .app { max-width: 600px; width: 100%; background: #111827; padding: 20px; border-radius: 10px; }
-  h1 { margin-top: 0; font-size:30px;}
-  select, input, button { padding: 8px; margin: 4px; border-radius: 5px; border: none;  font-size:20px;}
-  button { cursor: pointer; font-size:20px;}
-  .card { background: #1f2937; padding: 10px; border-radius: 8px; margin-bottom: 10px;font-size:20px; }
-  .log { max-height: 300px; overflow-y: auto; }
-  .try { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #374151; }
-  .status.ok { color: #34d399; }
-  .status.warn { color: #f59e0b; }
-  .status.err { color: #f87171; }
-  label {font-size:20px;}
-  /* === Alphabet Keyboard === */
-  .kb { margin-top:10px; display:grid; grid-template-columns: repeat(auto-fit, minmax(40px,1fr)); gap:8px; }
-  .key {
-    padding:10px 8px; border-radius:8px; text-align:center; font-weight:700;
-    background:#1a2430; color:#d0ddea; border:1px solid #374151; user-select:none;
-  }
-  .key.idle { background:#1a2430; color:#d0ddea; }
-  .key.hit  { background:#8fd3ff; color:#062033; border-color:transparent; }  /* 하늘색 */
-  .key.out  { background:#fccad6; color:#3a0010; border-color:transparent; }  /* 분홍색 */
-  .legend { display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:16px; color:#94a3b8; }
-  .legend .swatch { display:inline-block; width:14px; height:14px; border-radius:4px; margin-right:6px; vertical-align:-2px; }
-</style>
+
+    .app { max-width: 600px; width: 100%; background: #111827; padding: 20px; border-radius: 10px; }
+    h1 { margin-top: 0; font-size:30px;}
+    select, input, button { padding: 8px; margin: 4px; border-radius: 5px; border: none;  font-size:20px;}
+    button { cursor: pointer; font-size:20px;}
+    .card { background: #1f2937; padding: 10px; border-radius: 8px; margin-bottom: 10px;font-size:20px; }
+    .log { max-height: 300px; overflow-y: auto; }
+    .try { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #374151; }
+    .status.ok { color: #34d399; }
+    .status.warn { color: #f59e0b; }
+    .status.err { color: #f87171; }
+    label {font-size:20px;}
+
+    /* === Length Buttons === */
+    .length-buttons { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .length-btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: #374151;
+      color: #e5e7eb;
+      border: 2px solid transparent;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .length-btn.active {
+      background: #3b82f6;
+      color: #fff;
+      border-color: #93c5fd;
+    }
+
+    /* === Alphabet Keyboard === */
+    .kb { margin-top:10px; display:grid; grid-template-columns: repeat(auto-fit, minmax(40px,1fr)); gap:8px; }
+    .key {
+      padding:10px 8px; border-radius:8px; text-align:center; font-weight:700;
+      background:#1a2430; color:#d0ddea; border:1px solid #374151; user-select:none;
+      cursor: pointer;
+    }
+    .key.idle { background:#1a2430; color:#d0ddea; }
+    .key.hit  { background:#8fd3ff; color:#062033; border-color:transparent; }
+    .key.out  { background:#fccad6; color:#3a0010; border-color:transparent; }
+    .kb-actions { display:flex; gap:8px; margin-top:8px; }
+    .kb-actions button { flex:1; padding:10px; border-radius:8px; font-size:18px; font-weight:700; }
+    .key-back { background:#374151; color:#e5e7eb; }
+    .key-submit { background:#3b82f6; color:#fff; }
+    .legend { display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:16px; color:#94a3b8; }
+    .legend .swatch { display:inline-block; width:14px; height:14px; border-radius:4px; margin-right:6px; vertical-align:-2px; }
+  </style>
+
 </head>
 <body>
 <div class="app">
@@ -90,31 +134,29 @@
     <strong>Game Rules</strong>
     <ol style="font-size:calc(var(--fs) * 0.9); padding-left:20px;">
       <li>Guess the secret English word.</li>
-      <li>You can choose a word length of 3, 4, or 5 letters.</li>
-<li>You can allow or disallow repeated letters.</li>
-<li>S (Strike): Number of letters in the correct position.</li>
-<li>B (Ball): Number of letters in the word but in a different position.</li>
-<li>O (Out): Number of letters not included in the secret word.</li>
-<li>The game ends when you guess the word correctly or use up all attempts.</li>
-</ol>
-</div>
+      <li>You can choose a word length of 3, 4, 5, or 6 letters.</li>
+      <li>You can allow or disallow repeated letters.</li>
+      <li>S (Strike): Number of letters in the correct position.</li>
+      <li>B (Ball): Number of letters in the word but in a different position.</li>
+      <li>O (Out): Number of letters not included in the secret word.</li>
+      <li>The game ends when you guess the word correctly or use up all attempts.</li>
+    </ol>
+  </div>
 
-  
-<div class="card">
-  <label for="len">Word Length</label>
-  <select id="len">
-    <option value="3">3 Letters</option>
-    <option value="4" selected>4 Letters</option>
-    <option value="5">5 Letters</option>
-  </select>
-  <label><input type="checkbox" id="allowRepeats" /> Allow Repeated Letters</label>
-  <button id="newGame">New Game</button>
-</div>
+  <div class="card">
+    <div class="length-buttons">
+      <button class="length-btn" data-length="3">3</button>
+      <button class="length-btn active" data-length="4">4</button>
+      <button class="length-btn" data-length="5">5</button>
+      <button class="length-btn" data-length="6">6</button>
+      <label style="margin-left:8px;"><input type="checkbox" id="allowRepeats" /> Repeats</label>
+      <button id="newGame">▶ New Game</button>
+    </div>
+  </div>
 
 <div class="card">
   <label for="guess">Enter Guess</label>
   <input id="guess" type="text" placeholder="Enter a word" />
-  <button id="submit">Submit</button>
   <div id="status" class="status"></div>
 </div>
 
@@ -133,9 +175,14 @@
     <span><span class="swatch" style="background:#fccad6;"></span>Absent (Out)</span>
   </div>
   <div id="kb" class="kb" aria-label="Alphabet Keyboard (Status Indicator)"></div>
+  <div class="kb-actions">
+    <button class="key-back" id="kbBack">⌫ Back</button>
+    <button class="key-submit" id="kbSubmit">Submit ▶</button>
+  </div>
 </div>
 
 <button onclick="window.open('hints.html', '_blank')">View Word Pool</button>
+
 </div>
 
 <script>
@@ -151,8 +198,19 @@ function uniq(arr){ return Array.from(new Set(arr)); }
 function buildDict(len){ return uniq(normalizeWords(WORDPOOL)).filter(w=>w.length===len); }
 function isIsogram(word){ return new Set(word.split("")).size === word.length; }
 
-// ===== 요소 참조 =====
-const lenSel = document.getElementById('len');
+// ===== 길이 버튼 =====
+const lengthBtns = document.querySelectorAll('.length-btn');
+let length = 4;
+
+lengthBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    lengthBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    length = parseInt(btn.dataset.length, 10);
+    setStatus('Choose word length and repeat option, then press [New Game]', 'warn');
+  });
+});
+
 const allowRepeats = document.getElementById('allowRepeats');
 const newGameBtn = document.getElementById('newGame');
 const submitBtn = document.getElementById('submit');
@@ -164,7 +222,7 @@ const statusEl = document.getElementById('status');
 // === Alphabet Keyboard ===
 const kbEl = document.getElementById('kb');
 const ALPHABETS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const keyStates = new Map(); // 'A' -> 'idle' | 'hit' | 'out'
+const keyStates = new Map();
 
 function renderAlphabetKeyboard(){
   if(!kbEl) return;
@@ -173,11 +231,16 @@ function renderAlphabetKeyboard(){
     const div = document.createElement("div");
     div.className = "key " + (keyStates.get(ch) || "idle");
     div.textContent = ch;
+    div.addEventListener('click', () => {
+      if (gameOver) return;
+      if (guessInput.value.length < length) {
+        guessInput.value += ch;
+      }
+    });
     kbEl.appendChild(div);
   });
 }
 
-// 사용자가 방금 입력한 단어 g를 기준으로 상태 갱신
 function updateKeyStateFromGuess(g){
   const secretSet = new Set(secret.toUpperCase().split(""));
   const used = new Set(g.toUpperCase().split(""));
@@ -185,21 +248,19 @@ function updateKeyStateFromGuess(g){
     if(!/[A-Z]/.test(ch)) return;
     const prev = keyStates.get(ch) || "idle";
     const now = secretSet.has(ch) ? "hit" : "out";
-    keyStates.set(ch, prev === "hit" ? "hit" : now); // hit 우선 유지
+    keyStates.set(ch, prev === "hit" ? "hit" : now);
   });
   renderAlphabetKeyboard();
 }
 
-// ===== 게임 상태 =====
 let secret = "";
 let tries = 0;
 let maxTries = 0;
-let length = 4;
 let dict = [];
-let gameOver = true;   // 처음에는 게임 시작 전
+let gameOver = true;
 let usedGuesses = new Set();
 
-function setMaxTries(len){ return len===3?9:len===4?11:13; }
+function setMaxTries(len){ return len===3?9:len===4?11:len===5?13:15; }
 function pickSecret(){
   const pool = allowRepeats.checked ? dict : dict.filter(isIsogram);
   return pool[Math.floor(Math.random()*pool.length)];
@@ -213,36 +274,27 @@ function toggleInput(active){
   submitBtn.disabled = !active;
 }
 
-// ===== S/B 계산 (야구 표기) =====
 function countSB(secret, guess){
-  // S = 같은 자리 같은 글자 수 (strike)
   let S = 0;
   for (let i=0; i<length; i++) if (secret[i] === guess[i]) S++;
-
-  // 위치 무관한 겹침 수 (overlap)
   const sCount = {}, gCount = {};
   for (const ch of secret) sCount[ch] = (sCount[ch]||0) + 1;
   for (const ch of guess)  gCount[ch] = (gCount[ch]||0) + 1;
-
   let overlap = 0;
   for (const ch in sCount) overlap += Math.min(sCount[ch], gCount[ch]||0);
-
-  const B = overlap - S;          // 다른 위치 같은 글자 수 (ball)
-  const O = length - overlap;     // 포함되지 않은 글자 수 (out)
+  const B = overlap - S;
+  const O = length - overlap;
   return { S, B, O };
 }
+
 function appendLog(word, score){
   const div = document.createElement('div');
   div.className = 'try';
-  div.innerHTML = `<span>${word}</span><span>S ${score.S} · B ${score.B} · O ${score.O}</span>`;
+  div.innerHTML = `<span>${word}</span><span>${score.S}S ${score.B}B ${score.O}OUT</span>`;
   logEl.prepend(div);
 }
 
-
-
 function startGame(){
-  // 1) 기본 세팅
-  length = parseInt(lenSel.value,10);
   dict = buildDict(length);
   if (dict.length === 0){
     setStatus('No words of that length in the word pool.','err');
@@ -255,15 +307,9 @@ function startGame(){
   usedGuesses.clear();
   logEl.innerHTML = '';
   guessInput.value = '';
-
-  // 2) 게임 on + 입력 활성화
   gameOver = false;
   toggleInput(true);
-
-  // 3) 안내
   setStatus('Type your guess to begin.','ok');
-
-  // 4) 알파벳 키보드 초기화
   keyStates.clear();
   ALPHABETS.forEach(ch=>keyStates.set(ch,'idle'));
   renderAlphabetKeyboard();
@@ -271,20 +317,15 @@ function startGame(){
 
 function onSubmit(){
   if(gameOver) return;
-
   const g = guessInput.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,length);
-  if(g.length !== length){ setStatus(`Please enter ${length}letters.`,'warn'); return; }
+  if(g.length !== length){ setStatus(`Please enter ${length} letters.`,'warn'); return; }
   if(!dict.includes(g)){ setStatus('That word is not in the word pool.','err'); return; }
   if(usedGuesses.has(g)){ setStatus('You already tried this word.','warn'); return; }
   usedGuesses.add(g);
-
   tries++;
   const score = countSB(secret, g);
   appendLog(g, score);
-
-  // 키보드 색 갱신
   updateKeyStateFromGuess(g);
-
   if(score.S === length){
     setStatus(`Correct! ${secret}`,'ok');
     gameOver = true;
@@ -292,7 +333,7 @@ function onSubmit(){
     return;
   }
   if(tries >= maxTries){
-    setStatus(`Out of tries! The answer was  ${secret}`,'err');
+    setStatus(`Out of tries! The answer was ${secret}`,'err');
     gameOver = true;
     toggleInput(false);
     return;
@@ -301,24 +342,25 @@ function onSubmit(){
   guessInput.value = '';
 }
 
-// 이벤트 바인딩
+document.getElementById('kbBack').addEventListener('click', () => {
+  guessInput.value = guessInput.value.slice(0, -1);
+});
+document.getElementById('kbSubmit').addEventListener('click', onSubmit);
 newGameBtn.addEventListener('click', startGame);
 submitBtn.addEventListener('click', onSubmit);
 revealBtn.addEventListener('click', ()=>{
   if(secret){
     setStatus(`The answer was ${secret}`,'ok');
     gameOver = true;
-    toggleInput(false); // 정답 공개 시 입력 막기
+    toggleInput(false);
   }
 });
 guessInput.addEventListener('keydown', e=>{ if(e.key==='Enter') onSubmit(); });
+allowRepeats.addEventListener('change', ()=>setStatus('Choose word length and repeat option, then press [New Game]','warn'));
 
-lenSel.addEventListener('change', ()=>setStatus('Choose word length and repeat option, then press [New Game]','warn'));
-allowRepeats.addEventListener('change', ()=>setStatus('단어 길이와 중복 여부를 정한 후 [새 게임]을 누르세요.','warn'));
-
-// 초기 상태
 toggleInput(false);
 setStatus('Choose word length and repeat option, then press [New Game]','warn');
 </script>
+
 </body>
 </html>
