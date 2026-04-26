@@ -193,7 +193,12 @@ A math baseball game you can enjoy directly in your browser.Supports 4 modes whe
 |SBO의 위치|수수한글야구(쉬움)  |수수한글야구 |아무 단어나 입력 가능|
 |SBO의 개수|한글야구(쉬움)|한글야구| 워드풀의 단어만 입력 가능|
 
-
+Hangul Baseball is a consonant-based deduction game for Korean words (2–5 syllables).  
+- You see the vowel sequence as a hint, and must guess words with the same vowels.  
+- Scoring uses only consonants (initial + final; double finals decomposed).  
+- S: same position/slot/index & consonant   
+- B: consonant exists but at a different position/slot  
+- OUT: consonant not in the secret   
 ---
 
 ## 야구게임 주소 : https://soosooland.com/yagoo/  
