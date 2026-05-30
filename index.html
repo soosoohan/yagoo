@@ -127,7 +127,7 @@
         }
 </style>
 </head>
-<body>
+<body onload="initLanguage()">
   <button class="back-button" onclick="location.href='https://soosooland.com/'">
     Soosooland </button>
   <div class="container">
@@ -234,14 +234,32 @@
       </div>
 
   <script>
-    function toggleLanguage(lang){
-      const ko = document.getElementById('korean-description');
-      const en = document.getElementById('english-description');
-      const buttons = document.querySelectorAll('.language-button');
-      buttons.forEach(b=>b.classList.remove('active'));
-      if(lang==='ko'){ ko.classList.remove('hidden'); en.classList.add('hidden'); buttons[0].classList.add('active'); }
-      else { ko.classList.add('hidden'); en.classList.remove('hidden'); buttons[1].classList.add('active'); }
-    }
+    function toggleLanguage(lang) {
+  const ko = document.getElementById('korean-description');
+  const en = document.getElementById('english-description');
+  const buttons = document.querySelectorAll('.language-button');
+  buttons.forEach(b => b.classList.remove('active'));
+  if (lang === 'ko') {
+    ko.classList.remove('hidden');
+    en.classList.add('hidden');
+    buttons[0].classList.add('active');
+  } else {
+    ko.classList.add('hidden');
+    en.classList.remove('hidden');
+    buttons[1].classList.add('active');
+  }
+  localStorage.setItem('soosoo-lang', lang); // 저장
+}
+
+function initLanguage() {
+  const saved = localStorage.getItem('soosoo-lang');
+  if (saved) {
+    toggleLanguage(saved); // 저장된 값 우선
+  } else {
+    const lang = navigator.language.startsWith('ko') ? 'ko' : 'en';
+    toggleLanguage(lang); // 브라우저 언어 감지
+  }
+}
   </script>
 </body>
 </html>
