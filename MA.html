@@ -424,27 +424,29 @@ function render() {
     grid.appendChild(rowDiv);
   });
 
-  // 2) 현재 입력 중인 줄 (게임 끝났어도 정답 확인 결과 보여주려면 항상 그림)
-  const curRowDiv = document.createElement("div");
-  curRowDiv.className = "row";
-  state.template.forEach(c => {
-    const cell = document.createElement("div");
-    if (c.revealed) {
-      cell.className = "cell revealed";
-      cell.textContent = c.actual;
-    } else if (state.lockedValues[c.id]) {
-      cell.className = "cell correct";
-      cell.textContent = state.lockedValues[c.id];
-    } else {
-      cell.className = "cell editable";
-      if (c.id === state.selectedId) cell.classList.add("selected");
-      if (state.currentInput[c.id]) cell.classList.add("filled");
-      cell.textContent = state.currentInput[c.id] || "";
-      cell.onclick = () => handleCellClick(c.id);
-    }
-    curRowDiv.appendChild(cell);
-  });
-  grid.appendChild(curRowDiv);
+    // 2) 현재 입력 중인 줄 — 이미 이겨서 history에 정답 줄이 있으면 중복이니 생략
+  if (state.status !== "won") {
+    const curRowDiv = document.createElement("div");
+    curRowDiv.className = "row";
+    state.template.forEach(c => {
+      const cell = document.createElement("div");
+      if (c.revealed) {
+        cell.className = "cell revealed";
+        cell.textContent = c.actual;
+      } else if (state.lockedValues[c.id]) {
+        cell.className = "cell correct";
+        cell.textContent = state.lockedValues[c.id];
+      } else {
+        cell.className = "cell editable";
+        if (c.id === state.selectedId) cell.classList.add("selected");
+        if (state.currentInput[c.id]) cell.classList.add("filled");
+        cell.textContent = state.currentInput[c.id] || "";
+        cell.onclick = () => handleCellClick(c.id);
+      }
+      curRowDiv.appendChild(cell);
+    });
+    grid.appendChild(curRowDiv);
+  }
 
   const opPad = document.getElementById("opPad");
   opPad.innerHTML = "";
