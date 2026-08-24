@@ -105,6 +105,12 @@
   .btn-submit:disabled { opacity: .5; cursor: not-allowed; }
   .btn-giveup { background: #f4b183; color: white; }
   .btn-new { background: #6b7280; color: white; }
+footer {
+text-align: center;
+color: #444;
+font-size: 0.8rem;
+margin-top: auto;
+}
 </style>
 </head>
 <body>
@@ -132,6 +138,9 @@ Use the color clues to figure out the equation and find the answer.</p>
   <button class="btn-giveup" onclick="revealAnswer()">Reveal Answer</button>
   <button class="btn-new" onclick="startNewGame(state.stage)">New Game</button>
 </div>
+<footer>
+  <p>© 2025 Han Soosoo.</p>
+</footer>
 
 <script>
 const DIGIT_POOL = ["0","1","2","3","4","5","6","7","8","9"];
