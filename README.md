@@ -178,6 +178,7 @@ There are four modes depending on difficulty.
  🔴 Out: It is not in the equation.   
 
 Use the color clues to figure out the equation and find the answer.   
+
 ---
 
 ## 한글야구 (Hangul Baseball)
