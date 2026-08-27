@@ -152,6 +152,34 @@ A math baseball game you can enjoy directly in your browser.Supports 4 modes whe
 
 ---
 
+## 수식 야구 (Equation Baseball)
+
+힌트를  신호등 색깔로 표현한 수식야구 게임
+
+수식야구는 숨겨진 수식을 추리하는 게임입니다.    
+숫자와 연산자를 입력해 정답 수식을 완성하세요.   
+참이 아닌 수식은 입력할 수 없습니다.
+난이도에 따라 4가지 모드가 있습니다.   
+
+ 🟢 S: 숫자 또는 연산자가 정답과 같은 위치에 있습니다.   
+ 🟡 B: 정답에 포함되어 있지만 위치가 다릅니다.  
+ 🔴 Out: 정답에 포함되어 있지 않습니다.  
+
+색깔 힌트를 이용해 수식을 추리하고 정답을 맞혀보세요.  
+
+
+Equation Baseball is a game where you guess the hidden equation.   
+Enter numbers and operators to complete the correct equation.   
+You can’t enter an equation that isn’t true.   
+There are four modes depending on difficulty.  
+
+ 🟢 S: The number or operator is in the correct position.   
+ 🟡 B: It is in the equation, but in a different position.   
+ 🔴 Out: It is not in the equation.   
+
+Use the color clues to figure out the equation and find the answer.   
+---
+
 ## 한글야구 (Hangul Baseball)
 
 완성형 한글(가–힣)로 즐기는 자음 기반 S/B/OUT 추리 게임입니다.  
