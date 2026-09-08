@@ -347,7 +347,7 @@ margin-top: auto;
       if(existingRow){
         const wordSpan = existingRow.querySelector('.current-input-word');
         if(currentInput.length === 0){
-          wordSpan.textContent = '단어를 입력하세요...';
+          wordSpan.textContent = 'Enter a word...';
           wordSpan.classList.add('input-placeholder');
         } else {
           wordSpan.textContent = currentInput;
@@ -411,7 +411,7 @@ margin-top: auto;
     function startGame(){
       dict = buildDict(length);
       if (dict.length === 0){
-        setStatus('워드풀에 해당 길이 단어가 없습니다.','err');
+        setStatus('No words of that length in the word pool.', 'err');
         toggleInput(false);
         return;
       }
@@ -501,18 +501,17 @@ function submitGuess(){
       updateKeyStateFromGuess(g); // 있다/없다만 표시
 
       if(marks.every(m=>m==='S')){
-        setStatus(`정답! ${secret}`,'ok');
+        setStatus(`Correct! ${secret}`,'ok');
         gameOver = true;
         toggleInput(false);
         return;
       }
       if(tries >= maxTries){
-        setStatus(`실패! 정답은 ${secret}`,'err');
+        setStatus(`Failed! The answer was ${secret}`,'err');
         gameOver = true;
         toggleInput(false);
         return;
-      }
-      
+      }      
       // 게임이 계속되면 새로운 입력 행 추가
 setStatus('Keep trying.');
 currentInput = "";
@@ -542,7 +541,7 @@ setStatus('Word length selected. Press ▶.','warn');
     newGameBtn.addEventListener('click', startGame);
     revealBtn.addEventListener('click', ()=>{
       if(secret){
-        setStatus(`정답은 ${secret}`,'ok');
+        setStatus(\`The answer was ${secret}\`,'ok');
         gameOver = true;
         toggleInput(false);
       }
