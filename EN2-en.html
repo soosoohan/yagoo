@@ -244,7 +244,6 @@ lengthBtns.forEach(btn => {
 
 const allowRepeats = document.getElementById('allowRepeats');
 const newGameBtn = document.getElementById('newGame');
-const submitBtn = document.getElementById('submit');
 const revealBtn = document.getElementById('reveal');
 const guessInput = document.getElementById('guess');
 const logEl = document.getElementById('log');
@@ -302,7 +301,6 @@ function setStatus(msg, cls=''){
 }
 function toggleInput(active){
   guessInput.disabled = !active;
-  submitBtn.disabled = !active;
 }
 
 function countSB(secret, guess){
@@ -378,7 +376,6 @@ document.getElementById('kbBack').addEventListener('click', () => {
 });
 document.getElementById('kbSubmit').addEventListener('click', onSubmit);
 newGameBtn.addEventListener('click', startGame);
-submitBtn.addEventListener('click', onSubmit);
 revealBtn.addEventListener('click', ()=>{
   if(secret){
     setStatus(`The answer was ${secret}`,'ok');
