@@ -99,7 +99,13 @@
     .card { background: #1f2937; padding: 10px; border-radius: 8px; margin-bottom: 10px;font-size:20px; }
     .log { max-height: 300px; overflow-y: auto; }
     .try { display:flex; justify-content:space-between; padding: 6px 0; border-bottom: 1px solid #374151; }
-    .status.ok { color: #34d399; }
+    #status {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #0f172a;
+}
+   .status.ok { color: #34d399; }
     .status.warn { color: #f59e0b; }
     .status.err { color: #f87171; }
     label {font-size:20px;}
