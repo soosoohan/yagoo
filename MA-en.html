@@ -76,15 +76,15 @@ h1 { text-align: center; font-size: 22px; color: White; }
   .stages button.active { background: #93c5fd; color: white; }
   .attempts { text-align: center; font-size: 12px; color: #888; margin-bottom: 10px; }
   .grid { display: flex; flex-direction: column; gap: 4px; align-items: center;
-          background: #f2f2f2; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+          background: #0f172a; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
   .row { display: flex; }
   .cell { width: 38px; height: 44px; margin: 2px; border-radius: 6px; border: 2px solid #e0e0e0;
           display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: bold;
           color: #444; background: white; user-select: none; position: relative; }
-    .cell.revealed { background: #eceff1; border-color: #90a4ae; color: #37474f; }
-  .cell.correct { background: #b7e4c7; border-color: #2d9d5f; color: #1b5e3a; }
-  .cell.ball { background: #ffe8a3; border-color: #d4a017; color: #7a5c00; }
-  .cell.out { background: #ffc9c9; border-color: #e05c5c; color: #8a1f1f; }
+  .cell.revealed { background: #eceff1; border-color: #90a4ae; color: #37474f; }
+  .cell.correct { background: #b7e4c7; border-color: #b7e4c7; color: #1b5e3a; }
+  .cell.ball { background: #ffe8a3; border-color: #ffe8a3; color: #7a5c00; }
+  .cell.out { background: #ffc9c9; border-color: #ffc9c9; color: #8a1f1f; }
   .cell.editable { cursor: pointer; border-color: #d8d8d8; }
   .cell.editable.selected { border-color: #90b8f0; border-width: 3px; background: #eaf2ff; }
   .cell.editable.selected::after {
@@ -92,11 +92,11 @@ h1 { text-align: center; font-size: 22px; color: White; }
     width: 60%; height: 3px; background: #90b8f0; animation: blink 1s step-start infinite;
   }
   @keyframes blink { 50% { opacity: 0; } }
-  .cell.editable.filled { border-color: #bbb; background: #f7f7f7; }
+  .cell.editable.filled { border-color: #F7F7F7; background: #f7f7f7; }
   .message { text-align: center; font-size: 14px; font-weight: bold; margin-bottom: 10px; min-height: 18px; color: #555; }
   .message.error { color: #d9776e; }
   .pad { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 10px; }
-  .pad button { width: 40px; height: 40px; border-radius: 6px; border: 1.5px solid #ddd; background: white;
+  .pad button { width: 38px; height: 44px; border-radius: 6px; border: 1.5px solid #ddd; background: white;
                 font-size: 14px; font-weight: bold; cursor: pointer; color: #444; }
   .pad button:hover:not(:disabled) { background: #f5f5f5; }
   .pad button.correct { background: #b7e4c7; border-color: #2d9d5f; color: #1b5e3a; opacity: .55; cursor: not-allowed; }
