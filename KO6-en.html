@@ -295,14 +295,15 @@ margin-top: auto;
     }
   });
 
-  // 워드풀 표시 기능
   function displayWordpool() {
     if (!modeLen) {
       wordpoolDisplay.textContent = "select the word length first";
       return;
     }
-    
-    const filteredWords = WORDS.filter(w => [...w].length === modeLen);
+
+    const filteredWords = WORDS
+      .filter(w => [...w].length === modeLen)
+      .sort((a, b) => a.localeCompare(b, 'ko'));
     wordpoolDisplay.innerHTML = "";
     
     if (filteredWords.length === 0) {
