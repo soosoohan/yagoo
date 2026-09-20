@@ -287,6 +287,56 @@ margin-top: auto;
      ];
        
 
+
+// 워드풀 검증 함수
+  function isValidWord(word) {
+    return WORDS.includes(word);
+  }
+
+  // 워드풀 표시 토글 기능
+  btnWordpool.addEventListener("click", () => {
+    const isShowing = wordpoolDisplay.classList.contains("show");
+    if (isShowing) {
+      wordpoolDisplay.classList.remove("show");
+      btnWordpool.textContent = "Show word pool";
+    } else {
+      displayWordpool();
+      wordpoolDisplay.classList.add("show");
+      btnWordpool.textContent = "Hide word pool";
+    }
+  });
+
+  // 워드풀 표시 기능
+  function displayWordpool() {
+    if (!modeLen) {
+      wordpoolDisplay.textContent = "select the word length first";
+      return;
+    }
+
+    const filteredWords = WORDS
+      .filter(w => [...w].length === modeLen)
+      .sort((a, b) => a.localeCompare(b, 'ko'));
+    wordpoolDisplay.innerHTML = "";
+    
+    if (filteredWords.length === 0) {
+      wordpoolDisplay.textContent = `${modeLen} character words are not available in the word pool.`;
+      return;
+    }
+
+    const title = document.createElement("div");
+    title.textContent = `${modeLen} character word pool (total ${filteredWords.length}):`;
+    title.style.marginBottom = "10px";
+    title.style.fontWeight = "bold";
+    wordpoolDisplay.appendChild(title);
+
+    filteredWords.forEach(word => {
+      const span = document.createElement("span");
+      span.className = "word-item";
+      span.textContent = word;
+      wordpoolDisplay.appendChild(span);
+    });
+  }
+
   // ——— 한글 분해/조립 유틸 ———
   const CHO_LIST = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌ ㅍㅎ".replace(" ", "").split("");
   const JUNG_LIST = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
