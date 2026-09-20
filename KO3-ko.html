@@ -257,6 +257,8 @@ margin-top: auto;
 <div class="wordpool-section">
   <div class="wordpool-toggle">
     <button id="btn-wordpool" class="ghost">워드풀 보기</button>
+    <button id="btn-hintpool" class="ghost">힌트 보기</button>
+
   </div>
   <div id="wordpool-display" class="wordpool-display"></div>
 </div>
@@ -473,7 +475,7 @@ margin-top: auto;
     keyStates.clear(); KB_CONSONANTS.forEach(c=>keyStates.set(c,"idle")); renderKeyboard();
     guessEl.focus();
     updateButtons(false);
-    if (wordpoolDisplay.classList.contains("show")) displayWordpool();
+   if (poolMode) showPool(poolMode);
 
   }
 
