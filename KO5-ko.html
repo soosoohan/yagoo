@@ -295,48 +295,61 @@ margin-top: auto;
   }
 
   // 워드풀 표시 토글 기능
-  btnWordpool.addEventListener("click", () => {
-    const isShowing = wordpoolDisplay.classList.contains("show");
-    if (isShowing) {
-      wordpoolDisplay.classList.remove("show");
-      btnWordpool.textContent = "Show word pool";
-    } else {
-      displayWordpool();
-      wordpoolDisplay.classList.add("show");
-      btnWordpool.textContent = "Hide word pool";
-    }
-  });
+  const btnHint = $("#btn-hintpool");
+let poolMode = null; // null | "all" | "hint"
 
-  // 워드풀 표시 기능
-  function displayWordpool() {
-    if (!modeLen) {
-      wordpoolDisplay.textContent = "select the word length first";
-      return;
-    }
+function showPool(mode){
+  poolMode = mode;
+  displayWordpool(mode === "hint");
+  wordpoolDisplay.classList.add("show");
+  btnWordpool.textContent = (mode === "all") ? "Hide word pool" : "Show word pool";
+  btnHint.textContent = (mode === "hint") ? "Hide hint words" : "Show hint words";
+}
+function hidePool(){
+  poolMode = null;
+  wordpoolDisplay.classList.remove("show");
+  btnWordpool.textContent = "Show word pool";
+  btnHint.textContent = "Show hint words";
+}
+btnWordpool.addEventListener("click", () => poolMode === "all" ? hidePool() : showPool("all"));
+btnHint.addEventListener("click", () => poolMode === "hint" ? hidePool() : showPool("hint"));
 
-    const filteredWords = WORDS
-      .filter(w => [...w].length === modeLen)
-      .sort((a, b) => a.localeCompare(b, 'ko'));
-    wordpoolDisplay.innerHTML = "";
-    
-    if (filteredWords.length === 0) {
-      wordpoolDisplay.textContent = `${modeLen} character words are not available in the word pool.`;
-      return;
-    }
-
-    const title = document.createElement("div");
-    title.textContent = `${modeLen} character word pool (total ${filteredWords.length}):`;
-    title.style.marginBottom = "10px";
-    title.style.fontWeight = "bold";
-    wordpoolDisplay.appendChild(title);
-
-    filteredWords.forEach(word => {
-      const span = document.createElement("span");
-      span.className = "word-item";
-      span.textContent = word;
-      wordpoolDisplay.appendChild(span);
-    });
+function displayWordpool(onlyHint){
+  if (!modeLen) {
+    wordpoolDisplay.textContent = "select the word length first";
+    return;
   }
+  const hintV = (onlyHint && secretDecomp) ? secretDecomp.vowels.join("") : null;
+  const filteredWords = WORDS
+    .filter(w => [...w].length === modeLen)
+    .filter(w => {
+      if (!hintV) return true;
+      const d = decomposeWordToJamo(w);
+      return d && d.vowels.join("") === hintV;
+    })
+    .sort((a, b) => a.localeCompare(b, 'ko'));
+  wordpoolDisplay.innerHTML = "";
+
+  if (filteredWords.length === 0) {
+    wordpoolDisplay.textContent = "No words found.";
+    return;
+  }
+
+  const title = document.createElement("div");
+  title.textContent = onlyHint
+    ? `${modeLen}-letter words matching the vowel hint (total ${filteredWords.length}):`
+    : `${modeLen} character word pool (total ${filteredWords.length}):`;
+  title.style.marginBottom = "10px";
+  title.style.fontWeight = "bold";
+  wordpoolDisplay.appendChild(title);
+
+  filteredWords.forEach(word => {
+    const span = document.createElement("span");
+    span.className = "word-item";
+    span.textContent = word;
+    wordpoolDisplay.appendChild(span);
+  });
+}
 
   // ——— 한글 분해/조립 유틸 ———
   const CHO_LIST = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌ ㅍㅎ".replace(" ", "").split("");
