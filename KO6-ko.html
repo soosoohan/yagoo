@@ -454,6 +454,7 @@ margin-top: auto;
     keyStates.clear(); KB_CONSONANTS.forEach(c=>keyStates.set(c,"idle")); renderKeyboard();
     guessEl.focus();
     updateButtons(false);
+    if (wordpoolDisplay.classList.contains("show")) displayWordpool();
   }
 
   function validate(input) {
