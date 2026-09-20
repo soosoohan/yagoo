@@ -261,7 +261,7 @@ margin-top: auto;
   
 <div class="wordpool-section">
   <div class="wordpool-toggle">
-    <button id="btn-wordpool" class="ghost">View Wordpool</button>
+  <button id="btn-wordpool" class="ghost">Show word pool</button>
   </div>
   <div id="wordpool-display" class="wordpool-display"></div>
 </div>
@@ -479,12 +479,13 @@ margin-top: auto;
     keyStates.clear(); KB_CONSONANTS.forEach(c=>keyStates.set(c,"idle")); renderKeyboard();
     guessEl.focus();
     updateButtons(false);
+    if (wordpoolDisplay.classList.contains("show")) displayWordpool();  
   }
 
   function validate(input) {
     if (!modeLen) return "Please select the word length first.";
     if (!/^[가-힣]+$/.test(input)) return "Please enter only complete Hangul syllables.(가–힣)";
-    if ([...input].length !== modeLen) return `${modeLen}Please enter the text accurately.`;
+    if ([...input].length !== modeLen) return `Please enter exactly ${modeLen} letters.`;
     const g = decomposeWordToJamo(input);
     const hint = secretDecomp.vowels;
     for (let i=0;i<hint.length;i++){
@@ -680,7 +681,7 @@ addRow(g, perSyl);
   function giveUp() {
     if (finished || !modeLen) return;
     finished = true;
-    statusEl.textContent = `Out of tries! The answer was ${secret}`;
+    statusEl.textContent = `You gave up. The answer was ${secret}`;
     statusEl.classList.add("fail");
     btnTry.disabled = true;
     updateButtons(true);
@@ -698,7 +699,7 @@ addRow(g, perSyl);
     let v = e.target.value.replace(/\s+/g,"");
     e.target.value = v;
     const err = v ? validate(v) : "Please enter a word first.";
-    btnTry.disabled = !!v && !!err;
+    btnTry.disabled = !v || !!err;
     warnEl.textContent = (v && err) ? err : "";
   }
 
