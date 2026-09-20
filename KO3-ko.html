@@ -312,7 +312,7 @@ btnHint.addEventListener("click", () => poolMode === "hint" ? hidePool() : showP
 
 function displayWordpool(onlyHint){
   if (!modeLen) {
-    wordpoolDisplay.textContent = "select the word length first";
+    wordpoolDisplay.textContent = "글자수를 먼저 선택하세요";
     return;
   }
   const hintV = (onlyHint && secretDecomp) ? secretDecomp.vowels.join("") : null;
@@ -327,14 +327,14 @@ function displayWordpool(onlyHint){
   wordpoolDisplay.innerHTML = "";
 
   if (filteredWords.length === 0) {
-    wordpoolDisplay.textContent = "No words found.";
+    wordpoolDisplay.textContent = "해당하는 단어가 없어요.";
     return;
   }
 
   const title = document.createElement("div");
   title.textContent = onlyHint
-    ? `${modeLen}-letter words matching the vowel hint (total ${filteredWords.length}):`
-    : `${modeLen} character word pool (total ${filteredWords.length}):`;
+    ? `모음 힌트와 같은 ${modeLen}글자 단어 (총 ${filteredWords.length}개):`
+    : `${modeLen}글자 워드풀 (총 ${filteredWords.length}개):`;
   title.style.marginBottom = "10px";
   title.style.fontWeight = "bold";
   wordpoolDisplay.appendChild(title);
