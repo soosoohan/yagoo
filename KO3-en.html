@@ -77,7 +77,7 @@
   min-height: 100vh;
 }
    .back-button { position: fixed; top: max(48px, env(safe-area-inset-top) + 20px); left: 22px; width: 44px; height: 44px; padding: 0; font-size: 1.8em; font-weight: bold; 
-    background: #E6B800;
+    background: #9debfa;
     color: #0f172a;
     border-radius: 12px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;z-index: 100;}
   .back-button:hover {
@@ -88,7 +88,35 @@
   .card { background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:22px; box-shadow: 0 10px 30px rgba(0,0,0,.35);}
   h1 { margin:0 0 8px; font-size: 25px;}
   .sub { color:var(--muted); margin-bottom:18px; font-size: 20px; }
+details.rules {
+  margin: 10px 0 16px;
+  background: #0f1c2a;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: 0 16px;
+}
+details.rules summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  list-style: none;
+}
+details.rules summary::-webkit-details-marker { display: none; }
+details.rules summary::before { content: "▶ "; font-size: 14px; }
+details.rules[open] summary::before { content: "▼ "; }
+details.rules[open] summary {
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  margin-bottom: 10px;
+}
+details.rules h2 { font-size: 22px; margin: 8px 0; }
+details.rules h3 { font-size: 20px; margin: 14px 0 6px; }
+details.rules p,
+details.rules li { font-size: 18px; line-height: 1.6; color: #c7d9eb; }
+
   .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
 
   input {
     font: inherit;
@@ -196,13 +224,13 @@ margin-top: auto;
  <div class="wrap">
   <div class="card">
     <h1>Soosoo Hangul Baseball</h1>
-   <div class="sub">
-  <p>
-    Soosoo Hangul Baseball is a logic deduction game where you guess a secret Korean word chosen by the computer.<br>
-    Inspired by the number game Bulls and Cows, it helps you enjoy learning Korean vocabulary while sharpening your logical thinking.
-  </p>
+<div class="sub">
+  <p>Soosoo Hangul Baseball is a logic deduction game where you guess a secret Korean word chosen by the computer.</p>
 
-  <h2>How to Play Soosoo Hangul Baseball</h2>
+  <details class="rules">
+    <summary>How to Play &amp; Rules</summary>
+    Inspired by the number game Bulls and Cows, it helps you enjoy learning Korean vocabulary while sharpening your logical thinking.
+    <h2>How to Play Soosoo Hangul Baseball</h2>
   <p>
     The input buttons only provide consonants.
     The vowels of the answer are given as hints, so you can focus on finding the right consonants.
@@ -227,6 +255,9 @@ margin-top: auto;
     Choose from 2-letter, 3-letter, or 4-letter nouns and test your vocabulary.
     Use the S/B/O hints you get after each guess to work your way step by step to the answer.
   </p>
+  </details>
+</div>
+
   </div>
 
   <div class="mode-buttons">
