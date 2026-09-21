@@ -87,6 +87,34 @@ border-radius: 12px; border: none; cursor: pointer; display: flex; align-items: 
   .card { background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:22px; box-shadow: 0 10px 30px rgba(0,0,0,.35);}
   h1 { margin:0 0 8px; font-size: 25px; text-align: center;}
   .sub { color:var(--muted); margin-bottom:18px; font-size: 20px; }
+
+    details.rules {
+  margin: 10px 0 16px;
+  background: #0f1c2a;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: 0 16px;
+}
+details.rules summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  list-style: none;
+}
+details.rules summary::-webkit-details-marker { display: none; }
+details.rules summary::before { content: "▶ "; font-size: 14px; }
+details.rules[open] summary::before { content: "▼ "; }
+details.rules[open] summary {
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  margin-bottom: 10px;
+}
+details.rules h2 { font-size: 22px; margin: 8px 0; }
+details.rules h3 { font-size: 20px; margin: 14px 0 6px; }
+details.rules p,
+details.rules li { font-size: 18px; line-height: 1.6; color: #c7d9eb; }
+
   .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 
 input {
