@@ -509,7 +509,7 @@ margin-top: auto;
     keyStates.clear(); KB_CONSONANTS.forEach(c=>keyStates.set(c,"idle")); renderKeyboard();
     guessEl.focus();
     updateButtons(false);
-    if (poolMode) showPool(poolMode);
+    if (wordpoolDisplay.classList.contains("show")) displayWordpool();    
 
   }
 
