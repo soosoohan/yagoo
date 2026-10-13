@@ -803,8 +803,9 @@ flex-direction: column;
         
         document.getElementById('aiThinking').style.display = 'block';
         
-        setTimeout(() => {
-            let guess;
+       setTimeout(() => {
+       if (!gameActive || currentTurn !== 'ai') return;   // 대기 중에 상태가 바뀌었으면 중단
+       let guess;
             
             if (aiGuesses.length === 0) {
                 // 첫 번째 추리는 랜덤하게
@@ -834,7 +835,7 @@ flex-direction: column;
             currentTurn = 'player';
             updateTurnIndicator();
             updateKeypad(); // 키패드 업데이트
-        }, 2000);
+    }, 500 + Math.random() * 300);
     }
 
     function filterAIPossibleNumbers() {
