@@ -7,11 +7,11 @@ function showEndOverlay({ lang='ko', result, title, scoreText, onRestart }) {
   const s = END_STR[lang];
   const box = document.createElement('div');
   box.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:9999';
-  box.innerHTML = `<div style="background:#fff;border-radius:16px;padding:24px 32px;text-align:center;max-width:80vw">
-    <div style="color:#888">${s.gameOver}</div>
-    <div style="font-size:1.8em;margin:8px 0">${title || s[result]}</div>
-    <div style="margin-bottom:16px">${scoreText}</div>
-    <button id="endAgainBtn" style="font-size:1.1em;padding:10px 24px;border-radius:10px;border:0;background:#ffd54f">${s.again}</button></div>`;
+  box.innerHTML = `<div style="background:#fff;color:#222;border-radius:16px;padding:24px 32px;text-align:center;max-width:80vw">
+    <div style="color:#555;font-size:1em">${s.gameOver}</div>
+    <div style="font-size:1.8em;font-weight:bold;margin:8px 0;color:#222">${title || s[result]}</div>
+    <div style="margin-bottom:16px;color:#333">${scoreText}</div>
+    <button id="endAgainBtn" style="font-size:1.1em;padding:10px 24px;border-radius:10px;border:0;background:#ffd54f;color:#222;cursor:pointer">${s.again}</button></div>`;
   document.body.appendChild(box);
   box.querySelector('#endAgainBtn').onclick = () => { box.remove(); (onRestart || (() => location.reload()))(); };
   if (result === 'win') launchConfetti();
