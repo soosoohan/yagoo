@@ -148,7 +148,7 @@ margin-top: auto;
 }
 
   </style>
-
+<script src="end-screen.js"></script>
 </head>
 <body>
  <button class="back-button"  onclick="location.href='index.html'">
@@ -354,16 +354,26 @@ function onSubmit(){
   const score = countSB(secret, g);
   appendLog(g, score);
   updateKeyStateFromGuess(g);
-  if(score.S === length){
+    if(score.S === length){
     setStatus(`Correct! ${secret}`,'ok');
     gameOver = true;
     toggleInput(false);
+    setTimeout(() => showEndOverlay({
+      lang: 'en', result: 'win',
+      title: '🎉 You got it!',
+      scoreText: `${secret} · solved in ${tries} ${tries === 1 ? 'try' : 'tries'}`
+    }), 600);
     return;
   }
   if(tries >= maxTries){
     setStatus(`Out of tries! The answer was ${secret}`,'err');
     gameOver = true;
     toggleInput(false);
+    setTimeout(() => showEndOverlay({
+      lang: 'en', result: 'lose',
+      title: '😢 Out of tries',
+      scoreText: `The answer was ${secret}`
+    }), 600);
     return;
   }
   setStatus('Keep going.');
