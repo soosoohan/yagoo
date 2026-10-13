@@ -35,4 +35,4 @@ function launchConfetti(count = 80) {
   myConfetti({ particleCount: count, angle: 120, spread: 70, origin: { x: 1, y: 0.7 } });
   setTimeout(() => canvas.remove(), 4000);
 }
-}
+
