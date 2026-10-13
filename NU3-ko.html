@@ -667,8 +667,7 @@ margin-top: auto;
         document.getElementById('playerInput').maxLength = digits;
         document.getElementById('playerInput').placeholder = `${digits}자리 숫자 입력`;
         
-        // 규칙 텍스트 업데이트
-        document.getElementById('gameRuleDigits').textContent = `${digits}자리 서로 다른 숫자를 교대로 추리합니다!`;
+ document.getElementById('gameRuleDigits').textContent = `나와 AI가 번갈아 ${digits}자리 비밀숫자를 추리합니다!`;
     }
     // 게임 초기화
     function startGame() {
