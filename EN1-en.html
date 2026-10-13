@@ -486,19 +486,29 @@ function submitGuess(){
       const marks = perLetterSBO(secret, g);
       appendLog(g, marks);
       updateKeyStateFromGuess(g); // 있다/없다만 표시
-
-      if(marks.every(m=>m==='S')){
-        setStatus(`Correct! ${secret}`,'ok');
-        gameOver = true;
-        toggleInput(false);
-        return;
-      }
-      if(tries >= maxTries){
-        setStatus(`Failed! The answer was ${secret}`, 'err');
-        gameOver = true;
-        toggleInput(false);
-        return;
-      }
+     
+  if(marks.every(m=>m==='S')){
+  setStatus(`Correct! ${secret}`,'ok');
+  gameOver = true;
+  toggleInput(false);
+  setTimeout(() => showEndOverlay({
+    lang: 'en', result: 'win',
+    title: '🎉 You got it!',
+    scoreText: `${secret} · solved in ${tries} ${tries === 1 ? 'try' : 'tries'}`
+  }), 600);
+  return;
+}
+  if(tries >= maxTries){
+  setStatus(`Failed! The answer was ${secret}`, 'err');
+  gameOver = true;
+  toggleInput(false);
+  setTimeout(() => showEndOverlay({
+    lang: 'en', result: 'lose',
+    title: '😢 Out of tries',
+    scoreText: `The answer was ${secret}`
+  }), 600);
+  return;
+}
       
       // 게임이 계속되면 새로운 입력 행 추가
 setStatus('Keep trying.');
