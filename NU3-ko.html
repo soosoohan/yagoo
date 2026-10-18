@@ -891,25 +891,31 @@ margin-top: auto;
         }
     }
 
-    function endGame(winner) {
-        gameActive = false;
-        const status = document.getElementById('gameStatus');
-        
-        if (winner === 'player') {
-            status.innerHTML = '🎉 축하합니다! 당신이 승리했습니다!<br>비밀숫자는 ' + secretNumber + '였습니다.';
-            status.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
-            status.style.color = 'white';
-        } else {
-            status.innerHTML = '😅 AI가 승리했습니다!<br>비밀숫자는 ' + secretNumber + '였습니다.';
-            status.style.background = 'linear-gradient(135deg, #ee5a24, #ff6b6b)';
-            status.style.color = 'white';
-        }
-        
-        document.getElementById('turnIndicator').textContent = '게임이 종료되었습니다';
-        document.getElementById('playerInput').disabled = true;
-        document.getElementById('playerSubmit').disabled = true;
-        updateKeypad(); // 게임 종료시 키패드 비활성화
+   function endGame(winner) {
+    gameActive = false;
+    const status = document.getElementById('gameStatus');
+    const isWin = winner === 'player';
+
+    if (isWin) {
+        status.innerHTML = '🎉 축하합니다! 당신이 승리했습니다!<br>비밀숫자는 ' + secretNumber + '였습니다.';
+        status.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+    } else {
+        status.innerHTML = '😅 AI가 승리했습니다!<br>비밀숫자는 ' + secretNumber + '였습니다.';
+        status.style.background = 'linear-gradient(135deg, #ee5a24, #ff6b6b)';
     }
+    status.style.color = 'white';
+
+    document.getElementById('turnIndicator').textContent = '게임이 종료되었습니다';
+    document.getElementById('playerInput').disabled = true;
+    document.getElementById('playerSubmit').disabled = true;
+    updateKeypad(); // 게임 종료시 키패드 비활성화
+
+    showEndOverlay({
+        lang: 'ko',
+        result: isWin ? 'win' : 'lose',
+        scoreText: '비밀숫자는 ' + secretNumber + '였습니다.'
+    });
+}
 
     function resetGame() {
         gameActive = false;
