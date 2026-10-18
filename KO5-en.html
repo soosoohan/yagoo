@@ -698,13 +698,21 @@ addRow(g, perSyl);
     updateKeyStateFromGuess(g);
 
     if (g === secret) {
-      finished = true;
-      statusEl.textContent = `Correct! (${secret})`;
-      statusEl.classList.add("ok");
-      summaryEl.textContent = ``;
-      btnTry.disabled = true;
-      updateButtons(true);
-    } else {
+  finished = true;
+  statusEl.textContent = `Correct! (${secret})`;
+  statusEl.classList.add("ok");
+  summaryEl.textContent = `Attempts: ${tries}`;
+  btnTry.disabled = true;
+  updateButtons(true);
+
+  setTimeout(() => showEndOverlay({
+    lang: 'en',
+    result: 'win',
+    title: '🎉 Correct!',
+    scoreText: `Answer: ${secret} · ${tries} ${tries === 1 ? 'try' : 'tries'}`,
+    onRestart: () => location.reload()
+  }), 200);
+} else {
       summaryEl.textContent = ``;
     }
 
