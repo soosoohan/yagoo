@@ -578,13 +578,21 @@ function onTry() {
   const pattern = score(g, secret);
   addResult(g, pattern, tries); // Show result immediately
 
-  if (pattern.split("").every(ch => ch === "S")) {
+    if (pattern.split("").every(ch => ch === "S")) {
     finished = true;
     statusEl.textContent = `정답! (${secret})`;
     statusEl.classList.add("ok");
     summaryEl.textContent = `${tries}번 만에 성공!`;
     btnTry.disabled = true;
     updateButtons(true);
+
+    setTimeout(() => showEndOverlay({
+      lang: 'ko',
+      result: 'win',
+      title: '🎉 정답!',
+      scoreText: `정답: ${secret} · ${tries}번 만에 성공!`,
+      onRestart: () => location.reload()
+    }), 200);
   } else {
     summaryEl.textContent = ``;
   }
