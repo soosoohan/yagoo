@@ -477,12 +477,20 @@ function reset() {
     const { s, b, outs } = score(g, secret);
     addRow(g, s, b, outs);
 
-    if (s === mode.len) {
+      if (s === mode.len) {
       finished = true;
       statusEl.textContent = `정답! (${secret})`;
       statusEl.classList.add("ok");
       btnTry.disabled = true;
       updateButtons(true);
+
+      setTimeout(() => showEndOverlay({
+        lang: 'ko',
+        result: 'win',
+        title: '🎉 정답!',
+        scoreText: `정답: ${secret} · ${tries}번 만에 성공!`,
+        onRestart: () => location.reload()
+      }), 200);
     }
 
     guessEl.value = "";
