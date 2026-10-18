@@ -476,14 +476,21 @@ function onTry() {
     const { s, b, outs } = score(g, secret);
     addRow(g, s, b, outs);
 
-    if (s === mode.len) {
+      if (s === mode.len) {
       finished = true;
       statusEl.textContent = `Correct! (${secret})`;
       statusEl.classList.add("ok");
       btnTry.disabled = true;
       updateButtons(true);
-    }
 
+      setTimeout(() => showEndOverlay({
+        lang: 'en',
+        result: 'win',
+        title: '🎉 Correct!',
+        scoreText: `Answer: ${secret} · ${tries} ${tries === 1 ? 'try' : 'tries'}`,
+        onRestart: () => location.reload()
+      }), 200);
+    }
     guessEl.value = "";
     btnTry.disabled = true;
     updateKeypad();
