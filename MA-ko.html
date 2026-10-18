@@ -464,9 +464,18 @@ function submitAnswer() {
   const won = state.template.every(c => c.revealed || state.lockedValues[c.id]);
   const msg = document.getElementById("message");
   msg.classList.remove("error");
-  if (won) {
+   if (won) {
     state.status = "won";
-    msg.textContent = `🎉 ${MAX_ATTEMPTS - state.attemptsLeft}번 만에 맞췄어요!`;
+    const tried = MAX_ATTEMPTS - state.attemptsLeft;
+    msg.textContent = `🎉 ${tried}번 만에 맞췄어요!`;
+
+    setTimeout(() => showEndOverlay({
+      lang: 'ko',
+      result: 'win',
+      title: '🎉 정답!',
+      scoreText: `${tried}번 만에 성공!`,
+      onRestart: () => location.reload()
+    }), 200);
   } else if (state.attemptsLeft <= 0) {
     state.status = "lost";
     state.template.forEach(c => { state.lockedValues[c.id] = c.actual; });
