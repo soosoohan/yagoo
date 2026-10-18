@@ -464,7 +464,16 @@ function submitAnswer() {
   msg.classList.remove("error");
   if (won) {
     state.status = "won";
-    msg.textContent = `🎉 Solved in ${MAX_ATTEMPTS - state.attemptsLeft} attempts!`;
+    const tried = MAX_ATTEMPTS - state.attemptsLeft;
+    msg.textContent = `🎉 Solved in ${tried} ${tried === 1 ? 'try' : 'tries'}!`;
+
+    setTimeout(() => showEndOverlay({
+      lang: 'en',
+      result: 'win',
+      title: '🎉 Correct!',
+      scoreText: `Solved in ${tried} ${tried === 1 ? 'try' : 'tries'}!`,
+      onRestart: () => location.reload()
+    }), 200);
   } else if (state.attemptsLeft <= 0) {
     state.status = "lost";
     state.template.forEach(c => { state.lockedValues[c.id] = c.actual; });
