@@ -198,6 +198,8 @@ display:none;
 }
 .wordpool-display.show { display:block; }
 .word-item { display:inline-block; margin:2px 4px; padding:2px 6px; background:#2c4157; border-radius:6px; }
+.correct-flash td { animation: flash .4s ease 2; }
+@keyframes flash { 50% { background: #ffd54f; } }
 
 footer {
 text-align: center;
@@ -691,7 +693,7 @@ addRow(g, perSyl);
 
     updateKeyStateFromGuess(g);
 
-    if (g === secret) {
+  if (g === secret) {
   finished = true;
   statusEl.textContent = `정답! (${secret})`;
   statusEl.classList.add("ok");
@@ -699,13 +701,15 @@ addRow(g, perSyl);
   btnTry.disabled = true;
   updateButtons(true);
 
-  // 마지막 줄이 보이도록 잠깐 뒤에 종료 화면 표시
+  // 정답 줄 강조 (방금 prepend된 맨 위 줄)
+  if (tbody.firstElementChild) tbody.firstElementChild.classList.add('correct-flash');
+
   setTimeout(() => showEndOverlay({
     lang: 'ko',
     result: 'win',
     scoreText: `정답: ${secret} · 시도 ${tries}번`,
-    onRestart: () => location.reload()   // 한글 야구에 새 게임 함수가 있으면 그걸로 교체
-  }), 600);
+    onRestart: () => location.reload()
+  }), 300);
 } else {
   summaryEl.textContent = `시도 ${tries}번`;
 }
