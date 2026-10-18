@@ -210,6 +210,8 @@ margin-top: auto;
 }
 
 </style>
+<script src="end-screen.js"></script>
+  
 </head>
 <body>
  <button class="back-button"  onclick="location.href='index.html'">
@@ -690,15 +692,23 @@ addRow(g, perSyl);
     updateKeyStateFromGuess(g);
 
     if (g === secret) {
-      finished = true;
-      statusEl.textContent = `정답! (${secret})`;
-      statusEl.classList.add("ok");
-      summaryEl.textContent = `시도 횟수: ${tries}번`;
-      btnTry.disabled = true;
-      updateButtons(true);
-    } else {
-      summaryEl.textContent = `시도 ${tries}번`;
-    }
+  finished = true;
+  statusEl.textContent = `정답! (${secret})`;
+  statusEl.classList.add("ok");
+  summaryEl.textContent = `시도 횟수: ${tries}번`;
+  btnTry.disabled = true;
+  updateButtons(true);
+
+  // 마지막 줄이 보이도록 잠깐 뒤에 종료 화면 표시
+  setTimeout(() => showEndOverlay({
+    lang: 'ko',
+    result: 'win',
+    scoreText: `정답: ${secret} · 시도 ${tries}번`,
+    onRestart: () => location.reload()   // 한글 야구에 새 게임 함수가 있으면 그걸로 교체
+  }), 600);
+} else {
+  summaryEl.textContent = `시도 ${tries}번`;
+}
 
     guessEl.value = ""; btnTry.disabled = true; guessEl.focus();
   }
