@@ -651,26 +651,33 @@ margin-top: auto;
     }
 
     function endGame(winner) {
-        gameActive = false;
-        const status = document.getElementById('gameStatus');
-        
-        if (winner === 'player1') {
-            status.innerHTML = '🎉 Player 1 wins!<br>The secret number was ' + secretNumber + '.';
-            status.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
-            status.style.color = 'white';
-        } else {
-            status.innerHTML = '🎉 Player 2 wins!<br>The secret number was ' + secretNumber + '.';
-            status.style.background = 'linear-gradient(135deg, #ee5a24, #ff6b6b)';
-            status.style.color = 'white';
-        }
-        
-        document.getElementById('turnIndicator').textContent = 'Game Over';
-        document.getElementById('player1Input').disabled = true;
-        document.getElementById('player1Submit').disabled = true;
-        document.getElementById('player2Input').disabled = true;
-        document.getElementById('player2Submit').disabled = true;
-    }
+    gameActive = false;
+    const status = document.getElementById('gameStatus');
+    const isP1 = winner === 'player1';
 
+    if (isP1) {
+        status.innerHTML = '🎉 Player 1 wins!<br>The secret number was ' + secretNumber + '.';
+        status.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+    } else {
+        status.innerHTML = '🎉 Player 2 wins!<br>The secret number was ' + secretNumber + '.';
+        status.style.background = 'linear-gradient(135deg, #ee5a24, #ff6b6b)';
+    }
+    status.style.color = 'white';
+
+    document.getElementById('turnIndicator').textContent = 'Game Over';
+    document.getElementById('player1Input').disabled = true;
+    document.getElementById('player1Submit').disabled = true;
+    document.getElementById('player2Input').disabled = true;
+    document.getElementById('player2Submit').disabled = true;
+
+    showEndOverlay({
+    lang: 'en',
+    result: 'win',
+    title: isP1 ? '🎉 Player 1 Wins!' : '🎉 Player 2 Wins!',
+    scoreText: 'The secret number was ' + secretNumber+ '.'
+    });
+    }
+        
     function resetGame() {
         gameActive = false;
         selectedDigits = 0;
