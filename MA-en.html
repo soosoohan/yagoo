@@ -65,7 +65,7 @@
   <script src="https://soosooland.com/js/protection.js"></script>
    
 <style>
-  body { font-family: sans-serif; max-width: 460px; margin: 20px auto; padding: 0 12px; background: #0f172a; color: #e5e7eb;  }
+  body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 0 12px; background: #0f172a; color: #e5e7eb;  }
   .back-button { position: fixed; top: max(48px, env(safe-area-inset-top) + 20px); left: 22px; width: 44px; height: 44px; padding: 0; font-size: 1.8em; font-weight: bold; 
 background: #E6B800; color: #0F172A;
 border-radius: 12px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;z-index: 100;}
@@ -75,12 +75,21 @@ h1 { text-align: center; font-size: 22px; color: White; }
   .stages button { padding: 6px 10px; font-size: 12px; font-weight: bold; border: none; border-radius: 6px; background: #eee; color: #777; cursor: pointer; }
   .stages button.active { background: #93c5fd; color: white; }
   .attempts { text-align: center; font-size: 12px; color: #888; margin-bottom: 10px; }
-  .grid { display: flex; flex-direction: column; gap: 4px; align-items: center;
-          background: #0f172a; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
-  .row { display: flex; }
-  .cell { width: 38px; height: 44px; margin: 2px; border-radius: 6px; border: 2px solid #e0e0e0;
-          display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: bold;
-          color: #444; background: white; user-select: none; position: relative; }
+ .grid { display: flex; flex-direction: column; gap: 4px; align-items: center;
+        background: #0f172a; border-radius: 10px; padding: 12px; margin-bottom: 12px;
+        box-sizing: border-box; max-width: 100%; }
+.row { display: flex; justify-content: center; width: 100%; }
+.cell {
+  flex: 1 1 0;
+  min-width: 0;          /* 이게 있어야 38px 밑으로 줄어듦 */
+  max-width: 38px;       /* 데스크톱에서는 기존 크기 유지 */
+  aspect-ratio: 38 / 44;
+  width: auto; height: auto;
+  margin: 1px;
+  font-size: clamp(11px, 3.6vw, 17px);
+  border-radius: 6px; border: 2px solid #e0e0e0;
+  display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: bold;
+  color: #444; background: white; user-select: none; position: relative; }
   .cell.revealed { background: #eceff1; border-color: #90a4ae; color: #37474f; }
   .cell.correct { background: #b7e4c7; border-color: #b7e4c7; color: #1b5e3a; }
   .cell.ball { background: #ffe8a3; border-color: #ffe8a3; color: #7a5c00; }
