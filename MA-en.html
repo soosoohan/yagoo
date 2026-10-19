@@ -83,15 +83,16 @@ h1 { text-align: center; font-size: 22px; color: White; }
   justify-content: flex-start;
   gap: 3px;
 }
-  .cell {
-  box-sizing: border-box;      /* 테두리가 칸 크기를 키우지 않게 */
-  flex: 0 1 44px;              /* 최대 44px, 좁으면 같이 줄어듦 */
-  min-width: 0;
-  aspect-ratio: 1 / 1;         /* 정사각형 */
+.cell {
+  --size: clamp(26px, calc((100vw - 32px - 3px * (var(--n, 10) - 1)) / var(--n, 10)), 44px);
+  width: var(--size);
+  height: var(--size);
+  flex: none;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(14px, 4.5vw, 22px);
+  font-size: calc(var(--size) * 0.5);
   font-weight: bold;
   line-height: 1;
   user-select: none;
