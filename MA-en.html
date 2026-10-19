@@ -523,19 +523,29 @@ function render() {
   state.history.forEach(row => {
     const rowDiv = document.createElement("div");
     rowDiv.className = "row";
-    row.forEach(c => {
+        row.forEach(c => {
+      if (c.id === "equals") {
+        const br = document.createElement("div");
+        br.className = "row-break";
+        rowDiv.appendChild(br);
+      }
       const cell = document.createElement("div");
       cell.className = "cell " + c.cls;
       cell.textContent = c.value;
       rowDiv.appendChild(cell);
     });
-    grid.appendChild(rowDiv);
+     grid.appendChild(rowDiv);
   });
 
     if (state.status !== "won") {
     const curRowDiv = document.createElement("div");
     curRowDiv.className = "row";
-    state.template.forEach(c => {
+        state.template.forEach(c => {
+      if (c.id === "equals") {
+        const br = document.createElement("div");
+        br.className = "row-break";
+        curRowDiv.appendChild(br);
+      }
       const cell = document.createElement("div");
       if (c.revealed) {
         cell.className = "cell revealed";
