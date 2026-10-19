@@ -14,7 +14,7 @@ function showEndOverlay({ lang='ko', result, title, scoreText, onRestart }) {
     <button id="endAgainBtn" style="font-size:1.1em;padding:10px 24px;border-radius:10px;border:0;background:#ffd54f;color:#222;cursor:pointer">${s.again}</button></div>`;
   document.body.appendChild(box);
   box.querySelector('#endAgainBtn').onclick = () => { box.remove(); (onRestart || (() => location.reload()))(); };
-  if (result === 'win') launchConfetti();
+  if (result === 'win' || result === 'draw') launchConfetti();
 }
 
 // 라이브러리를 자동으로 불러오기 (게임 HTML에 CDN 줄을 따로 안 넣어도 돼요)
